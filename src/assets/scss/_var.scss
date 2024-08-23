@@ -1,0 +1,37 @@
+// app
+$bgColor: rgb(64, 48, 4);
+$fontColor: rgb(234, 107, 9);
+// 布局
+$aside_bgColor: #091e31;
+$asideTools_hover_bgImg: url('../images/菜单选中.png');
+$asideTools_active_bgImg: url('../images/菜单选中.png');
+$asideTools_fontColor: #ffffff;
+
+$main_bgColor: #091e31;
+$main_border: (
+  width: 1px,
+  style: solid,
+  color: #045a84,
+);
+// @each $property, $value in $main_border {
+//   border-#{$property}: $value;
+// }
+// 搜索
+$search_bgImg: url('../images/按钮.png');
+
+// 表格
+$tb_bgColor: rgb(26, 23, 24);
+$tb_fontColor: white;
+$tb_fontSize: 16px;
+$tb_lines: 2;
+$tb_h: 60px;
+$tb_row_hover: rgb(47, 75, 10);
+$tb_border: (
+  width: 1px,
+  style: solid,
+  color: #045a84,
+);
+
+
+// INPUT
+$input_bgColor: rgb(211, 22, 85);

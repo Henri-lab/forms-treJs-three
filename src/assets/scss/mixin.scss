@@ -1,0 +1,16 @@
+@mixin set-border($width, $style, $color) {
+  border-width: $width;
+  border-style: $style;
+  border-color: $color;
+}
+@mixin text-ellipsis($size, $line) {
+  // 必须同时设置 white-space: nowrap; 和 overflow: hidden; 才能使 text-overflow: ellipsis; 生效。
+  // 如果文本中包含换行符，text-overflow: ellipsis; 只会对第一行文本生效。
+  // 如果需要多行文本溢出时使用省略号，可以使用其他方法，例如 Flexbox 或 Grid 布局结合伪元素、line-clamp
+  font-size: $size;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: $line;
+  -webkit-box-orient: vertical;
+}

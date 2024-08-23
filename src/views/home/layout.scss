@@ -1,0 +1,85 @@
+.common-layout {
+  padding: 0;
+  height: 100vh;
+  background: url('../assets/images/背景.png');
+
+  .el-aside {
+    margin-top: 20px;
+    height: calc(100vh - 100px);
+    background: $aside_bgColor;
+    @include set-border(
+      map-get($main_border, 'width'),
+      map-get($main_border, 'style'),
+      map-get($main_border, 'color')
+    );
+
+    .aside-tools {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 46px;
+
+      img {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+      }
+
+      span {
+        font-size: 16px;
+        color: #ffffff;
+      }
+
+      &:hover {
+        background: $asideTools_hover_bgImg;
+      }
+
+      &.active {
+        background: $asideTools_active_bgImg;
+      }
+    }
+  }
+
+  .el-main {
+    margin-left: 20px;
+    margin-top: 20px;
+    height: calc(100vh - 100px);
+    background: #091e31;
+    @include set-border(
+      map-get($main_border, 'width'),
+      map-get($main_border, 'style'),
+      map-get($main_border, 'color')
+    );
+
+    .search-button {
+      margin-left: 30px;
+      background: $search_bgImg;
+      background-size: cover;
+      background-position: center;
+      width: 86px;
+      height: 42px;
+      border: none;
+      line-height: 40px;
+      color: #ffffff;
+      cursor: pointer;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .el-input {
+      height: 40px !important;
+    }
+    
+  }
+}
+
+.el-form-item__content:nth-child(1) {
+  margin: 0 !important;
+}
+
+.el-input__wrapper {
+  box-shadow: none !important;
+  background: none !important;
+  border: 1px solid #045a84;
+}

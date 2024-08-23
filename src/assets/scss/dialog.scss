@@ -1,0 +1,56 @@
+.el-dialog {
+  background-color: #0a1b2c !important;
+  padding: 0;
+  display: flex !important;
+  flex-direction: column !important;
+  margin: 0 !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  overflow-y: auto !important;
+  overflow-x: auto !important;
+  max-height: 90vh !important;
+  .el-dialog__header {
+    /* background: url("../assets/images/弹窗头部.png") no-repeat center; */
+    height: 70px;
+    margin: 20px;
+    padding: 0;
+    .el-dialog__title {
+      color: #ffff;
+      margin-left: 10px;
+      line-height: 40px;
+    }
+  }
+  .dialog-domain {
+    width: 600px;
+    border: 1px solid #01205a;
+    height: 300px;
+    margin: 10px auto;
+  }
+}
+
+.el-collapse-item__wrap {
+  border: none !important;
+  background: #0a1b2c !important;
+  .el-collapse {
+    border: none !important;
+    .el-form-item__label-wrap {
+      margin-left: 14px !important;
+      .el-form-item__label {
+        color: #ffff;
+      }
+    }
+    .el-collapse-item__arrow {
+      display: none;
+    }
+    .el-collapse-item__header {
+      background: #0d334e;
+      color: #fff;
+      border: none;
+      font-size: 18px;
+      padding-left: 10px;
+      margin: 10px 0;
+    }
+  }
+}

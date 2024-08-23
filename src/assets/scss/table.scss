@@ -1,0 +1,82 @@
+/*  
+// 表格部分样式
+ // 最外层透明 */
+.el-table,
+.el-table__expanded-cell {
+  background-color: rgb(53, 13, 90);
+  color: #93dcfe;
+  font-size: 24px;
+}
+
+/* 表格内背景颜色  */
+.el-table th,
+.el-table tr,
+.el-table td {
+  background-color: $tb_bgColor;
+  border: 0px;
+  color: $tb_fontColor;
+  font-size: 24px;
+  height: 5px;
+  font-family: Source Han Sans CN Normal, Source Han Sans CN Normal-Normal;
+  font-weight: Normal;
+}
+
+/* // 去掉最下面的那一条线  */
+.el-table::before {
+  height: 0px;
+}
+
+/* // 设置表格行高度 */
+.el-table__body tr,
+.el-table__body td {
+  padding: 0;
+  height: $tb_h;
+}
+
+/* // 修改高亮当前行颜色 */
+.el-table tbody tr:hover > td {
+  background: $tb_row_hover !important;
+}
+
+/* // 取消当前行高亮 */
+/* .el-table tbody tr {
+  pointer-events: none;
+} */
+
+/* 修改表头样式-加边框 */
+/* ::v-deep .el-table__header-wrapper {
+  border: solid 1px #04c2ed;
+} */
+
+/* // 表格斑马自定义颜色 */
+.el-table__row.warning-row {
+  background: #01205a;
+}
+
+/* 去掉表格里的padding */
+.el-table .cell,
+.el-table th div {
+  padding: 0;
+  @include text-ellipsis($tb_fontSize, $tb_lines);
+}
+
+// 详情按钮
+.el-button--small {
+  width: 80px;
+  height: 30px;
+  background: #0b8b7e;
+  border: 1px solid #0dc6a6;
+  color: #6dffdc;
+
+  &:hover {
+    background: #0b8b7e;
+    border: 1px solid #0dc6a6;
+    color: #6dffdc;
+  }
+
+  &.active {
+    background: #0b8b7e;
+    border: 1px solid #0dc6a6;
+    color: #6dffdc;
+  }
+}
