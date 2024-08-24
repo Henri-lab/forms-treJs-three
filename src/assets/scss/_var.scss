@@ -1,11 +1,14 @@
+// version 1
 // app
 $bgColor: rgb(64, 48, 4);
 $fontColor: rgb(234, 107, 9);
+$bgImg: url('../assets/images/背景.png');
 // 布局
 $aside_bgColor: #091e31;
 $asideTools_hover_bgImg: url('../images/菜单选中.png');
 $asideTools_active_bgImg: url('../images/菜单选中.png');
 $asideTools_fontColor: #ffffff;
+
 
 $main_bgColor: #091e31;
 $main_border: (
@@ -32,6 +35,7 @@ $tb_border: (
   color: #045a84,
 );
 
-
 // INPUT
-$input_bgColor: rgb(211, 22, 85);
+$input_bgColor: white;
+
+//version 2

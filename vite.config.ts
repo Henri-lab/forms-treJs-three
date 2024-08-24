@@ -16,7 +16,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'),
       comps: path.resolve(__dirname, 'src/components'),
     },
-    extensions: ['.ts', '.js', '.mjs', '.json', '.vue', '.jsx', '.tsx'],
+    extensions: ['.ts', '.js', '.mjs', 'glsl', '.json', '.vue', '.jsx', '.tsx'],
   },
   css: {
     preprocessorOptions: {
@@ -41,5 +41,10 @@ export default defineConfig({
         },
       ],
     },
+  },
+  define: {
+    __VUE_OPTIONS_API__: true,
+    __VUE_PROD_DEVTOOLS__: false,
+    __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false, // 添加这一行
   },
 });

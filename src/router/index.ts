@@ -4,13 +4,18 @@ const history = createWebHashHistory();
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    redirect: "/home",
+    redirect: "/three",
   },
   {
     path: "/home",
     name: "home",
     component: () => import("@/views/home/index"),
   },
+  {
+    path:"/three",
+    name:"three",
+    component:()=> import("@/components/threeVue/index")
+  }
 ];
 routerItems.forEach((element) => {
   routes.push(element);

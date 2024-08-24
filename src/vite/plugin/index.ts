@@ -1,6 +1,7 @@
-import vue from '@vitejs/plugin-vue';
+import { getVue } from './vue';
 import { getAutoImport } from './autoImport';
 import { getComponent } from './component';
+import glsl from 'vite-plugin-glsl';
 export function createPlugin() {
-  return [vue(), getAutoImport(), getComponent()];
+  return [getVue(), getAutoImport(), getComponent(), glsl()];
 }

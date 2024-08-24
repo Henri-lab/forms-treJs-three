@@ -9,16 +9,23 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tresjs/cientos": "^4.0.0",
+    "@tresjs/core": "^4.2.7",
     "axios": "^1.7.2",
     "echarts": "^5.5.1",
     "element-plus": "^2.7.3",
+    "gsap": "^3.12.5",
+    "three": "^0.167.1",
+    "vite-plugin-glsl": "^1.3.0",
     "vite-vue3-ts-cesium": "file:",
     "vue": "^3.2.41",
     "vue-router": "^4.1.6",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
+    "@types/gsap": "^3.0.0",
     "@types/node": "^18.11.9",
+    "@types/three": "^0.167.2",
     "@vitejs/plugin-vue": "^3.2.0",
     "sass": "^1.56.1",
     "typescript": "^4.6.4",

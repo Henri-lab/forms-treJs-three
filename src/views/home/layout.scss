@@ -1,7 +1,7 @@
 .common-layout {
   padding: 0;
   height: 100vh;
-  background: url('../assets/images/背景.png');
+  background: $bgImg;
 
   .el-aside {
     margin-top: 20px;
@@ -19,13 +19,13 @@
       align-items: center;
       justify-content: center;
       height: 46px;
-
+      //菜单项图标
       img {
         width: 20px;
         height: 20px;
         margin-right: 10px;
       }
-
+      //菜单项文本
       span {
         font-size: 16px;
         color: #ffffff;
@@ -45,13 +45,13 @@
     margin-left: 20px;
     margin-top: 20px;
     height: calc(100vh - 100px);
-    background: #091e31;
+    background: $main_bgColor;
     @include set-border(
       map-get($main_border, 'width'),
       map-get($main_border, 'style'),
       map-get($main_border, 'color')
     );
-
+    // 搜索按钮
     .search-button {
       margin-left: 30px;
       background: $search_bgImg;
@@ -66,20 +66,9 @@
       border-radius: 5px;
       text-align: center;
     }
-
+    // 搜索框
     .el-input {
       height: 40px !important;
     }
-    
   }
-}
-
-.el-form-item__content:nth-child(1) {
-  margin: 0 !important;
-}
-
-.el-input__wrapper {
-  box-shadow: none !important;
-  background: none !important;
-  border: 1px solid #045a84;
 }

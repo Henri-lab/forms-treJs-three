@@ -11,16 +11,15 @@
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,
-    "noEmit": true,
-    "allowJs": true,
-    "checkJs": false
+    "noEmit": true
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "src/**/*.js"
+    "src/**/*.js",
+    "types/**/*" // Ensure your custom types are included!
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
