@@ -23,8 +23,10 @@ declare module 'vue' {
     ElRow: typeof import('element-plus/es')['ElRow']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
+    Index2: typeof import('./src/components/threeVue/particle/index2.vue')['default']
     Particle: typeof import('./src/components/threeVue/particle/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Text3D: typeof import('./src/components/threeVue/text3D/index.vue')['default']
   }
 }
