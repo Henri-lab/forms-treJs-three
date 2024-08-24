@@ -1,3 +1,6 @@
+<!-- webgl 溢出警告 -->
+
+
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { OrbitControls } from '@tresjs/cientos';
@@ -27,7 +30,7 @@ const fireFliesShader = {
   },
 };
 
-const firefliesCount = 3000;
+const firefliesCount = 300;
 const positionArray = new Float32Array(firefliesCount * 3);
 const scaleArray = new Float32Array(firefliesCount);
 
