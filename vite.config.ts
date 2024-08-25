@@ -14,7 +14,8 @@ export default defineConfig({
     alias: {
       // 如果报错__dirname找不到，需要安装node,执行npm install --save-dev @types/node
       '@': path.resolve(__dirname, 'src'),
-      comps: path.resolve(__dirname, 'src/components'),
+      '~c': '/src/components',
+      // '@dataview/datav-vue3': 'node_modules/@dataview/datav-vue3/es/index.mjs',
     },
     extensions: ['.ts', '.js', '.mjs', 'glsl', '.json', '.vue', '.jsx', '.tsx'],
   },

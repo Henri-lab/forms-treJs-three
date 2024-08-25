@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Cube: typeof import('./src/components/threeVue/cube/index.vue')['default']
+    Decoration: typeof import('./src/components/dataV/decoration.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCol: typeof import('element-plus/es')['ElCol']
@@ -24,9 +25,13 @@ declare module 'vue' {
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     Index2: typeof import('./src/components/threeVue/particle/index2.vue')['default']
+    LoadProcess: typeof import('./src/components/threeVue/loadProcess/index.vue')['default']
     Particle: typeof import('./src/components/threeVue/particle/index.vue')['default']
+    Reflect: typeof import('./src/components/threeVue/reflect/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Sphere: typeof import('./src/components/threeVue/sphere/index.vue')['default']
+    Star: typeof import('./src/components/threeVue/particle/star.vue')['default']
     Text3D: typeof import('./src/components/threeVue/text3D/index.vue')['default']
   }
 }
