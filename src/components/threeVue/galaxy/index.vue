@@ -1,8 +1,8 @@
 <template>
     <div class="galaxy">
-        <TresCanvas clear-color="#005F5B">
+        <TresCanvas clear-color="#2F4F4F">
             <!-- 配置 -->
-            <TresPerspectiveCamera :position="[0, 2, cameraZ]" />
+            <TresPerspectiveCamera :position="[0, 0, cameraZ]" />
             <OrbitControls />
             <MouseParallax :factor="5" :ease="[3, 0.1]" />
             <TresAmbientLight />
@@ -25,16 +25,14 @@
                 </Circle>
             </TresMesh>
 
-
-
-
-
+            <!-- 轨道 -->
+            <CatmullRomCurve3 :points="orbitPos" :segments="4" :line-width="2" color="#fbb03b" />
         </TresCanvas>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, shallowRef } from 'vue';
+import { ref, onMounted, shallowRef, Ref, computed } from 'vue';
 import { TresCanvas, useRenderLoop } from '@tresjs/core'
 import {
     OrbitControls,
@@ -45,12 +43,20 @@ import {
     Circle,
     MouseParallax,
     CustomShaderMaterial,
-    Sparkles
+    Sparkles,
+    Lensflare,
+    CatmullRomCurve3
 } from '@tresjs/cientos'
+import mitt from 'mitt'
+
+const bus = mitt()
+
+
+
 
 const yRotation = shallowRef(0)
 useRenderLoop().onLoop(({ delta }) => {
-    yRotation.value += 0.02 * delta
+    yRotation.value += 0.1 * delta
 })
 
 
@@ -76,9 +82,36 @@ onMounted(() => {
 });
 
 const planets = ref([
-    { x: -10, y: -3, z: -10, id: 0 },
-    { x: 3, y: -1, z: 0, id: 1 },
+    { x: -13, y: 5, z: -8, id: 0 },
+    { x: -4, y: 0, z: 2, id: 1 },
 ])
+
+// 直线
+const orbitPos = computed(() => {
+    return planets.value.map((planet) => [planet.x, planet.y, planet.z]);
+});
+// 曲线
+// const orbitPos = ref([]) as any
+
+// onMounted(() => {
+//     const centerX = (-13 + -4) / 2;  // 中心点的x坐标
+//     const centerY = (5 + 0) / 2;     // 中心点的y坐标
+//     const centerZ = (-8 + 2) / 2;    // 中心点的z坐标
+
+//     const radius = Math.sqrt(Math.pow(-13 - centerX, 2) + Math.pow(5 - centerY, 2) + Math.pow(-8 - centerZ, 2));  // 半径
+//     const numPoints = 8;  // 你可以根据需要增加或减少点的数量
+
+//     for (let i = 0; i < numPoints; i++) {
+//         const angle = (2 * Math.PI * i) / numPoints;
+//         const x = centerX + radius * Math.cos(angle) || 0;
+//         const y = centerY + radius * Math.sin(angle);
+//         const z = centerZ;  // 假设轨道在同一个z平面上
+
+//         orbitPos.value.push({ x, y, z, id: i + 2 });  // 新生成点的id从2开始
+//     }
+// })
+const plane = planets.value[0]
+const warship = planets.value[1]
 
 </script>
 
@@ -92,11 +125,6 @@ const planets = ref([
         width: 100%;
         height: 100%;
         position: absolute;
-    }
-
-    .planet {
-        width: 100%;
-        height: 100%;
     }
 }
 </style>

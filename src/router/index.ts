@@ -4,7 +4,7 @@ const history = createWebHashHistory();
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    redirect: "/galaxy",
+    redirect: "/menu",
   },
   {
     path: "/home",
@@ -12,9 +12,9 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/home/index"),
   },
   {
-    path:"/galaxy",
-    name:"galaxy",
-    component:()=> import("@/views/galaxy/index")
+    path:"/menu",
+    name:"menu",
+    component:()=> import("@/views/menu/index")
   }
 ];
 routerItems.forEach((element) => {

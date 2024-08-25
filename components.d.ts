@@ -7,10 +7,12 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Card: typeof import('./src/components/card.vue')['default']
     Cube: typeof import('./src/components/threeVue/cube/index.vue')['default']
     Decoration: typeof import('./src/components/dataV/decoration.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElCard: typeof import('element-plus/es')['ElCard']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElCollapse: typeof import('element-plus/es')['ElCollapse']
     ElCollapseItem: typeof import('element-plus/es')['ElCollapseItem']
@@ -24,6 +26,7 @@ declare module 'vue' {
     ElRow: typeof import('element-plus/es')['ElRow']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
+    Galaxy: typeof import('./src/components/threeVue/galaxy/index.vue')['default']
     Index2: typeof import('./src/components/threeVue/particle/index2.vue')['default']
     LoadProcess: typeof import('./src/components/threeVue/loadProcess/index.vue')['default']
     Particle: typeof import('./src/components/threeVue/particle/index.vue')['default']
