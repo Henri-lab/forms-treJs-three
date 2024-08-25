@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { shallowRef } from 'vue'
+import { shallowRef, ref, onMounted } from 'vue'
 import { TresCanvas, useRenderLoop } from '@tresjs/core'
 import { OrbitControls, Stars } from '@tresjs/cientos'
+import { MeshGlassMaterial, Sphere } from '@tresjs/cientos'
 
 const yRotation = shallowRef(0)
 useRenderLoop().onLoop(({ delta }) => {
@@ -23,7 +24,7 @@ const animateCamera = () => {
 };
 
 onMounted(() => {
-      requestAnimationFrame(animateCamera);
+    requestAnimationFrame(animateCamera);
 });
 
 </script>

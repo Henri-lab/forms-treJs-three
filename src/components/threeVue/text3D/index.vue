@@ -4,9 +4,9 @@ import { OrbitControls, Text3D } from '@tresjs/cientos';
 import { shallowRef, watchEffect, defineProps } from 'vue';
 
 const camera = {
-    position: [2.789917807383607, 1.1520053956903624, 4.066760580672416],
+    position: [0, 0, 20],
     fov: 45,
-    rotation: [-0.26033035821639566, 0.3493743923092192, 0.09093149349977715],
+    rotation: [0, 1, 0],
 };
 const matcapTexture = await useTexture([
     'https://raw.githubusercontent.com/Tresjs/assets/main/textures/matcaps/7.png',
@@ -21,7 +21,7 @@ watchEffect(() => {
 let prop = defineProps({
     text: {
         type: String,
-        default: '',
+        default: 'text-3D',
     },
 });
 </script>
@@ -34,7 +34,7 @@ let prop = defineProps({
             <Suspense>
                 <Text3D :position="[-1, 0, 0]" ref="textRef"
                     font="https://raw.githubusercontent.com/Tresjs/assets/main/fonts/FiraCodeRegular.json">
-                   {{ prop.text }}
+                    {{ prop.text }}
                     <TresMeshMatcapMaterial :matcap="matcapTexture" />
                 </Text3D>
             </Suspense>
