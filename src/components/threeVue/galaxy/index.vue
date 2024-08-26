@@ -14,7 +14,8 @@ import {
     Sparkles,
     Lensflare,
     CatmullRomCurve3,
-    SVG
+    SVG,
+    Ring
 } from '@tresjs/cientos'
 import mitt from 'mitt'
 
@@ -68,7 +69,7 @@ function initRing() {
     const numPoints = 6; // 总共6个点
     const angleStep = (2 * Math.PI) / numPoints; // 每个点的角度步长
 
-    // 生成倾斜的环形坐标
+    // 生成倾斜的环形坐标 并设置好星球位置
     planets.value.forEach((planet, index) => {
         const angle = index * angleStep;
         const x = radius * Math.cos(angle); // 原本的x坐标
@@ -78,10 +79,63 @@ function initRing() {
         planet.y = y * Math.cos(tiltAngle); // 根据倾斜角度调整y坐标
         planet.z = z;                      // 设置z坐标
     });
+    // 六个点的坐标
+    const points = planets.value.map((planet) => {
+        return {
+            x: planet.x,
+            y: planet.y,
+            z: planet.z,
+        }
+    })
+    // console.log(points);
+
+    // 计算环的中心
+    const center = points.reduce((acc, point) => {
+        acc.x += point.x;
+        acc.y += point.y;
+        acc.z += point.z;
+        return acc;
+    }, { x: 0, y: 0, z: 0 });
+
+    center.x /= points.length;
+    center.y /= points.length;
+    center.z /= points.length;
+
+    // 假设用两个相邻点计算法向量
+    const v1 = { x: points[1].x - points[0].x, y: points[1].y - points[0].y, z: points[1].z - points[0].z };
+    const v2 = { x: points[2].x - points[0].x, y: points[2].y - points[0].y, z: points[2].z - points[0].z };
+
+    // 计算法向量
+    const normal = {
+        x: v1.y * v2.z - v1.z * v2.y,
+        y: v1.z * v2.x - v1.x * v2.z,
+        z: v1.x * v2.y - v1.y * v2.x
+    };
+
+    // 归一化法向量
+    const length = Math.sqrt(normal.x * normal.x + normal.y * normal.y + normal.z * normal.z);
+    normal.x /= length;
+    normal.y /= length;
+    normal.z /= length;
+
+    ringC.value = center;
+    ringN.value = normal;
+
+    // 输出中心和法向量
+    console.log('Center:', center);
+    console.log('Normal:', normal);
+
+
 }
 onMounted(() => {
     initRing();
 });
+// ring
+const ringN = ref({ x: 0, y: 0, z: 0 });
+const ringC = ref({ x: 0, y: 0, z: 0 });
+const ringR = ref(10);
+
+
 // 直线
 const orbitPos = computed(() => {
     return planets.value.map((planet) => [planet.x, planet.y, planet.z]);
@@ -158,6 +212,10 @@ const orbitPos = computed(() => {
                 </Suspense>
             </TresMesh>
             <!-- 轨道 -->
+            <Ring ref="ringRef" :args="[ringR - 0.3, ringR, 32]" :position="[ringC.x, ringC.y, ringC.z]"
+                :rotation="[Math.atan2(ringN.y, ringN.z) * Math.PI / (-3), Math.atan2(ringN.x, ringN.z), 0]">
+                <TresMeshToonMaterial color="purple" />
+            </Ring>
             <!-- <CatmullRomCurve3 :points="orbitPos" :segments="4" :line-width="2" color="#fbb03b" /> -->
         </TresCanvas>
     </div>
