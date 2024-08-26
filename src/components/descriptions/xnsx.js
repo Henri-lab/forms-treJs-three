@@ -139,7 +139,11 @@ function wrap_ship({ key, value }) {
 }
 
 function wrapObj_ship(obj) {
-    return Object.keys(obj).map(key => wrap_ship({ key, value: obj[key] }));
+    let res = []
+    obj.forEach(item => {
+        res.push(wrap_ship(item))
+    })
+    return res;
 }
 
 export let xxsx_ship = wrapObj_ship(kv_ship);
@@ -391,7 +395,11 @@ function wrap_aircraft({ key, value }) {
 }
 
 function wrapObj_aircraft(obj) {
-    return Object.keys(obj).map(key => wrap_aircraft({ key, value: obj[key] }));
+    let res = []
+    obj.forEach(item => {
+        res.push(wrap_aircraft(item))
+    })
+    return res;
 }
 
 export let xnsx_aircraft = wrapObj_aircraft(kv_aircraft);

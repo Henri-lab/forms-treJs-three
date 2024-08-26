@@ -15,23 +15,22 @@
           <!-- 字段名称 -->
           <template #label>
             <div class="cell-item">
-              {{ opt.value.key }}
+              {{ opt.name }}
             </div>
           </template>
-          <!-- 字段类型 textarea 输入框-->
-          <!-- --------------------------装备、诱饵  -->
+
           <el-input v-if="opt.type == 'textarea'" type="textarea" v-model="opt.value" :title="opt.value"
             auto-complete="off" :autosize="{ minRows: 1, maxRows: 10 }" @change="setManuRadarParam(table, opt)">
           </el-input>
-          <!--字段名称 雷达型号 ； 字段类型 下拉框+输入框  @hf-->
+
           <el-select v-if="opt.type === 'sel'" style="width: 180px" v-model="selRadars[table_i]"
-            :placeholder=selRadars[table_i] @change="completeRadarParams(table, table_i, $event)" allow-create filterable>
+            :placeholder=selRadars[table_i] @change="handleSelect" allow-create filterable>
             <el-option v-for="type_sel in db_RadarTypes" :key="type_sel" :label="type_sel" :value="type_sel" />
           </el-select>
-          <!-- 字段类型 自动补全 输入框 @hf-->
+
           <el-input v-if="opt.type == 'auto'" v-model="opt.value" placeholder="">
           </el-input>
-          <!-- 字段类型 普通 输入框-->
+
           <el-input v-if="opt.type == 'basic'" v-model="opt.value" :title="opt.value" allow-create filterable>
           </el-input>
         </el-descriptions-item>
@@ -43,14 +42,27 @@
 <script setup>
 import { onMounted } from 'vue';
 import { jbxx_ship, jbxx_aircraft } from './jbxx';
+import _ from 'lodash'
 
+const props = defineProps({
+  tableType: {
+    type: String,
+    required: true,
+  },
+})
 const tableList = ref([])
 
 onMounted(() => {
   console.log(jbxx_ship)
-  tableList.value.push(jbxx_ship)
+  if (props.tableType === 'jbxx_ship') {
+    tableList.value.push(_.cloneDeep(jbxx_ship))
+  }
+  if(props.tableType === 'jbxx_aircraft'){
+    tableList.value.push(_.cloneDeep(jbxx_aircraft))
+  }
 })
-
+const handleSelect = (val) => {
+}
 
 
 

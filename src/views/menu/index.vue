@@ -20,7 +20,7 @@
             </template> -->
         </el-button>
         <!-- <Card class="card-wrapper" /> -->
-        <Description class="description-wrapper" />
+        <Description class="description-wrapper" tableType='jbxx_ship' />
     </div>
 </template>
 
@@ -83,13 +83,14 @@ import Description from '~c/descriptions/index.vue';
 
     .description-wrapper {
         width: 30%;
-        height: 25%;
+        height: auto;
         background-color: rgba(76, 250, 250, 0.3);
         position: absolute;
         padding: 1%;
         top: 20vh;
         right: 10vw;
         box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+        z-index: 1;
     }
 }
 </style>

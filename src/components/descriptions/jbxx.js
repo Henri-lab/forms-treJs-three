@@ -188,8 +188,6 @@ function labelName_CN_ship(key) {
         unsinkability: '不沉性',
         freeboard_height: '干舷高',
     };
-
-
     return cnMap[key] || ``;
 }
 
@@ -240,7 +238,12 @@ function wrap_ship({ key, value }) {
 }
 
 function wrapObj_ship(obj) {
-    return Object.keys(obj).map(key => wrap_ship({ key, value: obj[key] }))
+    // console.log(Object.keys(obj))
+    let res = []
+    obj.forEach(item => {
+        res.push(wrap_ship(item))
+    })
+    return res;
 }
 
 
@@ -425,7 +428,11 @@ function wrap_aircraft({ key, value }) {
 }
 
 function wrapObj_aircraft(obj) {
-    return Object.keys(obj).map(key => wrap_aircraft({ key, value: obj[key] }))
+    let res = []
+    obj.forEach(item => {
+        res.push(wrap_ship(item))
+    })
+    return res;
 }
 
 export let jbxx_aircraft = {
