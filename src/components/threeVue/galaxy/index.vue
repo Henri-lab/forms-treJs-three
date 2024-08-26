@@ -118,7 +118,7 @@ function initRing() {
             z: planet.z,
         }
     })
-    // console.log(points);
+    console.log(points);
 
     // 计算环的中心
     const center = points.reduce((acc, point) => {
@@ -165,9 +165,9 @@ onMounted(() => {
 
 
 // 直线
-const orbitPos = computed(() => {
-    return planets.value.map((planet) => [planet.x, planet.y, planet.z]);
-});
+// const orbitPos = computed(() => {
+//     return planets.value.map((planet) => [planet.x, planet.y, planet.z]);
+// });
 // 曲线
 // const orbitPos = ref([]) as any
 
@@ -216,7 +216,13 @@ const reverse = () => {
         }
     }, 1)
 }
-defineExpose({ open, reverse })
+
+const lookAt = (i) => {
+    cameraX.value = planets.value[i].x
+    cameraY.value = planets.value[i].y
+    cameraZ.value = planets.value[i].z + 1
+}
+defineExpose({ open, reverse, lookAt })
 </script>
 
 <style lang="scss" scoped>
@@ -240,7 +246,7 @@ defineExpose({ open, reverse })
             <!-- 配置 -->
             <TresPerspectiveCamera :position="[cameraX, cameraY, cameraZ]" />
             <OrbitControls />
-            <MouseParallax :factor="5" :ease="[3, 0.1]" />
+            <MouseParallax :factor="50" :ease="[3, 0.5]" />
             <TresAmbientLight />
             <TresDirectionalLight :position="[10, 10, 15]" />
 

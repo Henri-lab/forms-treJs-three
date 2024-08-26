@@ -430,7 +430,7 @@ function wrap_aircraft({ key, value }) {
 function wrapObj_aircraft(obj) {
     let res = []
     obj.forEach(item => {
-        res.push(wrap_ship(item))
+        res.push(wrap_aircraft(item))
     })
     return res;
 }

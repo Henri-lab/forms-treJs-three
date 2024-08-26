@@ -1,5 +1,5 @@
 <template>
-  <div class="descriptions">
+  <div :class="['descriptions', 'animate__animated', animateClass]" v-if="isVisible" @animationend="handleAnimationEnd">
     <div v-for="(table, table_i) in tableList " :key="table.id">
       <!-- 目标详情 -->
       <el-descriptions class="margin-top" title="?" :column="3" border>
@@ -43,6 +43,10 @@
 import { onMounted } from 'vue';
 import { jbxx_ship, jbxx_aircraft } from './jbxx';
 import _ from 'lodash'
+import { ref, onBeforeUnmount } from 'vue';
+import { onUnmounted } from 'vue';
+
+const isVisible = ref(true);
 
 const props = defineProps({
   tableType: {
@@ -50,14 +54,26 @@ const props = defineProps({
     required: true,
   },
 })
+
+const animateClass = ref('animate__fadeInRightBig')
+const remove = (table) => {
+  animateClass.value = 'animate__fadeOutRightBig';
+};
+// onBeforeUnmount(() => {
+//   animateClass.value = 'animate__fadeOutRightBig';
+// })
+const handleAnimationEnd = () => { };
+
+
+
 const tableList = ref([])
 
 onMounted(() => {
-  console.log(jbxx_ship)
+  console.log(jbxx_aircraft)
   if (props.tableType === 'jbxx_ship') {
     tableList.value.push(_.cloneDeep(jbxx_ship))
   }
-  if(props.tableType === 'jbxx_aircraft'){
+  if (props.tableType === 'jbxx_aircraft') {
     tableList.value.push(_.cloneDeep(jbxx_aircraft))
   }
 })

@@ -2,7 +2,7 @@
     <div class="menu">
         <Galaxy class="galaxy-wrapper" ref="galaxy" />
         <Tags class="tags-wrapper animate__animated animate__fadeInDown" v-if="isBtn" />
-        <el-button class="btn1 animate__animated animate__fadeInRight" color="#626aef" v-if="isBtn">
+        <el-button class="btn1 animate__animated animate__fadeInRight" color="#626aef" v-if="isBtn" @click="lookUp">
             up
             <!-- <template v-slot:prepend>
                 <svg>
@@ -19,10 +19,10 @@
                 </svg>
             </template> -->
         </el-button>
-        <div class="details" @click="getDetails">详情</div>
-        <Card class="card-wrapper  animate__animated  animate__jackInTheBox" v-show="isCard" />
-        <Description class="description-wrapper  animate__animated  animate__fadeInRightBig" tableType='jbxx_ship'
-            v-draggable v-show="isDesc" />
+        <div class="details" @click="getDetails">详情1</div>
+        <Card ref="card" :class="'card-wrapper', 'animate__animated', cardClass" v-show="isCard" />
+        <Description class="description-wrapper" tableType='jbxx_ship' v-draggable v-if="isDesc1" />
+        <Description class="description-wrapper" tableType='jbxx_aircraft' v-draggable v-if="isDesc2" />
     </div>
 </template>
 
@@ -38,26 +38,32 @@ import mitt from 'mitt'
 const bus = mitt()
 const isBtn = ref(false)
 const isCard = ref(true)
-const isDesc = ref(false)
+const isDesc1 = ref(false)
+const isDesc2 = ref(false)
 const galaxy = ref(null)
+const card = ref(null)
+const cardClass = ref('animate__fadeInRightBig')
 onMounted(() => {
     setTimeout(() => {
         isBtn.value = true
-    }, 7000);
+    }, 5000);
 })
 let count = 0
 const getDetails = () => {
-    if (count++ % 2 == 0) {
-        galaxy.value && galaxy.value.reverse()
-    } else {
-        galaxy.value && galaxy.value.open()
-    }
-
-    // isCard.value = false
-    // isDesc.value = true
+    // if (count++ % 2 == 0) {
+    //     galaxy.value && galaxy.value.reverse()
+    // } else {
+    //     galaxy.value && galaxy.value.open()
+    // }
+    isCard.value = false
+    cardClass.value = 'animate__fadeOutLeftBig'
+    isCard.value = true
+    isDesc2.value = !isDesc2.value
     // bus.emit('galaxy')
-
-    
+}
+let index = 0
+const lookUp = () => {
+    galaxy.value && galaxy.value.lookAt(index++ % 6)
 }
 </script>
 
@@ -83,8 +89,8 @@ const getDetails = () => {
 
     .card-wrapper {
         width: 30%;
-        height: 25%;
-        background-color: rgba(76, 250, 250, 0.3);
+        max-height: 45%;
+        background-color: rgba(236, 200, 17, 0.3);
         position: absolute;
         padding: 1%;
         top: 20%;
