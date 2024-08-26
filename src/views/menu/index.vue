@@ -1,7 +1,6 @@
 <template>
     <div class="menu">
         <Galaxy class="galaxy-wrapper" />
-
         <Tags class="tags-wrapper" />
         <el-button class="btn1" color="#626aef">
             up
@@ -20,7 +19,8 @@
                 </svg>
             </template> -->
         </el-button>
-        <Card class="card-wrapper" />
+        <!-- <Card class="card-wrapper" /> -->
+        <Description class="description-wrapper" />
     </div>
 </template>
 
@@ -28,6 +28,7 @@
 import Galaxy from '~c/threeVue/galaxy/index.vue';
 import Card from '~c/card.vue';
 import Tags from '~c/tags.vue';
+import Description from '~c/descriptions/index.vue';
 
 </script>
 
@@ -78,6 +79,17 @@ import Tags from '~c/tags.vue';
         right: 8%;
         top: 2%;
         position: absolute;
+    }
+
+    .description-wrapper {
+        width: 30%;
+        height: 25%;
+        background-color: rgba(76, 250, 250, 0.3);
+        position: absolute;
+        padding: 1%;
+        top: 20vh;
+        right: 10vw;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 1);
     }
 }
 </style>
