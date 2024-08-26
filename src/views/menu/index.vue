@@ -1,6 +1,6 @@
 <template>
     <div class="menu">
-        <Galaxy class="galaxy-wrapper" />
+        <Galaxy class="galaxy-wrapper" ref="galaxy" />
         <Tags class="tags-wrapper animate__animated animate__fadeInDown" v-if="isBtn" />
         <el-button class="btn1 animate__animated animate__fadeInRight" color="#626aef" v-if="isBtn">
             up
@@ -27,23 +27,37 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import Galaxy from '~c/threeVue/galaxy/index.vue';
 import Card from '~c/card.vue';
 import Tags from '~c/tags.vue';
 import Description from '~c/descriptions/index.vue';
 import { onMounted, ref } from 'vue';
+import mitt from 'mitt'
 
+const bus = mitt()
 const isBtn = ref(false)
 const isCard = ref(true)
 const isDesc = ref(false)
+const galaxy = ref(null)
 onMounted(() => {
     setTimeout(() => {
         isBtn.value = true
     }, 7000);
 })
+let count = 0
 const getDetails = () => {
-    isCard.value = false
-    isDesc.value = true
+    if (count++ % 2 == 0) {
+        galaxy.value && galaxy.value.reverse()
+    } else {
+        galaxy.value && galaxy.value.open()
+    }
+
+    // isCard.value = false
+    // isDesc.value = true
+    // bus.emit('galaxy')
+
+    
 }
 </script>
 

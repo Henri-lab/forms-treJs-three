@@ -15,11 +15,24 @@ import {
     Lensflare,
     CatmullRomCurve3,
     SVG,
-    Ring
+    Ring,
+    Sky
 } from '@tresjs/cientos'
 import mitt from 'mitt'
 
-const bus = mitt()
+// const bus = mitt()
+// bus.on('galaxy', () => {
+//     console.log('galaxy')
+//     ringR.value = 0
+//     const timer = setInterval(() => {
+//         if (ringR.value < 100)
+//             ringR.value += 6
+//         else {
+//             initRing()
+//             clearInterval(timer)
+//         }
+//     }, 10)
+// })
 
 // 立方体旋转
 const boxRef: ShallowRef<TresInstance | null> = shallowRef(null);
@@ -57,7 +70,7 @@ const cameraZ = ref(2000); // camera startPos
 const cameraX = ref(0);
 const cameraY = ref(5);
 const animateCamera = () => {
-    if (cameraZ.value > 37) {
+    if (cameraZ.value > 42) {
         cameraZ.value -= 7; //speed
         requestAnimationFrame(animateCamera);
     }
@@ -176,6 +189,34 @@ const orbitPos = computed(() => {
 //     }
 // })
 
+const initR = 12
+const open = () => {
+    console.log('galaxy')
+    ringR.value = initR
+    const timer = setInterval(() => {
+        if (ringR.value < 40) {
+            ringR.value += 0.03
+            initRing()
+        }
+        else {
+            clearInterval(timer)
+        }
+    }, 1)
+}
+const reverse = () => {
+    console.log('galaxy')
+
+    const timer = setInterval(() => {
+        if (ringR.value > initR) {
+            ringR.value -= 0.03
+            initRing()
+        }
+        else {
+            clearInterval(timer)
+        }
+    }, 1)
+}
+defineExpose({ open, reverse })
 </script>
 
 <style lang="scss" scoped>
@@ -206,7 +247,7 @@ const orbitPos = computed(() => {
             <!-- 背景 -->
             <Stars :rotation="[0, yRotation, 0]" :radius="5" :depth="50" :count="1000" :size="0.3"
                 :size-attenuation="true" />
-
+            <Sky />
             <!-- 星球 -->
             <TresMesh class="planets" v-for="planet in planets" :key="planet.id" :position="[planet.x, planet.y, planet.z]">
                 <Sphere color="blue">
