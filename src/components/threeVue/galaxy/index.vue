@@ -1,7 +1,7 @@
 <script setup lang="ts">
 //@ts-nocheck
 import { ref, onMounted, shallowRef, Ref, computed } from 'vue';
-import { TresCanvas, useRenderLoop } from '@tresjs/core'
+import { TresCanvas, useRenderLoop, TresInstance } from '@tresjs/core'
 import {
     OrbitControls,
     Stars,
@@ -21,9 +21,23 @@ import mitt from 'mitt'
 
 const bus = mitt()
 
+// 立方体旋转
+const boxRef: ShallowRef<TresInstance | null> = shallowRef(null);
+const { onLoop } = useRenderLoop();
+onLoop(({ delta, elapsed }) => {
+    if (boxRef.value) {
+        boxRef.value.rotation.y += delta;
+        boxRef.value.rotation.z = elapsed * 0.2;
+    }
+});
+function onClick(ev) {
+    if (ev) {
+        ev.object.material.color.set('#008080');
+    }
+}
 
 
-
+// 背景旋转
 const yRotation = shallowRef(0)
 useRenderLoop().onLoop(({ delta }) => {
     yRotation.value += 0.1 * delta
@@ -62,11 +76,15 @@ const planets = ref([
     { x: 0, y: 0, z: 0, id: 5, svg: '@/assets/flagSVG/cn.svg' },
 ])
 
-
+// ring
+const ringN = ref({ x: 0, y: 0, z: 0 });// 环normal
+const ringC = ref({ x: 0, y: 0, z: 0 });// 环中心点
+const ringR = ref(12);// 环的半径
+const ringS = ref(6);// 环的个数
 function initRing() {
-    const radius = 10; // 环的半径
+    const radius = ringR.value || 10; // 环的半径
     const tiltAngle = Math.PI / 4; // 环相对于水平面的倾斜角度
-    const numPoints = 6; // 总共6个点
+    const numPoints = ringS.value || 6; // 总共6个点
     const angleStep = (2 * Math.PI) / numPoints; // 每个点的角度步长
 
     // 生成倾斜的环形坐标 并设置好星球位置
@@ -130,10 +148,7 @@ function initRing() {
 onMounted(() => {
     initRing();
 });
-// ring
-const ringN = ref({ x: 0, y: 0, z: 0 });
-const ringC = ref({ x: 0, y: 0, z: 0 });
-const ringR = ref(10);
+
 
 
 // 直线
@@ -217,6 +232,12 @@ const orbitPos = computed(() => {
                 <TresMeshToonMaterial color="purple" />
             </Ring>
             <!-- <CatmullRomCurve3 :points="orbitPos" :segments="4" :line-width="2" color="#fbb03b" /> -->
+
+            <!-- 立方体 -->
+            <TresMesh ref="boxRef" :position="[23.2, 13, 0]" :scale="0.5" cast-shadow>
+                <TresBoxGeometry :args="[1, 1, 1]" />
+                <TresMeshNormalMaterial />
+            </TresMesh>
         </TresCanvas>
     </div>
 </template>

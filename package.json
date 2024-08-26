@@ -20,6 +20,7 @@
     "@dataview/datav-vue3": "0.0.0-test.1672506674342",
     "@tresjs/cientos": "^4.0.0",
     "@tresjs/core": "^4.2.7",
+    "animate.css": "^4.1.1",
     "axios": "^1.7.2",
     "echarts": "^5.5.1",
     "element-plus": "^2.7.3",

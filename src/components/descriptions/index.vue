@@ -6,7 +6,7 @@
         <template #title>
           <div class="descrTitle">
             <span>{{ table.title }}</span>
-            <span style="cursor: pointer" @click="remove(table)">删除</span>
+            <span style="cursor: pointer" @click="remove(table)">关闭</span>
           </div>
         </template>
 

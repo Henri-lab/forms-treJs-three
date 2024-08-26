@@ -1,8 +1,8 @@
 <template>
     <div class="menu">
         <Galaxy class="galaxy-wrapper" />
-        <Tags class="tags-wrapper" />
-        <el-button class="btn1" color="#626aef">
+        <Tags class="tags-wrapper animate__animated animate__fadeInDown" v-if="isBtn" />
+        <el-button class="btn1 animate__animated animate__fadeInRight" color="#626aef" v-if="isBtn">
             up
             <!-- <template v-slot:prepend>
                 <svg>
@@ -11,7 +11,7 @@
             </template> -->
 
         </el-button>
-        <el-button class="btn2" color="#626aef">
+        <el-button class="btn2 animate__animated animate__fadeInRight" color="#626aef" v-if="isBtn">
             down
             <!-- <template v-slot:prepend>
                 <svg>
@@ -19,8 +19,10 @@
                 </svg>
             </template> -->
         </el-button>
-        <!-- <Card class="card-wrapper" /> -->
-        <Description class="description-wrapper" tableType='jbxx_ship' />
+        <div class="details" @click="getDetails">详情</div>
+        <Card class="card-wrapper  animate__animated  animate__jackInTheBox" v-show="isCard" />
+        <Description class="description-wrapper  animate__animated  animate__fadeInRightBig" tableType='jbxx_ship'
+            v-draggable v-show="isDesc" />
     </div>
 </template>
 
@@ -29,7 +31,20 @@ import Galaxy from '~c/threeVue/galaxy/index.vue';
 import Card from '~c/card.vue';
 import Tags from '~c/tags.vue';
 import Description from '~c/descriptions/index.vue';
+import { onMounted, ref } from 'vue';
 
+const isBtn = ref(false)
+const isCard = ref(true)
+const isDesc = ref(false)
+onMounted(() => {
+    setTimeout(() => {
+        isBtn.value = true
+    }, 7000);
+})
+const getDetails = () => {
+    isCard.value = false
+    isDesc.value = true
+}
 </script>
 
 <style lang="scss" scoped>
@@ -44,15 +59,24 @@ import Description from '~c/descriptions/index.vue';
         position: absolute;
     }
 
+    .details {
+        width: 7%;
+        height: 5%;
+        position: absolute;
+        top: 13%;
+        right: 10%;
+    }
+
     .card-wrapper {
         width: 30%;
         height: 25%;
         background-color: rgba(76, 250, 250, 0.3);
         position: absolute;
         padding: 1%;
-        top: 20vh;
-        right: 10vw;
+        top: 20%;
+        right: 10%;
         box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+        --animate-duration: 7s;
     }
 
     .btn1 {
@@ -62,6 +86,7 @@ import Description from '~c/descriptions/index.vue';
         top: 25%;
         right: 41%;
         z-index: 1;
+        --animate-duration: 2s;
     }
 
     .btn2 {
@@ -71,6 +96,7 @@ import Description from '~c/descriptions/index.vue';
         top: 35%;
         right: 41%;
         z-index: 1;
+        --animate-duration: 2s;
     }
 
     .tags-wrapper {
