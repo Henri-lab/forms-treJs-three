@@ -21,11 +21,14 @@ declare module 'vue' {
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElHeader: typeof import('element-plus/es')['ElHeader']
+    ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
+    ElTabPane: typeof import('element-plus/es')['ElTabPane']
+    ElTabs: typeof import('element-plus/es')['ElTabs']
     Galaxy: typeof import('./src/components/threeVue/galaxy/index.vue')['default']
     Index2: typeof import('./src/components/threeVue/particle/index2.vue')['default']
     LoadProcess: typeof import('./src/components/threeVue/loadProcess/index.vue')['default']
@@ -35,6 +38,8 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     Sphere: typeof import('./src/components/threeVue/sphere/index.vue')['default']
     Star: typeof import('./src/components/threeVue/particle/star.vue')['default']
+    Tag: typeof import('./src/components/tag.vue')['default']
+    Tags: typeof import('./src/components/tags.vue')['default']
     Text3D: typeof import('./src/components/threeVue/text3D/index.vue')['default']
   }
 }

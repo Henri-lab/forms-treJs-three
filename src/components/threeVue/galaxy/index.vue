@@ -1,37 +1,5 @@
-<template>
-    <div class="galaxy">
-        <TresCanvas clear-color="#2F4F4F">
-            <!-- 配置 -->
-            <TresPerspectiveCamera :position="[0, 0, cameraZ]" />
-            <OrbitControls />
-            <MouseParallax :factor="5" :ease="[3, 0.1]" />
-            <TresAmbientLight />
-            <TresDirectionalLight :position="[10, 10, 15]" />
-
-            <!-- 背景 -->
-            <Stars :rotation="[0, yRotation, 0]" :radius="5" :depth="50" :count="1000" :size="0.3"
-                :size-attenuation="true" />
-
-            <!-- 星球 -->
-            <TresMesh class="planets" v-for="planet in planets" :key="planet.id" :position="[planet.x, planet.y, planet.z]">
-                <Sphere color="blue">
-                    <MeshGlassMaterial color="white" />
-                    <Sparkles :directional-light="lightRef" />
-                </Sphere>
-            </TresMesh>
-            <TresMesh class="planets" v-for="planet in planets" :key="planet.id" :position="[planet.x, planet.y, planet.z]">
-                <Circle :args="[1, 1]">
-                    <TresMeshToonMaterial color="#33A8FF" />
-                </Circle>
-            </TresMesh>
-
-            <!-- 轨道 -->
-            <CatmullRomCurve3 :points="orbitPos" :segments="4" :line-width="2" color="#fbb03b" />
-        </TresCanvas>
-    </div>
-</template>
-
 <script setup lang="ts">
+//@ts-nocheck
 import { ref, onMounted, shallowRef, Ref, computed } from 'vue';
 import { TresCanvas, useRenderLoop } from '@tresjs/core'
 import {
@@ -45,7 +13,8 @@ import {
     CustomShaderMaterial,
     Sparkles,
     Lensflare,
-    CatmullRomCurve3
+    CatmullRomCurve3,
+    SVG
 } from '@tresjs/cientos'
 import mitt from 'mitt'
 
@@ -82,8 +51,8 @@ onMounted(() => {
 });
 
 const planets = ref([
-    { x: -13, y: 5, z: -8, id: 0 },
-    { x: -4, y: 0, z: 2, id: 1 },
+    { x: -13, y: 5, z: -8, id: 0, svg: '@/assets/flagSVG/us.svg' },
+    { x: -4, y: 0, z: 2, id: 1, svg: '@/assets/flagSVG/cn.svg' },
 ])
 
 // 直线
@@ -128,3 +97,43 @@ const warship = planets.value[1]
     }
 }
 </style>
+
+
+<template>
+    <div class="galaxy">
+        <TresCanvas clear-color="#2F4F4F">
+            <!-- 配置 -->
+            <TresPerspectiveCamera :position="[0, 0, cameraZ]" />
+            <OrbitControls />
+            <MouseParallax :factor="5" :ease="[3, 0.1]" />
+            <TresAmbientLight />
+            <TresDirectionalLight :position="[10, 10, 15]" />
+
+            <!-- 背景 -->
+            <Stars :rotation="[0, yRotation, 0]" :radius="5" :depth="50" :count="1000" :size="0.3"
+                :size-attenuation="true" />
+
+            <!-- 星球 -->
+            <TresMesh class="planets" v-for="planet in planets" :key="planet.id" :position="[planet.x, planet.y, planet.z]">
+                <Sphere color="blue">
+                    <MeshGlassMaterial color="white" />
+                    <Sparkles :directional-light="lightRef" />
+                </Sphere>
+            </TresMesh>
+            <TresMesh class="planets" v-for="planet in planets" :key="planet.id" :position="[planet.x, planet.y, planet.z]">
+                <Circle :args="[1, 1]">
+                    <TresMeshToonMaterial color="#33A8FF" />
+                </Circle>
+            </TresMesh>
+
+            <!-- 国旗 -->
+            <TresMesh class="flags" v-for="planet in planets" :key="planet.id" :position="[planet.x, planet.y, planet.z]">
+                <Suspense>
+                    <SVG  src="../../../assets/flagSVG/us.svg" :scale="1" />
+                </Suspense>
+            </TresMesh>
+            <!-- 轨道 -->
+            <CatmullRomCurve3 :points="orbitPos" :segments="4" :line-width="2" color="#fbb03b" />
+        </TresCanvas>
+    </div>
+</template>
