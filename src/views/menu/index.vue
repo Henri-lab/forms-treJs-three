@@ -11,10 +11,13 @@
         <el-button class="btn2 animate__animated animate__fadeInRight" color="#626aef" v-if="isBtn" @click="lookNext">
             next
         </el-button>
-        <div class="details" @click="getDetails">详情1</div>
+        <div class="detailsPane" v-draggable>
+            <div class="details" @click="getDetails('jabxx_ship')">基础信息(舰船)</div>
+            <div class="details" @click="getDetails('jabxx_aircraft')">基础信息(飞机)</div>
+        </div>
         <Card ref="card" :class="'card-wrapper', 'animate__animated', cardClass" v-show="isCard" :countryName="country" />
-        <Description class="description-wrapper" tableType='jbxx_ship' v-draggable v-if="isDesc1" />
-        <Description class="description-wrapper" tableType='jbxx_aircraft' v-draggable v-if="isDesc2" />
+        <Description class="description-wrapper" tableType='jbxx_ship' v-draggable v-if="isJbxxShip" />
+        <Description class="description-wrapper" tableType='jbxx_aircraft' v-draggable v-if="isJbxxAir" />
     </div>
 </template>
 
@@ -32,8 +35,8 @@ import { lowerCaseCountryNameMap } from './dict'
 const bus = mitt()
 const isBtn = ref(false)
 const isCard = ref(true)
-const isDesc1 = ref(false)
-const isDesc2 = ref(false)
+const isJbxxShip = ref(false)
+const isJbxxAir = ref(false)
 const galaxy = ref(null)
 const card = ref(null)
 const cardClass = ref('animate__fadeInRightBig')
@@ -56,17 +59,17 @@ onMounted(() => {
     console.log(planets, 'planets in menu');
 })
 let count = 0
-const getDetails = () => {
-    // if (count++ % 2 == 0) {
-    //     galaxy.value && galaxy.value.reverse()
-    // } else {
-    //     galaxy.value && galaxy.value.open()
-    // }
+const getDetails = (type) => {
+    galaxy.value && galaxy.value.open()
     isCard.value = false
     cardClass.value = 'animate__fadeOutLeftBig'
     isCard.value = true
-    isDesc2.value = !isDesc2.value
-    // bus.emit('galaxy')
+
+    if (type === 'jbxx_aircraft') {
+        isJbxxAir.value = !isJbxxAir.value
+    } else if (type === 'jbxx_ship') {
+        isJbxxShip.value = !isJbxxShip
+    }
 }
 
 // 暂时硬编码(6个球)数组遍历 因为摄像头没有调好
@@ -109,12 +112,14 @@ const lookReset = (e) => {
         position: absolute;
     }
 
-    .details {
-        width: 7%;
-        height: 5%;
+    .detailsPane {
+        width: 50%;
+        height: 50%;
         position: absolute;
         top: 13%;
-        right: 10%;
+        left: 10%;
+        background-color: white;
+        opacity: 60%;
     }
 
     .card-wrapper {
@@ -176,5 +181,6 @@ const lookReset = (e) => {
         box-shadow: 0 0 10px rgba(0, 0, 0, 1);
         z-index: 1;
     }
+
 }
 </style>

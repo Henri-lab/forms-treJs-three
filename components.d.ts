@@ -8,6 +8,8 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Context: typeof import('./src/components/threeVue/galaxy/Context.vue')['default']
+    copy: typeof import('./src/components/descriptions/index copy.vue')['default']
+    Descriptions: typeof import('./src/components/descriptions/index.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
     ElDescriptions: typeof import('element-plus/es')['ElDescriptions']
@@ -16,6 +18,7 @@ declare module 'vue' {
     ElOption: typeof import('element-plus/es')['ElOption']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
+    'Index copy': typeof import('./src/components/descriptions/index copy.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Test: typeof import('./src/components/threeVue/galaxy/test.vue')['default']
