@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div class="card" v-if="isShow">
         <el-card class="card">
             <template #header>
                 <div class="card-header">
@@ -11,13 +11,13 @@
                     <div class="aircraft-chart chart" ref="aircraftChart">
                         <v-chart :option="airOpt" class="vchart"></v-chart>
                     </div>
-                    <el-button type="primary" class="btn-check" round>查看</el-button>
+                    <el-button type="primary" class="btn-check" round @click="checkAir(props.countryName)">查看</el-button>
                 </div>
                 <div class="ship">
                     <div class="ship-chart chart" ref="shipChart">
                         <v-chart :option="shipOpt" class="vchart"></v-chart>
                     </div>
-                    <el-button type="primary" class="btn-check" round>查看</el-button>
+                    <el-button type="primary" class="btn-check" round @click="checkShip(props.countryName)">查看</el-button>
                 </div>
             </div>
             <!-- <template #footer>Footer content</template> -->
@@ -28,8 +28,7 @@
 <script lang="ts" setup>
 import { defineProps, onMounted, ref } from 'vue';
 import * as THREE from 'three';
-import mitt from 'mitt';
-const bus = mitt();
+import bus from '@/utils/bus';
 
 const props = defineProps({
     countryName: {
@@ -37,7 +36,11 @@ const props = defineProps({
         default: 'test',
     },
 })
-
+const isShow = ref(true);
+const toggleShow = () => {
+    isShow.value = !isShow.value;
+}
+defineExpose({ toggleShow })
 const airOpt = ref({
     backgroundColor: 'black',
 
@@ -170,6 +173,14 @@ onMounted(() => {
 })
 
 
+function checkAir(country) {
+    bus.emit('detailsCheck', { country, type: 'aircraft' })
+}
+function checkShip(country) {
+    bus.emit('detailsCheck', { country, type: 'ship' })
+}
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -187,7 +198,7 @@ onMounted(() => {
     background-color: transparent;
     opacity: 90%;
     padding: 0;
-    
+
 
     // @update
     .classify {

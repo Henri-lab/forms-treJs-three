@@ -124,7 +124,7 @@ function initRing() {
             z: planet.z,
         }
     })
-    console.log(points, 'points');
+    // console.log(points, 'points');
 
     // 计算环的中心
     const center = points.reduce((acc, point) => {
@@ -159,8 +159,8 @@ function initRing() {
     ringN.value = normal;
 
     // 输出中心和法向量
-    console.log('Center:', center);
-    console.log('Normal:', normal);
+    // console.log('Center:', center);
+    // console.log('Normal:', normal);
 
 
 }

@@ -11,13 +11,19 @@
         <el-button class="btn2 animate__animated animate__fadeInRight" color="green" v-if="isBtn" @click="lookNext">
             next
         </el-button>
-        <div class="detailsPane" v-draggable v-if="isDtails">
-            <div class="details" @click="getDetails('jabxx_ship')">基础信息(舰船)</div>
-            <div class="details" @click="getDetails('jabxx_aircraft')">基础信息(飞机)</div>
+
+        <div class="detailsPane animate__animated animate__fadeInLeft" v-draggable v-if="isDtails">
+            <div class="navi">
+                <div class="details">{{ country }}</div>
+                <div class="close" @click="closeDetails">关闭</div>
+            </div>
+            <Description class="description-wrapper" :country="country" :targetType="checkType" />
         </div>
-        <Card ref="card" :class="'card-wrapper', 'animate__animated', cardClass" v-show="isCard" :countryName="country" />
-        <Description class="description-wrapper" tableType='jbxx_ship' v-draggable v-if="isJbxxShip" />
-        <Description class="description-wrapper" tableType='jbxx_aircraft' v-draggable v-if="isJbxxAir" />
+        <Search class="search-wrapper" />
+        <Card ref="card" :class="'card-wrapper', 'animate__animated', cardClass, zoomClass" v-show="isCard"
+            :countryName="country" />
+
+
     </div>
 </template>
 
@@ -27,12 +33,11 @@ import Galaxy from '~c/threeVue/galaxy/index.vue';
 import Card from '~c/card.vue';
 import Tags from '~c/tags.vue';
 import Description from '~c/descriptions/index.vue';
+import Search from '~c/search.vue'
 import { onMounted, ref, watch } from 'vue';
-import mitt from 'mitt'
+import bus from '@/utils/bus';
 import { lowerCaseCountryNameMap } from './dict'
 
-
-const bus = mitt()
 const isBtn = ref(false)
 const isCard = ref(true)
 const isJbxxShip = ref(false)
@@ -40,7 +45,9 @@ const isJbxxAir = ref(false)
 const galaxy = ref(null)
 const card = ref(null)
 const cardClass = ref('animate__fadeInRightBig')
+const zoomClass = ref('')
 const isDtails = ref(false)
+const checkType = ref('')
 
 onMounted(() => {
     setTimeout(() => {
@@ -60,6 +67,7 @@ onMounted(() => {
     console.log(planets, 'planets in menu');
 })
 let count = 0
+
 const getDetails = (type) => {
     galaxy.value && galaxy.value.open()
     isCard.value = false
@@ -95,13 +103,37 @@ const lookNext = () => {
     // galaxy.value && galaxy.value.lookAt(index-- % 6)
 }
 const lookReset = (e) => {
-    if (e.target === 'canvas') console.log(e.target);
     country.value = ''
     galaxy.value && galaxy.value.cameraReset()
 }
+
+const closeDetails = () => {
+    isDtails.value = false
+    galaxy.value && galaxy.value.reverse()
+
+
+}
+bus.on('openRing', () => {
+    galaxy.value && galaxy.value.open()
+})
+
+bus.on('detailsCheck', ({ country, type }) => {
+    console.log(country, type, '查看详情~国家和类型');
+    checkType.value = type
+    galaxy.value && galaxy.value.open()
+    isDtails.value = true;
+    // card.value.style.width = `100px`
+    // card.value.style.height = `100px`
+    zoomClass.value = 'zoom'
+})
 </script>
 
 <style lang="scss" scoped>
+.zoom {
+    width: 100px !important;
+    height: 100px !important;
+}
+
 .menu {
     width: 100%;
     height: 100%;
@@ -121,6 +153,33 @@ const lookReset = (e) => {
         left: 10%;
         background-color: white;
         opacity: 60%;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+
+        .navi {
+            display: flex;
+            width: 100%;
+            height: 10%;
+            justify-content: space-around;
+        }
+
+        .description-wrapper {
+            width: 100%;
+            background-color: burlywood;
+            height: 85%;
+        }
+
+    }
+
+    .search-wrapper {
+        width: 40%;
+        max-height: 10%;
+        position: absolute;
+        padding: 0;
+        top: 10%;
+        right: 10%;
+        // background-color: red;
     }
 
     .card-wrapper {
@@ -172,17 +231,17 @@ const lookReset = (e) => {
         position: absolute;
     }
 
-    .description-wrapper {
-        width: 30%;
-        height: auto;
-        background-color: rgba(76, 250, 250, 0.3);
-        position: absolute;
-        padding: 1%;
-        top: 20vh;
-        right: 10vw;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 1);
-        z-index: 1;
-    }
+    // .description-wrapper {
+    //     width: 30%;
+    //     height: auto;
+    //     background-color: rgba(76, 250, 250, 0.3);
+    //     position: absolute;
+    //     padding: 1%;
+    //     top: 20vh;
+    //     right: 10vw;
+    //     box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+    //     z-index: 1;
+    // }
 
 }
 </style>
