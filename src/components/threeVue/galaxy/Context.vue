@@ -45,7 +45,6 @@ onMounted(() => {
 
 // 假设这是在组件的 mounted 钩子或某个更新函数中
 function lookAt() {
-
     _camera.lookAt(new THREE.Vector3(props.direction[0], props.direction[1], props.direction[2]));
     console.log(_camera, 'camera look at', props.direction[0], props.direction[1], props.direction[2]);
 
@@ -65,19 +64,9 @@ function animate() {
 
 
 
-const getContext = (type) => {
-    if (type === 'camera') {
-        const { camera } = useTresContext()
-        return camera
-    }
-}
-
-
-
 
 
 defineExpose({
-    getContext,
     animate,
     lookAt
 })

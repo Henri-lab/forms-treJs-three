@@ -9,6 +9,7 @@ import {
     MeshWobbleMaterial,
     Sphere,
     Circle,
+    Plane,
     MouseParallax,
     CustomShaderMaterial,
     Sparkles,
@@ -22,6 +23,7 @@ import {
 import mitt from 'mitt'
 import Context from './Context.vue'
 import { TextureLoader } from 'three';
+import { resolve } from 'path';
 
 const bus = mitt()
 // bus.on('galaxy', () => {
@@ -229,7 +231,7 @@ const lookAt = (i) => {
     cameraY.value = planets.value[0].y
     cameraZ.value = planets.value[0].z
     transArr(planets.value)
-    console.log(cameraX.value, cameraY.value, cameraZ.value,'cameraXYZ');
+    console.log(cameraX.value, cameraY.value, cameraZ.value, 'cameraXYZ');
 
     // lookX.value = planets.value[i].x
     // lookY.value = planets.value[i].y
@@ -248,12 +250,15 @@ function transArr(arr: any) {
 //     camera = res
 //     console.log(camera, 'camera');
 // })
+const texture = ref([])
+const promises = planets.value.map(p => useLoader(TextureLoader, p.svg).then(res => {
+    return new Promise((resolve) => {
+        resolve(res)
+    })
+}))
 
-const texture = ref({})
-useLoader(TextureLoader, 'src/assets/test.png').then(res => {
-    texture.value = res
-    console.log(texture.value, 'texture');
-})
+Promise.all(promises).then(resArr => texture.value = resArr)
+
 
 
 
@@ -299,13 +304,14 @@ defineExpose({ open, reverse, lookAt })
                 </Sphere>
             </TresMesh>
 
-            <TresMesh class="planets" v-for="planet in planets" :key="planet.id" :position="[planet.x, planet.y, planet.z]">
-                <!-- <Circle :args="[1, 1]">
-                    <TresMeshToonMaterial color="#33A8FF" />
-                </Circle> -->
-                <Sphere>
-                    <TresMeshBasicMaterial :map="texture" />
-                </Sphere>
+            <TresMesh class="planets" v-for="(planet, index) in planets" :key="planet.id"
+                :position="[planet.x, planet.y, planet.z]">
+                <Plane :args="[3, 3]" :rotation="[Math.PI / 1, Math.PI / 1, Math.PI / 2]">
+                    <TresMeshBasicMaterial :map="texture[index]" />
+                </Plane>
+
+
+
             </TresMesh>
 
 
