@@ -29,22 +29,36 @@ const props = defineProps({
 //     }, 1000);
 // })
 let _camera = {}
+let _scene = {}
+let _renderer = {}
 onMounted(() => {
-    const { camera } = useTresContext()
+    const { camera, scene, renderer } = useTresContext()
     _camera = camera.value
-    console.log(camera.value, 'camera in ctx');
-    console.log(props.direction, 'direction');
-
+    _scene = scene.value
+    _renderer = renderer.value
+    console.log(useTresContext(), 'ctx');
+    console.log(_camera, 'camera in ctx');
+    console.log(_scene, 'scene in ctx');
+    console.log(_renderer, 'renderer in ctx');
 })
 
-const lookAtPosition = ref(new THREE.Vector3(props.direction[0], props.direction[1], props.direction[2])); // 设置目标点
 
 // 假设这是在组件的 mounted 钩子或某个更新函数中
-function updateCamera() {
-    _camera.lookAt(lookAtPosition.value);
-    console.log(props.direction, 'direction');
-    console.log(_camera.position, 'camera position');
+function lookAt() {
 
+    _camera.lookAt(new THREE.Vector3(props.direction[0], props.direction[1], props.direction[2]));
+    console.log(_camera, 'camera look at', props.direction[0], props.direction[1], props.direction[2]);
+
+    // console.log(props.direction, 'direction');
+
+}
+let index = 0
+function animate() {
+    // console.log(_camera.position, 'camera position');
+
+    lookAt(); // 更新相机朝向逻辑
+    _renderer.render(_scene, _camera); // 渲染场景
+    requestAnimationFrame(animate); // 请求下一帧的动画
 }
 
 
@@ -64,7 +78,8 @@ const getContext = (type) => {
 
 defineExpose({
     getContext,
-    updateCamera
+    animate,
+    lookAt
 })
 
 

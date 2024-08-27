@@ -84,8 +84,8 @@ onMounted(() => {
 });
 
 const planets = ref([
-    { x: 0, y: 0, z: 0, id: 0, svg: 'src/assets/flagSVG/us.svg', color: 'white' },
     { x: 0, y: 0, z: 0, id: 1, svg: 'src/assets/flagSVG/cn.svg', color: 'white' },
+    { x: 0, y: 0, z: 0, id: 0, svg: 'src/assets/flagSVG/us.svg', color: 'white' },
     { x: 0, y: 0, z: 0, id: 2, svg: 'src/assets/flagSVG/ru.svg', color: 'white' },
     { x: 0, y: 0, z: 0, id: 3, svg: 'src/assets/flagSVG/fr.svg', color: 'white' },
     { x: 0, y: 0, z: 0, id: 4, svg: 'src/assets/flagSVG/gb.svg', color: 'white' },
@@ -225,13 +225,23 @@ const lookY = ref(0)
 const lookZ = ref(0)
 const ctx = ref(null)
 const lookAt = (i) => {
-    cameraX.value = planets.value[i].x
-    cameraY.value = planets.value[i].y
-    cameraZ.value = planets.value[i].z + 3
-    lookX.value = planets.value[i].x
-    lookY.value = planets.value[i].y
-    lookZ.value = planets.value[i].z
-    ctx.value && ctx.value.updateCamera()
+    cameraX.value = planets.value[0].x
+    cameraY.value = planets.value[0].y
+    cameraZ.value = planets.value[0].z
+    transArr(planets.value)
+    console.log(cameraX.value, cameraY.value, cameraZ.value,'cameraXYZ');
+
+    // lookX.value = planets.value[i].x
+    // lookY.value = planets.value[i].y
+    // lookZ.value = planets.value[i].z
+    // // ctx.value && ctx.value.animate()
+    // ctx.value && ctx.value.lookAt() //bug
+
+}
+
+function transArr(arr: any) {
+    const pop = arr.shift()
+    arr.push(pop)
 }
 
 // bus.on('getCamera', (res) => {

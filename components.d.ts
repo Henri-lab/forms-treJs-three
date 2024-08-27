@@ -17,5 +17,6 @@ declare module 'vue' {
     ElSelect: typeof import('element-plus/es')['ElSelect']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Test: typeof import('./src/components/threeVue/galaxy/test.vue')['default']
   }
 }
