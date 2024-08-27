@@ -5,13 +5,13 @@
         <div class="theme">
             <el-switch v-model="themeLight" />开灯
         </div>
-        <el-button class="btn1 animate__animated animate__fadeInRight" color="#626aef" v-if="isBtn" @click="lookPre">
+        <el-button class="btn1 animate__animated animate__fadeInRight" color="green" v-if="isBtn" @click="lookPre">
             pre
         </el-button>
-        <el-button class="btn2 animate__animated animate__fadeInRight" color="#626aef" v-if="isBtn" @click="lookNext">
+        <el-button class="btn2 animate__animated animate__fadeInRight" color="green" v-if="isBtn" @click="lookNext">
             next
         </el-button>
-        <div class="detailsPane" v-draggable>
+        <div class="detailsPane" v-draggable v-if="isDtails">
             <div class="details" @click="getDetails('jabxx_ship')">基础信息(舰船)</div>
             <div class="details" @click="getDetails('jabxx_aircraft')">基础信息(飞机)</div>
         </div>
@@ -40,6 +40,7 @@ const isJbxxAir = ref(false)
 const galaxy = ref(null)
 const card = ref(null)
 const cardClass = ref('animate__fadeInRightBig')
+const isDtails = ref(false)
 
 onMounted(() => {
     setTimeout(() => {
@@ -76,7 +77,7 @@ const getDetails = (type) => {
 let countCN = 0
 let countUSA = 0
 let i_planets = 0
-const country = ref('请选择您要查看的国家')
+const country = ref('')
 
 const lookPre = () => {
     const { x, y, z, name } = planets[Math.abs(i_planets++ % 6)]
@@ -95,7 +96,7 @@ const lookNext = () => {
 }
 const lookReset = (e) => {
     if (e.target === 'canvas') console.log(e.target);
-
+    country.value = ''
     galaxy.value && galaxy.value.cameraReset()
 }
 </script>
@@ -123,33 +124,34 @@ const lookReset = (e) => {
     }
 
     .card-wrapper {
-        width: 30%;
-        max-height: 45%;
-        background-color: rgba(236, 200, 17, 0.3);
+        width: 40%;
+        max-height: 55%;
+        // background-color: rgba(236, 200, 17, 0.3);
         position: absolute;
         padding: 1%;
         top: 20%;
         right: 10%;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+        // box-shadow: 0 0 10px rgba(0, 0, 0, 1);
         --animate-duration: 7s;
+        overflow: visible;
     }
 
     .btn1 {
-        width: 3%;
-        height: 3%;
+        width: 5%;
+        height: 5%;
         position: absolute;
         top: 25%;
-        right: 41%;
+        right: 5%;
         z-index: 1;
         --animate-duration: 2s;
     }
 
     .btn2 {
-        width: 3%;
-        height: 3%;
+        width: 5%;
+        height: 5%;
         position: absolute;
         top: 35%;
-        right: 41%;
+        right: 5%;
         z-index: 1;
         --animate-duration: 2s;
     }

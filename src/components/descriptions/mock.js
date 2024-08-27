@@ -68,6 +68,19 @@ axios.get('/data.json').then(res => {
     })
     console.log(sbtx_aircraft_arr, '3 飞机识别特性')
     console.log(sbtx_ship_arr, '3 舰船识别特性')
+
+
+    Object.keys(data['tree']).forEach(k => {
+        if (k.includes('机')) {
+            sbtx_aircraft_arr.push(data['tree'][k])
+        } else if (k.includes('舰')) {
+            sbtx_ship_arr.push(data['tree'][k])
+        }
+    })
+    console.log(sbtx_aircraft_arr, '3 飞机识别特性')
+    console.log(sbtx_ship_arr, '3 舰船识别特性')
+
+    tree = data['tree']
 })
 
 
