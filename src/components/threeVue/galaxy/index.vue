@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import { ref, onMounted, shallowRef, Ref, computed } from 'vue';
-import { TresCanvas, useRenderLoop, TresInstance } from '@tresjs/core'
+import { TresCanvas, useRenderLoop, TresInstance, useTexture, useLoader } from '@tresjs/core'
 import {
     OrbitControls,
     Stars,
@@ -16,10 +16,12 @@ import {
     CatmullRomCurve3,
     SVG,
     Ring,
-    Sky
+    Sky,
+    useVideoTexture
 } from '@tresjs/cientos'
 import mitt from 'mitt'
 import Context from './Context.vue'
+import { TextureLoader } from 'three';
 
 const bus = mitt()
 // bus.on('galaxy', () => {
@@ -82,11 +84,11 @@ onMounted(() => {
 });
 
 const planets = ref([
-    { x: 0, y: 0, z: 0, id: 0, svg: 'src/assets/flagSVG/us.svg', color: 'blue' },
-    { x: 0, y: 0, z: 0, id: 1, svg: 'src/assets/flagSVG/cn.svg', color: 'red' },
-    { x: 0, y: 0, z: 0, id: 2, svg: 'src/assets/flagSVG/ru.svg', color: 'purple' },
-    { x: 0, y: 0, z: 0, id: 3, svg: 'src/assets/flagSVG/fr.svg', color: 'yellow' },
-    { x: 0, y: 0, z: 0, id: 4, svg: 'src/assets/flagSVG/gb.svg', color: 'green' },
+    { x: 0, y: 0, z: 0, id: 0, svg: 'src/assets/flagSVG/us.svg', color: 'white' },
+    { x: 0, y: 0, z: 0, id: 1, svg: 'src/assets/flagSVG/cn.svg', color: 'white' },
+    { x: 0, y: 0, z: 0, id: 2, svg: 'src/assets/flagSVG/ru.svg', color: 'white' },
+    { x: 0, y: 0, z: 0, id: 3, svg: 'src/assets/flagSVG/fr.svg', color: 'white' },
+    { x: 0, y: 0, z: 0, id: 4, svg: 'src/assets/flagSVG/gb.svg', color: 'white' },
     { x: 0, y: 0, z: 0, id: 5, svg: 'src/assets/flagSVG/jp.svg', color: 'white' },
 ])
 
@@ -237,6 +239,11 @@ const lookAt = (i) => {
 //     console.log(camera, 'camera');
 // })
 
+const texture = ref({})
+useLoader(TextureLoader, 'src/assets/test.png').then(res => {
+    texture.value = res
+    console.log(texture.value, 'texture');
+})
 
 
 
@@ -281,16 +288,22 @@ defineExpose({ open, reverse, lookAt })
                     <Sparkles :directional-light="lightRef" />
                 </Sphere>
             </TresMesh>
+
             <TresMesh class="planets" v-for="planet in planets" :key="planet.id" :position="[planet.x, planet.y, planet.z]">
-                <Circle :args="[1, 1]">
+                <!-- <Circle :args="[1, 1]">
                     <TresMeshToonMaterial color="#33A8FF" />
-                </Circle>
+                </Circle> -->
+                <Sphere>
+                    <TresMeshBasicMaterial :map="texture" />
+                </Sphere>
             </TresMesh>
 
+
             <!-- 国旗 -->
-            <TresMesh class="flags" v-for="planet in planets" :key="planet.id" :position="[planet.x-2, planet.y-1, planet.z]">
+            <TresMesh class="flags" v-for="planet in planets" :key="planet.id"
+                :position="[planet.x - 1, planet.y + 2, planet.z + 2]">
                 <Suspense>
-                    <SVG :src="planet.svg" :scale="0.01"  />
+                    <SVG :src="planet.svg" :scale="0.003" />
                 </Suspense>
             </TresMesh>
             <!-- 轨道 -->
