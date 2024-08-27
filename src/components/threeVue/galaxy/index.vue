@@ -291,6 +291,12 @@ onBeforeMount(() => {
     // clearInterval(timer2)
 })
 
+const theme = ref('black')
+const changeTheme = () => {
+    console.log('change theme');
+    
+    theme.value === 'black' ? theme.value = 'white' : theme.value = 'black'
+}
 
 
 
@@ -300,7 +306,8 @@ defineExpose({
     lookAt,
     setPosOfCamera,
     cameraReset,
-    getPlanets
+    getPlanets,
+    changeTheme
 })
 </script>
 
@@ -321,7 +328,7 @@ defineExpose({
 
 <template>
     <div class="galaxy">
-        <TresCanvas clear-color="#2F4F4F">
+        <TresCanvas :clear-color="theme">
             <Context ref="ctx" :direction="[lookX, lookY, lookZ]" />
             <!-- 配置 -->
             <TresPerspectiveCamera :position="[cameraX, cameraY, cameraZ]" />
@@ -331,7 +338,7 @@ defineExpose({
             <TresDirectionalLight :position="[10, 10, 15]" />
 
             <!-- 背景 -->
-            <Stars :rotation="[0, yRotation, 0]" :radius="5" :depth="50" :count="1000" :size="0.3"
+            <Stars :rotation="[0, yRotation, 0]" :radius="500" :depth="100" :count="2000" :size="0.3"
                 :size-attenuation="true" />
             <!-- <Sky /> -->
             <!-- 星球 -->

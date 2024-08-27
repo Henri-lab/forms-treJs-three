@@ -2,6 +2,9 @@
     <div class="menu" @click.right="lookReset">
         <Galaxy class="galaxy-wrapper" ref="galaxy" />
         <Tags class="tags-wrapper animate__animated animate__fadeInDown" v-if="isBtn" />
+        <div class="theme">
+            <el-switch v-model="themeLight" />开灯
+        </div>
         <el-button class="btn1 animate__animated animate__fadeInRight" color="#626aef" v-if="isBtn" @click="lookPre">
             pre
         </el-button>
@@ -21,9 +24,10 @@ import Galaxy from '~c/threeVue/galaxy/index.vue';
 import Card from '~c/card.vue';
 import Tags from '~c/tags.vue';
 import Description from '~c/descriptions/index.vue';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import mitt from 'mitt'
 import { lowerCaseCountryNameMap } from './dict'
+
 
 const bus = mitt()
 const isBtn = ref(false)
@@ -38,6 +42,11 @@ onMounted(() => {
     setTimeout(() => {
         isBtn.value = true
     }, 5000);
+})
+
+const themeLight = ref(false)
+watch(() => themeLight.value, (newV) => {
+    galaxy.value && galaxy.value.changeTheme()
 })
 
 
@@ -143,8 +152,16 @@ const lookReset = (e) => {
     .tags-wrapper {
         width: 23%;
         height: 5%;
-        right: 8%;
+        right: 10%;
         top: 2%;
+        position: absolute;
+    }
+
+    .theme {
+        width: 10%;
+        height: 5%;
+        right: -5%;
+        top: 0%;
         position: absolute;
     }
 
