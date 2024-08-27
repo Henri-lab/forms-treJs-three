@@ -34,6 +34,7 @@ import Tags from '~c/tags.vue';
 import Description from '~c/descriptions/index.vue';
 import { onMounted, ref } from 'vue';
 import mitt from 'mitt'
+import Context from '~c/threeVue/galaxy/Context.vue'
 
 const bus = mitt()
 const isBtn = ref(false)

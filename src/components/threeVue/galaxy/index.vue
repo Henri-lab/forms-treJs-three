@@ -1,5 +1,5 @@
 <script setup lang="ts">
-//@ts-nocheck
+
 import { ref, onMounted, shallowRef, Ref, computed } from 'vue';
 import { TresCanvas, useRenderLoop, TresInstance } from '@tresjs/core'
 import {
@@ -19,8 +19,9 @@ import {
     Sky
 } from '@tresjs/cientos'
 import mitt from 'mitt'
+import Context from './Context.vue'
 
-// const bus = mitt()
+const bus = mitt()
 // bus.on('galaxy', () => {
 //     console.log('galaxy')
 //     ringR.value = 0
@@ -81,12 +82,12 @@ onMounted(() => {
 });
 
 const planets = ref([
-    { x: 0, y: 0, z: 0, id: 0, svg: '@/assets/flagSVG/us.svg' },
-    { x: 0, y: 0, z: 0, id: 1, svg: '@/assets/flagSVG/cn.svg' },
-    { x: 0, y: 0, z: 0, id: 2, svg: '@/assets/flagSVG/us.svg' },
-    { x: 0, y: 0, z: 0, id: 3, svg: '@/assets/flagSVG/cn.svg' },
-    { x: 0, y: 0, z: 0, id: 4, svg: '@/assets/flagSVG/us.svg' },
-    { x: 0, y: 0, z: 0, id: 5, svg: '@/assets/flagSVG/cn.svg' },
+    { x: 0, y: 0, z: 0, id: 0, svg: 'src/assets/flagSVG/us.svg', color: 'blue' },
+    { x: 0, y: 0, z: 0, id: 1, svg: 'src/assets/flagSVG/cn.svg', color: 'red' },
+    { x: 0, y: 0, z: 0, id: 2, svg: 'src/assets/flagSVG/ru.svg', color: 'purple' },
+    { x: 0, y: 0, z: 0, id: 3, svg: 'src/assets/flagSVG/fr.svg', color: 'yellow' },
+    { x: 0, y: 0, z: 0, id: 4, svg: 'src/assets/flagSVG/gb.svg', color: 'green' },
+    { x: 0, y: 0, z: 0, id: 5, svg: 'src/assets/flagSVG/jp.svg', color: 'white' },
 ])
 
 // ring
@@ -217,11 +218,29 @@ const reverse = () => {
     }, 1)
 }
 
+const lookX = ref(0)
+const lookY = ref(0)
+const lookZ = ref(0)
+const ctx = ref(null)
 const lookAt = (i) => {
     cameraX.value = planets.value[i].x
     cameraY.value = planets.value[i].y
-    cameraZ.value = planets.value[i].z + 1
+    cameraZ.value = planets.value[i].z + 3
+    lookX.value = planets.value[i].x
+    lookY.value = planets.value[i].y
+    lookZ.value = planets.value[i].z
+    ctx.value && ctx.value.updateCamera()
 }
+
+// bus.on('getCamera', (res) => {
+//     camera = res
+//     console.log(camera, 'camera');
+// })
+
+
+
+
+
 defineExpose({ open, reverse, lookAt })
 </script>
 
@@ -243,6 +262,7 @@ defineExpose({ open, reverse, lookAt })
 <template>
     <div class="galaxy">
         <TresCanvas clear-color="#2F4F4F">
+            <Context ref="ctx" :direction="[lookX, lookY, lookZ]" />
             <!-- 配置 -->
             <TresPerspectiveCamera :position="[cameraX, cameraY, cameraZ]" />
             <OrbitControls />
@@ -256,8 +276,8 @@ defineExpose({ open, reverse, lookAt })
             <Sky />
             <!-- 星球 -->
             <TresMesh class="planets" v-for="planet in planets" :key="planet.id" :position="[planet.x, planet.y, planet.z]">
-                <Sphere color="blue">
-                    <MeshGlassMaterial color="white" />
+                <Sphere>
+                    <MeshGlassMaterial :color="planet.color" />
                     <Sparkles :directional-light="lightRef" />
                 </Sphere>
             </TresMesh>
@@ -268,9 +288,9 @@ defineExpose({ open, reverse, lookAt })
             </TresMesh>
 
             <!-- 国旗 -->
-            <TresMesh class="flags" v-for="planet in planets" :key="planet.id" :position="[planet.x, planet.y, planet.z]">
+            <TresMesh class="flags" v-for="planet in planets" :key="planet.id" :position="[planet.x-2, planet.y-1, planet.z]">
                 <Suspense>
-                    <SVG src="@/assets/flagSVG/us.svg" :scale="1" />
+                    <SVG :src="planet.svg" :scale="0.01"  />
                 </Suspense>
             </TresMesh>
             <!-- 轨道 -->
