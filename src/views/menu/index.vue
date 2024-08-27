@@ -1,5 +1,5 @@
 <template>
-    <div class="menu">
+    <div class="menu" @click.right="lookReset">
         <Galaxy class="galaxy-wrapper" ref="galaxy" />
         <Tags class="tags-wrapper animate__animated animate__fadeInDown" v-if="isBtn" />
         <el-button class="btn1 animate__animated animate__fadeInRight" color="#626aef" v-if="isBtn" @click="lookPre">
@@ -9,7 +9,7 @@
             next
         </el-button>
         <div class="details" @click="getDetails">详情1</div>
-        <Card ref="card" :class="'card-wrapper', 'animate__animated', cardClass" v-show="isCard" />
+        <Card ref="card" :class="'card-wrapper', 'animate__animated', cardClass" v-show="isCard" :countryName="country" />
         <Description class="description-wrapper" tableType='jbxx_ship' v-draggable v-if="isDesc1" />
         <Description class="description-wrapper" tableType='jbxx_aircraft' v-draggable v-if="isDesc2" />
     </div>
@@ -23,7 +23,7 @@ import Tags from '~c/tags.vue';
 import Description from '~c/descriptions/index.vue';
 import { onMounted, ref } from 'vue';
 import mitt from 'mitt'
-import Context from '~c/threeVue/galaxy/Context.vue'
+import { lowerCaseCountryNameMap } from './dict'
 
 const bus = mitt()
 const isBtn = ref(false)
@@ -64,18 +64,27 @@ const getDetails = () => {
 let countCN = 0
 let countUSA = 0
 let i_planets = 0
+const country = ref('请选择您要查看的国家')
+
 const lookPre = () => {
     const { x, y, z, name } = planets[Math.abs(i_planets++ % 6)]
     galaxy.value && galaxy.value.setPosOfCamera(x, y, z + 5)
-    console.log(name, '--country name watching');
+    country.value = lowerCaseCountryNameMap[name.toLowerCase()]
+    // console.log(name, '--country name watching');
     // bug
     // galaxy.value && galaxy.value.lookAt(index++ % 6)
 }
 const lookNext = () => {
     const { x, y, z, name } = planets[Math.abs(i_planets-- % 6)]
     galaxy.value && galaxy.value.setPosOfCamera(x, y, z + 5)
-    console.log(name, '--country name watching');
+    country.value = lowerCaseCountryNameMap[name.toLowerCase()]
+    // console.log(name, '--country name watching');
     // galaxy.value && galaxy.value.lookAt(index-- % 6)
+}
+const lookReset = (e) => {
+    if (e.target === 'canvas') console.log(e.target);
+
+    galaxy.value && galaxy.value.cameraReset()
 }
 </script>
 

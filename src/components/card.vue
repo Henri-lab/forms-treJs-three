@@ -3,7 +3,7 @@
         <el-card>
             <template #header>
                 <div class="card-header">
-                    <span>Card name</span>
+                    <span>{{ props.countryName }}</span>
                 </div>
             </template>
             <p v-for="o in 4" :key="o" class="text item">{{ 'List item ' + o }}</p>
@@ -12,11 +12,16 @@
     </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
+import { defineProps, onMounted, ref } from 'vue';
 import mitt from 'mitt';
 const bus = mitt();
-bus.on('planetClick', (info) => {
-    console.log('planetClick')
+
+const props = defineProps({
+    countryName: {
+        type: String,
+        default: 'test',
+    },
 })
 
 

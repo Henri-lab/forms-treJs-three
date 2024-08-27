@@ -87,12 +87,12 @@ onMounted(() => {
 });
 
 const planets = ref([
-    { x: 0, y: 0, z: 0, id: 2, svg: 'src/assets/flagSVG/ru.svg', color: 'white', name: 'ru' },
-    { x: 0, y: 0, z: 0, id: 3, svg: 'src/assets/flagSVG/fr.svg', color: 'white', name: 'fr' },
-    { x: 0, y: 0, z: 0, id: 4, svg: 'src/assets/flagSVG/gb.svg', color: 'white', name: 'gb' },
     { x: 0, y: 0, z: 0, id: 1, svg: 'src/assets/flagSVG/cn.svg', color: 'white', name: 'cn' },
-    { x: 0, y: 0, z: 0, id: 0, svg: 'src/assets/flagSVG/us.svg', color: 'white', name: 'us' },
-    { x: 0, y: 0, z: 0, id: 5, svg: 'src/assets/flagSVG/jp.svg', color: 'white', name: 'jp' },
+    { x: 0, y: 0, z: 0, id: 2, svg: 'src/assets/flagSVG/us.svg', color: 'white', name: 'us' },
+    { x: 0, y: 0, z: 0, id: 3, svg: 'src/assets/flagSVG/ru.svg', color: 'white', name: 'ru' },
+    { x: 0, y: 0, z: 0, id: 4, svg: 'src/assets/flagSVG/fr.svg', color: 'white', name: 'fr' },
+    { x: 0, y: 0, z: 0, id: 5, svg: 'src/assets/flagSVG/gb.svg', color: 'white', name: 'gb' },
+    { x: 0, y: 0, z: 0, id: 6, svg: 'src/assets/flagSVG/jp.svg', color: 'white', name: 'jp' },
 ])
 
 // ring
@@ -124,7 +124,7 @@ function initRing() {
             z: planet.z,
         }
     })
-    console.log(points,'points');
+    console.log(points, 'points');
 
     // 计算环的中心
     const center = points.reduce((acc, point) => {
