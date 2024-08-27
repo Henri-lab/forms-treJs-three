@@ -11,7 +11,7 @@
             </template> -->
 
         </el-button>
-        <el-button class="btn2 animate__animated animate__fadeInRight" color="#626aef" v-if="isBtn">
+        <el-button class="btn2 animate__animated animate__fadeInRight" color="#626aef" v-if="isBtn" @click="lookDown">
             down
             <!-- <template v-slot:prepend>
                 <svg>
@@ -64,7 +64,12 @@ const getDetails = () => {
 }
 let index = 0
 const lookUp = () => {
-    galaxy.value && galaxy.value.lookAt(index++ % 6)
+    galaxy.value && galaxy.value.lookAt_test1()
+    // galaxy.value && galaxy.value.lookAt(index++ % 6)
+}
+const lookDown = () => {
+    galaxy.value && galaxy.value.lookAt_test2()
+    // galaxy.value && galaxy.value.lookAt(index-- % 6)
 }
 </script>
 

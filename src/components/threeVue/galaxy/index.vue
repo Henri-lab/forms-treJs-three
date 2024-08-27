@@ -24,6 +24,7 @@ import mitt from 'mitt'
 import Context from './Context.vue'
 import { TextureLoader } from 'three';
 import { resolve } from 'path';
+import { onBeforeMount } from 'vue';
 
 const bus = mitt()
 // bus.on('galaxy', () => {
@@ -86,11 +87,11 @@ onMounted(() => {
 });
 
 const planets = ref([
-    { x: 0, y: 0, z: 0, id: 1, svg: 'src/assets/flagSVG/cn.svg', color: 'white' },
-    { x: 0, y: 0, z: 0, id: 0, svg: 'src/assets/flagSVG/us.svg', color: 'white' },
     { x: 0, y: 0, z: 0, id: 2, svg: 'src/assets/flagSVG/ru.svg', color: 'white' },
     { x: 0, y: 0, z: 0, id: 3, svg: 'src/assets/flagSVG/fr.svg', color: 'white' },
     { x: 0, y: 0, z: 0, id: 4, svg: 'src/assets/flagSVG/gb.svg', color: 'white' },
+    { x: 0, y: 0, z: 0, id: 1, svg: 'src/assets/flagSVG/cn.svg', color: 'white' },
+    { x: 0, y: 0, z: 0, id: 0, svg: 'src/assets/flagSVG/us.svg', color: 'white' },
     { x: 0, y: 0, z: 0, id: 5, svg: 'src/assets/flagSVG/jp.svg', color: 'white' },
 ])
 
@@ -227,23 +228,37 @@ const lookY = ref(0)
 const lookZ = ref(0)
 const ctx = ref(null)
 const lookAt = (i) => {
-    cameraX.value = planets.value[0].x
-    cameraY.value = planets.value[0].y
-    cameraZ.value = planets.value[0].z
-    transArr(planets.value)
-    console.log(cameraX.value, cameraY.value, cameraZ.value, 'cameraXYZ');
-
-    // lookX.value = planets.value[i].x
-    // lookY.value = planets.value[i].y
-    // lookZ.value = planets.value[i].z
+    lookX.value = planets.value[i].x
+    lookY.value = planets.value[i].y
+    lookZ.value = planets.value[i].z
     // // ctx.value && ctx.value.animate()
-    // ctx.value && ctx.value.lookAt() //bug
+    ctx.value && ctx.value.lookAt() //bug
 
 }
 
+// 💢
+const lookAt_test1 = () => {
+    cameraX.value = planets.value[0].x
+    cameraY.value = planets.value[0].y
+    cameraZ.value = planets.value[0].z
+
+    transArr(planets.value)
+}
+const lookAt_test2 = () => {
+    transArr_reverse(planets.value)
+
+    cameraX.value = planets.value[0].x
+    cameraY.value = planets.value[0].y
+    cameraZ.value = planets.value[0].z
+}
 function transArr(arr: any) {
     const pop = arr.shift()
     arr.push(pop)
+}
+function transArr_reverse(arr: any) {
+
+    const pop = arr.pop()
+    arr.unshift(pop)
 }
 
 // bus.on('getCamera', (res) => {
@@ -258,11 +273,28 @@ const promises = planets.value.map(p => {
 
 Promise.all(promises).then(resArr => texture.value = resArr)
 
+// plane的rotation
+const rotX = ref(Math.PI)
+const rotY = ref(Math.PI)
+const rotZ = ref(Math.PI)
+let timer2
+// onMounted(() => {
+//     let rate = 1
+//     timer2 = setInterval(() => {
+//         rate += 1
+//         rotZ.value = Math.PI / rate
+//         console.log(rate,'rate');
+
+//     }, 100)
+// })
+onBeforeMount(() => {
+    // clearInterval(timer2)
+})
 
 
 
 
-defineExpose({ open, reverse, lookAt })
+defineExpose({ open, reverse, lookAt, lookAt_test1, lookAt_test2 })
 </script>
 
 <style lang="scss" scoped>
@@ -294,7 +326,7 @@ defineExpose({ open, reverse, lookAt })
             <!-- 背景 -->
             <Stars :rotation="[0, yRotation, 0]" :radius="5" :depth="50" :count="1000" :size="0.3"
                 :size-attenuation="true" />
-            <Sky />
+            <!-- <Sky /> -->
             <!-- 星球 -->
             <TresMesh class="planets" v-for="planet in planets" :key="planet.id" :position="[planet.x, planet.y, planet.z]">
                 <Sphere>
@@ -305,21 +337,18 @@ defineExpose({ open, reverse, lookAt })
 
             <TresMesh class="planets" v-for="(planet, index) in planets" :key="planet.id"
                 :position="[planet.x, planet.y, planet.z]">
-                <Plane :args="[3, 3]" :rotation="[Math.PI / 1, Math.PI / 1, Math.PI / 2]">
+                <Plane :args="[3, 2.5]" :rotation="[rotX, rotY, rotZ]">
                     <TresMeshBasicMaterial :map="texture[index]" />
                 </Plane>
-
-
-
             </TresMesh>
 
 
             <!-- 国旗 -->
             <TresMesh class="flags" v-for="planet in planets" :key="planet.id"
                 :position="[planet.x - 1, planet.y + 2, planet.z + 2]">
-                <Suspense>
+                <!-- <Suspense>
                     <SVG :src="planet.svg" :scale="0.003" />
-                </Suspense>
+                </Suspense> -->
             </TresMesh>
             <!-- 轨道 -->
             <Ring ref="ringRef" :args="[ringR - 0.3, ringR, 32]" :position="[ringC.x, ringC.y, ringC.z]"
