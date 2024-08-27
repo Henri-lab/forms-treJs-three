@@ -87,12 +87,12 @@ onMounted(() => {
 });
 
 const planets = ref([
-    { x: 0, y: 0, z: 0, id: 2, svg: 'src/assets/flagSVG/ru.svg', color: 'white' },
-    { x: 0, y: 0, z: 0, id: 3, svg: 'src/assets/flagSVG/fr.svg', color: 'white' },
-    { x: 0, y: 0, z: 0, id: 4, svg: 'src/assets/flagSVG/gb.svg', color: 'white' },
-    { x: 0, y: 0, z: 0, id: 1, svg: 'src/assets/flagSVG/cn.svg', color: 'white' },
-    { x: 0, y: 0, z: 0, id: 0, svg: 'src/assets/flagSVG/us.svg', color: 'white' },
-    { x: 0, y: 0, z: 0, id: 5, svg: 'src/assets/flagSVG/jp.svg', color: 'white' },
+    { x: 0, y: 0, z: 0, id: 2, svg: 'src/assets/flagSVG/ru.svg', color: 'white', name: 'ru' },
+    { x: 0, y: 0, z: 0, id: 3, svg: 'src/assets/flagSVG/fr.svg', color: 'white', name: 'fr' },
+    { x: 0, y: 0, z: 0, id: 4, svg: 'src/assets/flagSVG/gb.svg', color: 'white', name: 'gb' },
+    { x: 0, y: 0, z: 0, id: 1, svg: 'src/assets/flagSVG/cn.svg', color: 'white', name: 'cn' },
+    { x: 0, y: 0, z: 0, id: 0, svg: 'src/assets/flagSVG/us.svg', color: 'white', name: 'us' },
+    { x: 0, y: 0, z: 0, id: 5, svg: 'src/assets/flagSVG/jp.svg', color: 'white', name: 'jp' },
 ])
 
 // ring
@@ -124,7 +124,7 @@ function initRing() {
             z: planet.z,
         }
     })
-    console.log(points);
+    console.log(points,'points');
 
     // 计算环的中心
     const center = points.reduce((acc, point) => {
@@ -237,19 +237,17 @@ const lookAt = (i) => {
 }
 
 // 💢
-const lookAt_test1 = () => {
-    cameraX.value = planets.value[0].x
-    cameraY.value = planets.value[0].y
-    cameraZ.value = planets.value[0].z
-
-    transArr(planets.value)
+const setPosOfCamera = (x, y, z) => {
+    cameraX.value = x
+    cameraY.value = y
+    cameraZ.value = z
 }
-const lookAt_test2 = () => {
-    transArr_reverse(planets.value)
 
-    cameraX.value = planets.value[0].x
-    cameraY.value = planets.value[0].y
-    cameraZ.value = planets.value[0].z
+
+const cameraReset = () => {
+    cameraX.value = 0
+    cameraY.value = 5
+    cameraZ.value = 42
 }
 function transArr(arr: any) {
     const pop = arr.shift()
@@ -260,7 +258,9 @@ function transArr_reverse(arr: any) {
     const pop = arr.pop()
     arr.unshift(pop)
 }
-
+function getPlanets() {
+    return planets.value
+}
 // bus.on('getCamera', (res) => {
 //     camera = res
 //     console.log(camera, 'camera');
@@ -294,7 +294,14 @@ onBeforeMount(() => {
 
 
 
-defineExpose({ open, reverse, lookAt, lookAt_test1, lookAt_test2 })
+defineExpose({
+    open,
+    reverse,
+    lookAt,
+    setPosOfCamera,
+    cameraReset,
+    getPlanets
+})
 </script>
 
 <style lang="scss" scoped>
@@ -351,7 +358,7 @@ defineExpose({ open, reverse, lookAt, lookAt_test1, lookAt_test2 })
                 </Suspense> -->
             </TresMesh>
             <!-- 轨道 -->
-            <Ring ref="ringRef" :args="[ringR - 0.3, ringR, 32]" :position="[ringC.x, ringC.y, ringC.z]"
+            <Ring ref="ringRef" :args="[ringR - 0.1, ringR, 32]" :position="[ringC.x, ringC.y, ringC.z]"
                 :rotation="[Math.atan2(ringN.y, ringN.z) * Math.PI / (-3), Math.atan2(ringN.x, ringN.z), 0]">
                 <TresMeshToonMaterial color="purple" />
             </Ring>

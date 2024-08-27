@@ -2,22 +2,11 @@
     <div class="menu">
         <Galaxy class="galaxy-wrapper" ref="galaxy" />
         <Tags class="tags-wrapper animate__animated animate__fadeInDown" v-if="isBtn" />
-        <el-button class="btn1 animate__animated animate__fadeInRight" color="#626aef" v-if="isBtn" @click="lookUp">
-            up
-            <!-- <template v-slot:prepend>
-                <svg>
-                    <use href="@/assets/upArrow.svg"></use>
-                </svg>
-            </template> -->
-
+        <el-button class="btn1 animate__animated animate__fadeInRight" color="#626aef" v-if="isBtn" @click="lookPre">
+            pre
         </el-button>
-        <el-button class="btn2 animate__animated animate__fadeInRight" color="#626aef" v-if="isBtn" @click="lookDown">
-            down
-            <!-- <template v-slot:prepend>
-                <svg>
-                    <use href="@/assets/downArrow.svg"></use>
-                </svg>
-            </template> -->
+        <el-button class="btn2 animate__animated animate__fadeInRight" color="#626aef" v-if="isBtn" @click="lookNext">
+            next
         </el-button>
         <div class="details" @click="getDetails">详情1</div>
         <Card ref="card" :class="'card-wrapper', 'animate__animated', cardClass" v-show="isCard" />
@@ -44,10 +33,18 @@ const isDesc2 = ref(false)
 const galaxy = ref(null)
 const card = ref(null)
 const cardClass = ref('animate__fadeInRightBig')
+
 onMounted(() => {
     setTimeout(() => {
         isBtn.value = true
     }, 5000);
+})
+
+
+let planets = []
+onMounted(() => {
+    planets = galaxy.value && galaxy.value.getPlanets()
+    console.log(planets, 'planets in menu');
 })
 let count = 0
 const getDetails = () => {
@@ -62,13 +59,22 @@ const getDetails = () => {
     isDesc2.value = !isDesc2.value
     // bus.emit('galaxy')
 }
-let index = 0
-const lookUp = () => {
-    galaxy.value && galaxy.value.lookAt_test1()
+
+// 暂时硬编码(6个球)数组遍历 因为摄像头没有调好
+let countCN = 0
+let countUSA = 0
+let i_planets = 0
+const lookPre = () => {
+    const { x, y, z, name } = planets[Math.abs(i_planets++ % 6)]
+    galaxy.value && galaxy.value.setPosOfCamera(x, y, z + 5)
+    console.log(name, '--country name watching');
+    // bug
     // galaxy.value && galaxy.value.lookAt(index++ % 6)
 }
-const lookDown = () => {
-    galaxy.value && galaxy.value.lookAt_test2()
+const lookNext = () => {
+    const { x, y, z, name } = planets[Math.abs(i_planets-- % 6)]
+    galaxy.value && galaxy.value.setPosOfCamera(x, y, z + 5)
+    console.log(name, '--country name watching');
     // galaxy.value && galaxy.value.lookAt(index-- % 6)
 }
 </script>
