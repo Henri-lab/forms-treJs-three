@@ -42,7 +42,7 @@ const select = ref('')
 const targets = ref([])
 
 function initTargets() {
-    if (props.country) {
+    if (!props.country) {
         targets.value = []
         return
     }
