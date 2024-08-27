@@ -251,11 +251,10 @@ function transArr(arr: any) {
 //     console.log(camera, 'camera');
 // })
 const texture = ref([])
-const promises = planets.value.map(p => useLoader(TextureLoader, p.svg).then(res => {
-    return new Promise((resolve) => {
-        resolve(res)
-    })
-}))
+
+const promises = planets.value.map(p => {
+    return useLoader(TextureLoader, p.svg);
+});
 
 Promise.all(promises).then(resArr => texture.value = resArr)
 
