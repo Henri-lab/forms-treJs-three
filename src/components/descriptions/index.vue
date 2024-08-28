@@ -15,7 +15,7 @@
                             <el-row :gutter="gutter">
                                 <el-col :span="12" v-for="item in obj[select]">
                                     <el-form-item :label="item.name">
-                                        <el-input v-model="item.value" :title="item.value" />
+                                        <el-input v-model="item.value" :title="item.value" disabled />
                                     </el-form-item>
                                 </el-col>
                             </el-row>
@@ -24,7 +24,7 @@
                             <el-row :gutter="gutter">
                                 <el-col :span="12" v-for="item in obj1[select]">
                                     <el-form-item :label="item.name">
-                                        <el-input v-model="item.value" :title="item.value" />
+                                        <el-input v-model="item.value" :title="item.value" disabled />
                                     </el-form-item>
                                 </el-col>
                             </el-row>
@@ -33,7 +33,7 @@
                             <el-row :gutter="gutter">
                                 <el-col :span="12" v-for="item in obj2[select]">
                                     <el-form-item :label="item.name">
-                                        <el-input v-model="item.value" :title="item.value" />
+                                        <el-input v-model="item.value" :title="item.value" disabled />
                                     </el-form-item>
                                 </el-col>
                             </el-row>
@@ -42,7 +42,7 @@
                             <el-row :gutter="gutter">
                                 <el-col :span="12" v-for="item in obj3[select]">
                                     <el-form-item :label="item.name">
-                                        <el-input v-model="item.value" :title="item.value" />
+                                        <el-input v-model="item.value" :title="item.value" disabled />
                                     </el-form-item>
                                 </el-col>
                             </el-row>
@@ -51,7 +51,7 @@
                             <el-row :gutter="gutter">
                                 <el-col :span="12" v-for="item in obj4[select]">
                                     <el-form-item :label="item.name">
-                                        <el-input v-model="item.value" :title="item.value" />
+                                        <el-input v-model="item.value" :title="item.value" disabled />
                                     </el-form-item>
                                 </el-col>
                             </el-row>
@@ -60,7 +60,7 @@
                             <el-row :gutter="gutter">
                                 <el-col :span="12" v-for="item in obj5[select]">
                                     <el-form-item :label="item.name">
-                                        <el-input v-model="item.value" :title="item.value" />
+                                        <el-input v-model="item.value" :title="item.value" disabled />
                                     </el-form-item>
                                 </el-col>
                             </el-row>
@@ -225,6 +225,7 @@ onBeforeUnmount(() => {
         .left {
             width: 60%;
             height: 100%;
+
             // border: 1px solid orange;
             // box-shadow: 10px, 10px, 10px, 10px, rgb(59, 55, 55, 0.5);
             .empty {

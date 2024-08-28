@@ -15,13 +15,13 @@
             <div class="head"></div>
             <div class="detailsPane animate__animated animate__fadeInRight">
                 <div class="navi">
-                    <div class="details">{{ country }}</div>
+                    <div class="detailsName">{{ country }}</div>
                     <div class="close" @click="closeDetails"><el-button type="danger">关闭</el-button></div>
                 </div>
-                <Description class="description-wrapper" :country="country" :targetType="checkType" />
+                <Description class="description-wrapper " :country="country" :targetType="checkType" />
             </div>
         </div>
-        <Search class="search-wrapper" v-if="isCard" />
+        <Search class="search-wrapper animate__animated animate__fadeInRight" v-if="isBtn" />
         <Card ref="card" class="card-wrapper animate__animated animate__fadeInUpBig" v-show="isCard"
             :countryName="country" />
 
@@ -41,7 +41,7 @@ import bus from '@/utils/bus';
 import { lowerCaseCountryNameMap } from './dict'
 
 const isBtn = ref(false)
-const isCard = ref(false)
+const isCard = ref(true)//false 导致 echarts无法获取宽高！！
 const isJbxxShip = ref(false)
 const isJbxxAir = ref(false)
 const galaxy = ref(null)
@@ -54,7 +54,6 @@ const checkType = ref('')
 onMounted(() => {
     setTimeout(() => {
         isBtn.value = true
-        isCard.value = true
     }, 5000);
 })
 
@@ -138,6 +137,11 @@ bus.on('detailsCheck', ({ country, type }) => {
 .zoom {
     width: 100px !important;
     height: 100px !important;
+}
+
+.detailsName{
+    font-size: 30px;
+    font-weight: 900;
 }
 
 .menu {
@@ -228,7 +232,7 @@ bus.on('detailsCheck', ({ country, type }) => {
         top: 20%;
         right: 10%;
         // box-shadow: 0 0 10px rgba(0, 0, 0, 1);
-        --animate-duration: 2s;
+        --animate-duration: 7s;
         overflow: visible;
     }
 

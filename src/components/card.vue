@@ -9,12 +9,14 @@
             <div class="classify">
                 <div class="aircraft">
                     <div class="aircraft-chart chart" ref="aircraftChart">
+                        <el-empty class="empty" v-show="isEmpty"></el-empty>
                         <v-chart :option="airOpt" class="vchart"></v-chart>
                     </div>
                     <el-button type="primary" class="btn-check" round @click="checkAir(props.countryName)">查看</el-button>
                 </div>
                 <div class="ship">
                     <div class="ship-chart chart" ref="shipChart">
+                        <el-empty class="empty" v-show="isEmpty"></el-empty>
                         <v-chart :option="shipOpt" class="vchart"></v-chart>
                     </div>
                     <el-button type="primary" class="btn-check" round @click="checkShip(props.countryName)">查看</el-button>
@@ -26,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, onMounted, ref } from 'vue';
+import { defineProps, onMounted, ref, watch } from 'vue';
 import * as THREE from 'three';
 import bus from '@/utils/bus';
 
@@ -37,140 +39,417 @@ const props = defineProps({
     },
 })
 const isShow = ref(true);
+const isEmpty = ref(true)
 const toggleShow = () => {
     isShow.value = !isShow.value;
 }
 defineExpose({ toggleShow })
 const airOpt = ref({
-    backgroundColor: 'black',
+    //     backgroundColor: 'black',
 
-    title: {
-        text: '飞机目标',
-        left: 'center',
-        top: 20,
-        textStyle: {
-            color: '#ccc'
-        }
-    },
+    //     title: {
+    //         text: '飞机目标',
+    //         left: 'center',
+    //         top: 20,
+    //         textStyle: {
+    //             color: '#ccc'
+    //         }
+    //     },
 
-    tooltip: {
-        trigger: 'item',
-        formatter: '{a} <br/>{b} : {c} ({d}%)'
-    },
+    //     tooltip: {
+    //         trigger: 'item',
+    //         formatter: '{a} <br/>{b} : {c} ({d}%)'
+    //     },
 
-    visualMap: {
-        show: false,
-        min: 0,
-        max: 600,
-        inRange: {
-            colorLightness: [0, 1]
-        }
-    },
-    series: [
-        {
-            name: '访问来源',
-            type: 'pie',
-            radius: '55%',
-            center: ['50%', '50%'],
-            data: [
-                { value: 335, name: '直接访问' },
-                { value: 310, name: '邮件营销' },
-                { value: 274, name: '联盟广告' },
-                { value: 235, name: '视频广告' },
-                { value: 400, name: '搜索引擎' }
-            ].sort(function (a, b) { return a.value - b.value; }),
-            roseType: 'radius',
-            label: {
-                color: 'rgba(255, 255, 255, 0.3)'
-            },
-            labelLine: {
-                lineStyle: {
-                    color: 'rgba(255, 255, 255, 0.3)'
-                },
-                smooth: 0.2,
-                length: 10,
-                length2: 20
-            },
-            itemStyle: {
-                color: '#c23531',
-                shadowBlur: 200,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
-            },
+    //     visualMap: {
+    //         show: false,
+    //         min: 0,
+    //         max: 600,
+    //         inRange: {
+    //             colorLightness: [0, 1]
+    //         }
+    //     },
+    //     series: [
+    //         {
+    //             name: '访问来源',
+    //             type: 'pie',
+    //             radius: '55%',
+    //             center: ['50%', '50%'],
+    //             data: [
+    //                 { value: 335, name: '直接访问' },
+    //                 { value: 310, name: '邮件营销' },
+    //                 { value: 274, name: '联盟广告' },
+    //                 { value: 235, name: '视频广告' },
+    //                 { value: 400, name: '搜索引擎' }
+    //             ].sort(function (a, b) { return a.value - b.value; }),
+    //             roseType: 'radius',
+    //             label: {
+    //                 color: 'rgba(255, 255, 255, 0.3)'
+    //             },
+    //             labelLine: {
+    //                 lineStyle: {
+    //                     color: 'rgba(255, 255, 255, 0.3)'
+    //                 },
+    //                 smooth: 0.2,
+    //                 length: 10,
+    //                 length2: 20
+    //             },
+    //             itemStyle: {
+    //                 color: '#c23531',
+    //                 shadowBlur: 200,
+    //                 shadowColor: 'rgba(0, 0, 0, 0.5)'
+    //             },
 
-            animationType: 'scale',
-            animationEasing: 'elasticOut',
-            animationDelay: function (idx: any) {
-                return Math.random() * 200;
-            }
-        }
-    ]
+    //             animationType: 'scale',
+    //             animationEasing: 'elasticOut',
+    //             animationDelay: function (idx: any) {
+    //                 return Math.random() * 200;
+    //             }
+    //         }
+    //     ]
 })
 const shipOpt = ref({
-    backgroundColor: 'black',
+    //     backgroundColor: 'black',
 
-    title: {
-        text: '舰艇目标',
-        left: 'center',
-        top: 20,
-        textStyle: {
-            color: '#ccc'
-        }
-    },
+    //     title: {
+    //         text: '舰艇目标',
+    //         left: 'center',
+    //         top: 20,
+    //         textStyle: {
+    //             color: '#ccc'
+    //         }
+    //     },
 
-    tooltip: {
-        trigger: 'item',
-        formatter: '{a} <br/>{b} : {c} ({d}%)'
-    },
+    //     tooltip: {
+    //         trigger: 'item',
+    //         formatter: '{a} <br/>{b} : {c} ({d}%)'
+    //     },
 
-    visualMap: {
-        show: false,
-        min: 0,
-        max: 600,
-        inRange: {
-            colorLightness: [0, 1]
-        }
-    },
-    series: [
-        {
-            name: '访问来源',
-            type: 'pie',
-            radius: '55%',
-            center: ['50%', '50%'],
-            data: [
-                { value: 335, name: '直接访问' },
-                { value: 310, name: '邮件营销' },
-                { value: 274, name: '联盟广告' },
-                { value: 235, name: '视频广告' },
-                { value: 400, name: '搜索引擎' }
-            ].sort(function (a, b) { return a.value - b.value; }),
-            roseType: 'radius',
-            label: {
-                color: 'rgba(255, 255, 255, 0.3)'
-            },
-            labelLine: {
-                lineStyle: {
-                    color: 'rgba(255, 255, 255, 0.3)'
-                },
-                smooth: 0.2,
-                length: 10,
-                length2: 20
-            },
-            itemStyle: {
-                color: '#c23531',
-                shadowBlur: 200,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
-            },
+    //     visualMap: {
+    //         show: false,
+    //         min: 0,
+    //         max: 600,
+    //         inRange: {
+    //             colorLightness: [0, 1]
+    //         }
+    //     },
+    //     series: [
+    //         {
+    //             name: '访问来源',
+    //             type: 'pie',
+    //             radius: '55%',
+    //             center: ['50%', '50%'],
+    //             data: [
+    //                 { value: 335, name: '直接访问' },
+    //                 { value: 310, name: '邮件营销' },
+    //                 { value: 274, name: '联盟广告' },
+    //                 { value: 235, name: '视频广告' },
+    //                 { value: 400, name: '搜索引擎' }
+    //             ].sort(function (a, b) { return a.value - b.value; }),
+    //             roseType: 'radius',
+    //             label: {
+    //                 color: 'rgba(255, 255, 255, 0.3)'
+    //             },
+    //             labelLine: {
+    //                 lineStyle: {
+    //                     color: 'rgba(255, 255, 255, 0.3)'
+    //                 },
+    //                 smooth: 0.2,
+    //                 length: 10,
+    //                 length2: 20
+    //             },
+    //             itemStyle: {
+    //                 color: '#c23531',
+    //                 shadowBlur: 200,
+    //                 shadowColor: 'rgba(0, 0, 0, 0.5)'
+    //             },
 
-            animationType: 'scale',
-            animationEasing: 'elasticOut',
-            animationDelay: function (idx: any) {
-                return Math.random() * 200;
-            }
-        }
-    ]
+    //             animationType: 'scale',
+    //             animationEasing: 'elasticOut',
+    //             animationDelay: function (idx: any) {
+    //                 return Math.random() * 200;
+    //             }
+    //         }
+    //     ]
 })
-onMounted(() => {
-})
+
+// 暂时硬编码 
+watch(() => props.countryName, (newV) => {
+    if (newV === '中国') {
+        console.log('china pie');
+        isEmpty.value = false
+
+        airOpt.value = {
+            backgroundColor: 'black',
+
+            title: {
+                text: '飞机目标',
+                left: 'center',
+                top: 20,
+                textStyle: {
+                    color: '#ccc'
+                }
+            },
+
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b} : {c} ({d}%)'
+            },
+
+            visualMap: {
+                show: false,
+                min: 0,
+                max: 600,
+                inRange: {
+                    colorLightness: [0, 1]
+                }
+            },
+            series: [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius: '55%',
+                    center: ['50%', '50%'],
+                    data: [
+                        { value: 335, name: '直接访问' },
+                        { value: 310, name: '邮件营销' },
+                        { value: 274, name: '联盟广告' },
+                        { value: 235, name: '视频广告' },
+                        { value: 400, name: '搜索引擎' }
+                    ].sort(function (a, b) { return a.value - b.value; }),
+                    roseType: 'radius',
+                    label: {
+                        color: 'rgba(255, 255, 255, 0.3)'
+                    },
+                    labelLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.3)'
+                        },
+                        smooth: 0.2,
+                        length: 10,
+                        length2: 20
+                    },
+                    itemStyle: {
+                        color: '#c23531',
+                        shadowBlur: 200,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    },
+
+                    animationType: 'scale',
+                    animationEasing: 'elasticOut',
+                    animationDelay: function (idx: any) {
+                        return Math.random() * 200;
+                    }
+                }
+            ]
+        }
+        shipOpt.value = {
+            backgroundColor: 'black',
+
+            title: {
+                text: '舰艇目标',
+                left: 'center',
+                top: 20,
+                textStyle: {
+                    color: '#ccc'
+                }
+            },
+
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b} : {c} ({d}%)'
+            },
+
+            visualMap: {
+                show: false,
+                min: 0,
+                max: 600,
+                inRange: {
+                    colorLightness: [0, 1]
+                }
+            },
+            series: [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius: '55%',
+                    center: ['50%', '50%'],
+                    data: [
+                        { value: 335, name: '直接访问' },
+                        { value: 310, name: '邮件营销' },
+                        { value: 274, name: '联盟广告' },
+                        { value: 235, name: '视频广告' },
+                        { value: 400, name: '搜索引擎' }
+                    ].sort(function (a, b) { return a.value - b.value; }),
+                    roseType: 'radius',
+                    label: {
+                        color: 'rgba(255, 255, 255, 0.3)'
+                    },
+                    labelLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.3)'
+                        },
+                        smooth: 0.2,
+                        length: 10,
+                        length2: 20
+                    },
+                    itemStyle: {
+                        color: '#c23531',
+                        shadowBlur: 200,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    },
+
+                    animationType: 'scale',
+                    animationEasing: 'elasticOut',
+                    animationDelay: function (idx: any) {
+                        return Math.random() * 200;
+                    }
+                }
+            ]
+        }
+    }
+    else if (newV === '美国') {
+        console.log('usa pie');
+        isEmpty.value = false
+
+        airOpt.value = {
+            backgroundColor: 'black',
+
+            title: {
+                text: '飞机目标',
+                left: 'center',
+                top: 20,
+                textStyle: {
+                    color: '#ccc'
+                }
+            },
+
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b} : {c} ({d}%)'
+            },
+
+            visualMap: {
+                show: false,
+                min: 0,
+                max: 600,
+                inRange: {
+                    colorLightness: [0, 1]
+                }
+            },
+            series: [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius: '55%',
+                    center: ['50%', '50%'],
+                    data: [
+                        { value: 335, name: '直接访问' },
+                        { value: 310, name: '邮件营销' },
+                        { value: 274, name: '联盟广告' },
+                        { value: 235, name: '视频广告' },
+                        { value: 400, name: '搜索引擎' }
+                    ].sort(function (a, b) { return a.value - b.value; }),
+                    roseType: 'radius',
+                    label: {
+                        color: 'rgba(255, 255, 255, 0.3)'
+                    },
+                    labelLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.3)'
+                        },
+                        smooth: 0.2,
+                        length: 10,
+                        length2: 20
+                    },
+                    itemStyle: {
+                        color: '#c23531',
+                        shadowBlur: 200,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    },
+
+                    animationType: 'scale',
+                    animationEasing: 'elasticOut',
+                    animationDelay: function (idx: any) {
+                        return Math.random() * 200;
+                    }
+                }
+            ]
+        }
+        shipOpt.value = {
+            backgroundColor: 'black',
+
+            title: {
+                text: '舰艇目标',
+                left: 'center',
+                top: 20,
+                textStyle: {
+                    color: '#ccc'
+                }
+            },
+
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b} : {c} ({d}%)'
+            },
+
+            visualMap: {
+                show: false,
+                min: 0,
+                max: 600,
+                inRange: {
+                    colorLightness: [0, 1]
+                }
+            },
+            series: [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius: '55%',
+                    center: ['50%', '50%'],
+                    data: [
+                        { value: 335, name: '直接访问' },
+                        { value: 310, name: '邮件营销' },
+                        { value: 274, name: '联盟广告' },
+                        { value: 235, name: '视频广告' },
+                        { value: 400, name: '搜索引擎' }
+                    ].sort(function (a, b) { return a.value - b.value; }),
+                    roseType: 'radius',
+                    label: {
+                        color: 'rgba(255, 255, 255, 0.3)'
+                    },
+                    labelLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.3)'
+                        },
+                        smooth: 0.2,
+                        length: 10,
+                        length2: 20
+                    },
+                    itemStyle: {
+                        color: '#c23531',
+                        shadowBlur: 200,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    },
+
+                    animationType: 'scale',
+                    animationEasing: 'elasticOut',
+                    animationDelay: function (idx: any) {
+                        return Math.random() * 200;
+                    }
+                }
+            ]
+        }
+    } else {
+        isEmpty.value = true
+        airOpt.value = {}
+        shipOpt.value = {}
+    }
+},
+    {
+        immediate: true
+    }
+)
 
 
 function checkAir(country) {
@@ -208,7 +487,7 @@ function checkShip(country) {
         padding: 0;
         display: flex;
         margin: 0 auto;
-        justify-content: center;
+        justify-content: space-between;
 
         .aircraft {
             width: 50%;
@@ -221,7 +500,12 @@ function checkShip(country) {
             .chart {
                 width: 100%;
                 height: 95%;
+
                 // border: 1px solid greenyellow;
+                .empty {
+                    float: left;
+                    margin-left: 30%;
+                }
 
                 .vchart {
                     width: 100%;
@@ -262,6 +546,14 @@ function checkShip(country) {
                     border-radius: 10%;
                     margin: 0 auto;
                     border-bottom: 2px;
+
+
+
+                }
+
+                .empty {
+                    float: right;
+                    margin-right: 25%;
 
                 }
             }
