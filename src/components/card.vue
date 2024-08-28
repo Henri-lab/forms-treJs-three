@@ -426,19 +426,19 @@ let radarGraph_air = {
         trigger: 'item', // 鼠标悬停时触发提示框
         formatter: function (params) {
             // params 是一个数组，包含所有匹配的系列的数据
-            var seriesName = params[0].seriesName; // 获取系列名称
-            var dataIndex = params[0].dataIndex; // 获取数据项的索引
-            var value = params[0].value; // 获取数据项的值
-            var legendName = params[0].name; // 获取图例名称
+            var seriesName = params.seriesName; // 获取系列名称
+            var dataIndex = params.dataIndex; // 获取数据项的索引
+            var value = params.value; // 获取数据项的值
+            var legendName = params.name; // 获取图例名称
 
             // 格式化提示框的显示内容
-            return `${legendName} - ${seriesName}
-       作战半径: ${value[0]}公里
-       最大航程: ${value[1]}公里
-       实用航程: ${value[2]}公里
-       最大平飞速度: ${value[3]}马赫
-       巡航速度: ${value[4]}马赫
-       巡航高度: ${value[5]}米`;
+            return `${legendName} - ${seriesName}<br/>
+       作战半径: ${value[0]}公里<br/>
+       最大航程: ${value[1]}公里<br/>
+       实用航程: ${value[2]}公里<br/>
+       最大平飞速度: ${value[3]}马赫<br/>
+       巡航速度: ${value[4]}马赫<br/>
+       巡航高度: ${value[5]}米<br/>`;
         }
     },
     legend: {
@@ -488,6 +488,20 @@ let radarGraph_ship = {
     tooltip: {
         trigger: 'item', // 鼠标悬停时触发提示框
         formatter: function (params) {
+            // params 是一个数组，包含所有匹配的系列的数据
+            var seriesName = params.seriesName; // 获取系列名称
+            var dataIndex = params.dataIndex; // 获取数据项的索引
+            var value = params.value; // 获取数据项的值
+            var legendName = params.name; // 获取图例名称
+
+            // 格式化提示框的显示内容
+            return `${legendName} - ${seriesName}<br/>
+       最大航速: ${value[0]}节<br/>
+       巡航航速: ${value[1]}节<br/>
+       最大吃水: ${value[2]}米<br/>
+       燃油储备: ${value[3]}万加仑<br/>
+       弹药储备: ${value[4]}吨<br/>
+       转弯半径: ${value[5]}米<br/>`;
         }
     },
     legend: {
