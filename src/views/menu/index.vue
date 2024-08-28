@@ -6,24 +6,24 @@
             <el-switch v-model="themeLight" />开灯
         </div>
         <el-button class="btn1 animate__animated animate__fadeInRight" color="green" v-if="isBtn" @click="lookPre">
-            pre
+            前一个
         </el-button>
         <el-button class="btn2 animate__animated animate__fadeInRight" color="green" v-if="isBtn" @click="lookNext">
-            next
+            下一个
         </el-button>
         <div class="detailsPane-wrapper" v-if="isDtails">
             <div class="head"></div>
             <div class="detailsPane animate__animated animate__fadeInRight">
                 <div class="navi">
                     <div class="details">{{ country }}</div>
-                    <div class="close" @click="closeDetails"><el-button type="">关闭</el-button></div>
+                    <div class="close" @click="closeDetails"><el-button type="danger">关闭</el-button></div>
                 </div>
                 <Description class="description-wrapper" :country="country" :targetType="checkType" />
             </div>
         </div>
         <Search class="search-wrapper" v-if="isCard" />
-        <Card ref="card" :class="'card-wrapper', 'animate__animated', 'animate__fadeInRight', cardClass, zoomClass"
-            v-show="isCard" :countryName="country" />
+        <Card ref="card" class="card-wrapper animate__animated animate__fadeInUpBig" v-show="isCard"
+            :countryName="country" />
 
 
     </div>
@@ -41,7 +41,7 @@ import bus from '@/utils/bus';
 import { lowerCaseCountryNameMap } from './dict'
 
 const isBtn = ref(false)
-const isCard = ref(true)
+const isCard = ref(false)
 const isJbxxShip = ref(false)
 const isJbxxAir = ref(false)
 const galaxy = ref(null)
@@ -54,6 +54,7 @@ const checkType = ref('')
 onMounted(() => {
     setTimeout(() => {
         isBtn.value = true
+        isCard.value = true
     }, 5000);
 })
 
@@ -158,11 +159,12 @@ bus.on('detailsCheck', ({ country, type }) => {
         top: 8%;
         right: 10%;
         flex-direction: column;
-        opacity:65%;
+        opacity: 1;
         z-index: 2;
         border: 1px solid whitesmoke;
         background-color: white;
         border-radius: 20%;
+
         .head {
             width: 100%;
             height: 5%;
@@ -219,14 +221,14 @@ bus.on('detailsCheck', ({ country, type }) => {
 
     .card-wrapper {
         width: 40%;
-        max-height: 55%;
+        max-height: 60%;
         // background-color: rgba(236, 200, 17, 0.3);
         position: absolute;
         padding: 1%;
         top: 20%;
         right: 10%;
         // box-shadow: 0 0 10px rgba(0, 0, 0, 1);
-        --animate-duration: 7s;
+        --animate-duration: 2s;
         overflow: visible;
     }
 

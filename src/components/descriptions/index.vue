@@ -1,3 +1,5 @@
+<!-- targetType ：aircraft / ship -->
+
 <template>
     <div class="description">
         <div class="head">
@@ -7,7 +9,7 @@
         </div>
         <div class="main">
             <div class="left">
-                <el-collapse v-model="activeNames" @change="collapseChange">
+                <el-collapse v-model="collapsedNames" @change="collapseChange" v-if="isCollapse">
                     <el-form :model="dialogForm" label-width="120px" style="max-width: 1000px; margin: 10px auto">
                         <el-collapse-item title="基本标识属性:" name="1">
                             <el-row :gutter="gutter">
@@ -65,6 +67,8 @@
                         </el-collapse-item>
                     </el-form>
                 </el-collapse>
+                <el-empty class="empty" description="请选择一个战斗机型号" v-if="isEmptyAir" />
+                <el-empty class="empty" description="请选择一个舰船型号" v-if="isEmptyShip" />
             </div>
             <div class="right">
                 <Chart />
@@ -93,7 +97,7 @@ import {
     sbtx_ship_arr,
     tree
 } from './mock'
-
+const gutter = ref(20);//折叠项间距
 
 const props = defineProps({
     country: {
@@ -109,6 +113,7 @@ const props = defineProps({
 
 const select = ref('')
 const targets = ref([])
+const collapsedNames = ref([])
 
 function initTargets() {
     targets.value = []
@@ -150,6 +155,27 @@ onMounted(() => {
 watch(() => props.country, () => {
     initTargets()
 })
+
+const isCollapse = ref(false)
+const isEmptyAir = ref(false)
+const isEmptyShip = ref(false)
+watch(() => select.value,
+    (newV) => {
+        if (!newV) {
+            isCollapse.value = false
+            if (props.targetType === 'aircraft')
+                isEmptyAir.value = true
+            else
+                isEmptyShip.value = true
+        } else {
+            isCollapse.value = true
+            isEmptyAir.value = false
+            isEmptyShip.value = false
+        }
+    },
+    {
+        immediate: true
+    })
 const obj = ref([])
 const obj1 = ref([])
 const obj2 = ref([])
@@ -197,13 +223,18 @@ onBeforeUnmount(() => {
         justify-content: space-around;
 
         .left {
-            width: 48%;
+            width: 60%;
             height: 100%;
-            border: 1px solid orange;
+            // border: 1px solid orange;
+            // box-shadow: 10px, 10px, 10px, 10px, rgb(59, 55, 55, 0.5);
+            .empty {
+                width: 100%;
+                height: 100%;
+            }
         }
 
         .right {
-            width: 48%;
+            width: 35%;
             height: 100%;
             border: 1px solid orange;
         }

@@ -60,7 +60,7 @@ const airOpt = ref({
 
     visualMap: {
         show: false,
-        min: 80,
+        min: 0,
         max: 600,
         inRange: {
             colorLightness: [0, 1]
@@ -124,7 +124,7 @@ const shipOpt = ref({
 
     visualMap: {
         show: false,
-        min: 80,
+        min: 0,
         max: 600,
         inRange: {
             colorLightness: [0, 1]
@@ -257,6 +257,7 @@ function checkShip(country) {
                 .vchart {
                     width: 100%;
                     height: 100%;
+
                     border: 1px solid greenyellow;
                     border-radius: 10%;
                     margin: 0 auto;
