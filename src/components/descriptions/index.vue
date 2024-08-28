@@ -81,6 +81,7 @@
 import { onMounted } from 'vue';
 import Chart from './chart.vue'
 import axios from 'axios'
+import bus from '@/utils/bus'
 import {
     data,
     jbxx_aircraft_arr,
@@ -168,6 +169,7 @@ watch(() => select.value,
             else
                 isEmptyShip.value = true
         } else {
+            bus.emit('chartChange', select.value)
             isCollapse.value = true
             isEmptyAir.value = false
             isEmptyShip.value = false

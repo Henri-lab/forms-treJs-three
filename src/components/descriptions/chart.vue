@@ -1,335 +1,842 @@
 <template>
     <div class="map">
-        <v-chart class="chart" :options="mapOpt"></v-chart>
+        <v-chart class="vchart" :option="mapOpt"></v-chart>
     </div>
 </template>
 
 <script setup>
 import * as echarts from 'echarts';
 import axios from 'axios';
+import bus from '@/utils/bus';
+
 const mapOpt = ref({})
 
+// const colors = ['#FFAE57', '#FF7853', '#EA5151', '#CC3F57', '#9A2555'];
+// const bgColor = '#2E2733';
+// const itemStyle = {
+//     star5: {
+//         color: colors[0]
+//     },
+//     star4: {
+//         color: colors[1]
+//     },
+//     star3: {
+//         color: colors[2]
+//     },
+//     star2: {
+//         color: colors[3]
+//     }
+// };
+// const data = [
+//     {
+//         name: '虚构',
+//         itemStyle: {
+//             color: colors[1]
+//         },
+//         children: [
+//             {
+//                 name: '小说',
+//                 children: [
+//                     {
+//                         name: '5☆',
+//                         children: [
+//                             {
+//                                 name: '疼'
+//                             },
+//                             {
+//                                 name: '慈悲'
+//                             },
+//                             {
+//                                 name: '楼下的房客'
+//                             }
+//                         ]
+//                     },
+//                     {
+//                         name: '4☆',
+//                         children: [
+//                             {
+//                                 name: '虚无的十字架'
+//                             },
+//                             {
+//                                 name: '无声告白'
+//                             },
+//                             {
+//                                 name: '童年的终结'
+//                             }
+//                         ]
+//                     },
+//                     {
+//                         name: '3☆',
+//                         children: [
+//                             {
+//                                 name: '疯癫老人日记'
+//                             }
+//                         ]
+//                     }
+//                 ]
+//             },
+//             {
+//                 name: '其他',
+//                 children: [
+//                     {
+//                         name: '5☆',
+//                         children: [
+//                             {
+//                                 name: '纳博科夫短篇小说全集'
+//                             }
+//                         ]
+//                     },
+//                     {
+//                         name: '4☆',
+//                         children: [
+//                             {
+//                                 name: '安魂曲'
+//                             },
+//                             {
+//                                 name: '人生拼图版'
+//                             }
+//                         ]
+//                     },
+//                     {
+//                         name: '3☆',
+//                         children: [
+//                             {
+//                                 name: '比起爱你，我更需要你'
+//                             }
+//                         ]
+//                     }
+//                 ]
+//             }
+//         ]
+//     },
+//     {
+//         name: '非虚构',
+//         itemStyle: {
+//             color: colors[2]
+//         },
+//         children: [
+//             {
+//                 name: '设计',
+//                 children: [
+//                     {
+//                         name: '5☆',
+//                         children: [
+//                             {
+//                                 name: '无界面交互'
+//                             }
+//                         ]
+//                     },
+//                     {
+//                         name: '4☆',
+//                         children: [
+//                             {
+//                                 name: '数字绘图的光照与渲染技术'
+//                             },
+//                             {
+//                                 name: '日本建筑解剖书'
+//                             }
+//                         ]
+//                     },
+//                     {
+//                         name: '3☆',
+//                         children: [
+//                             {
+//                                 name: '奇幻世界艺术\n&RPG地图绘制讲座'
+//                             }
+//                         ]
+//                     }
+//                 ]
+//             },
+//             {
+//                 name: '社科',
+//                 children: [
+//                     {
+//                         name: '5☆',
+//                         children: [
+//                             {
+//                                 name: '痛点'
+//                             }
+//                         ]
+//                     },
+//                     {
+//                         name: '4☆',
+//                         children: [
+//                             {
+//                                 name: '卓有成效的管理者'
+//                             },
+//                             {
+//                                 name: '进化'
+//                             },
+//                             {
+//                                 name: '后物欲时代的来临'
+//                             }
+//                         ]
+//                     },
+//                     {
+//                         name: '3☆',
+//                         children: [
+//                             {
+//                                 name: '疯癫与文明'
+//                             }
+//                         ]
+//                     }
+//                 ]
+//             },
+//             {
+//                 name: '心理',
+//                 children: [
+//                     {
+//                         name: '5☆',
+//                         children: [
+//                             {
+//                                 name: '我们时代的神经症人格'
+//                             }
+//                         ]
+//                     },
+//                     {
+//                         name: '4☆',
+//                         children: [
+//                             {
+//                                 name: '皮格马利翁效应'
+//                             },
+//                             {
+//                                 name: '受伤的人'
+//                             }
+//                         ]
+//                     },
+//                     {
+//                         name: '3☆'
+//                     },
+//                     {
+//                         name: '2☆',
+//                         children: [
+//                             {
+//                                 name: '迷恋'
+//                             }
+//                         ]
+//                     }
+//                 ]
+//             },
+//             {
+//                 name: '居家',
+//                 children: [
+//                     {
+//                         name: '4☆',
+//                         children: [
+//                             {
+//                                 name: '把房子住成家'
+//                             },
+//                             {
+//                                 name: '只过必要生活'
+//                             },
+//                             {
+//                                 name: '北欧简约风格'
+//                             }
+//                         ]
+//                     }
+//                 ]
+//             },
+//             {
+//                 name: '绘本',
+//                 children: [
+//                     {
+//                         name: '5☆',
+//                         children: [
+//                             {
+//                                 name: '设计诗'
+//                             }
+//                         ]
+//                     },
+//                     {
+//                         name: '4☆',
+//                         children: [
+//                             {
+//                                 name: '假如生活糊弄了你'
+//                             },
+//                             {
+//                                 name: '博物学家的神秘动物图鉴'
+//                             }
+//                         ]
+//                     },
+//                     {
+//                         name: '3☆',
+//                         children: [
+//                             {
+//                                 name: '方向'
+//                             }
+//                         ]
+//                     }
+//                 ]
+//             },
+//             {
+//                 name: '哲学',
+//                 children: [
+//                     {
+//                         name: '4☆',
+//                         children: [
+//                             {
+//                                 name: '人生的智慧'
+//                             }
+//                         ]
+//                     }
+//                 ]
+//             },
+//             {
+//                 name: '技术',
+//                 children: [
+//                     {
+//                         name: '5☆',
+//                         children: [
+//                             {
+//                                 name: '代码整洁之道'
+//                             }
+//                         ]
+//                     },
+//                     {
+//                         name: '4☆',
+//                         children: [
+//                             {
+//                                 name: 'Three.js 开发指南'
+//                             }
+//                         ]
+//                     }
+//                 ]
+//             }
+//         ]
+//     }
+// ];
+// for (let j = 0; j < data.length; ++j) {
+//     let level1 = data[j].children;
+//     for (let i = 0; i < level1.length; ++i) {
+//         let block = level1[i].children;
+//         let bookScore = [];
+//         let bookScoreId;
+//         for (let star = 0; star < block.length; ++star) {
+//             let style = (function (name) {
+//                 switch (name) {
+//                     case '5☆':
+//                         bookScoreId = 0;
+//                         return itemStyle.star5;
+//                     case '4☆':
+//                         bookScoreId = 1;
+//                         return itemStyle.star4;
+//                     case '3☆':
+//                         bookScoreId = 2;
+//                         return itemStyle.star3;
+//                     case '2☆':
+//                         bookScoreId = 3;
+//                         return itemStyle.star2;
+//                 }
+//             })(block[star].name);
+//             block[star].label = {
+//                 color: style.color,
+//                 downplay: {
+//                     opacity: 0.5
+//                 }
+//             };
+//             if (block[star].children) {
+//                 style = {
+//                     opacity: 1,
+//                     color: style.color
+//                 };
+//                 block[star].children.forEach(function (book) {
+//                     book.value = 1;
+//                     book.itemStyle = style;
+//                     book.label = {
+//                         color: style.color
+//                     };
+//                     let value = 1;
+//                     if (bookScoreId === 0 || bookScoreId === 3) {
+//                         value = 5;
+//                     }
+//                     if (bookScore[bookScoreId]) {
+//                         bookScore[bookScoreId].value += value;
+//                     } else {
+//                         bookScore[bookScoreId] = {
+//                             color: colors[bookScoreId],
+//                             value: value
+//                         };
+//                     }
+//                 });
+//             }
+//         }
+//         level1[i].itemStyle = {
+//             color: data[j].itemStyle.color
+//         };
+//     }
+// }
+// let option = {
+//     backgroundColor: bgColor,
+//     // color: colors,
+//     series: [
+//         {
+//             type: 'sunburst',
+//             center: ['50%', '48%'],
+//             data: data,
+//             sort: function (a, b) {
+//                 if (a.depth === 1) {
+//                     return b.getValue() - a.getValue();
+//                 } else {
+//                     return a.dataIndex - b.dataIndex;
+//                 }
+//             },
+//             label: {
+//                 rotate: 'radial',
+//                 color: bgColor
+//             },
+//             itemStyle: {
+//                 borderColor: bgColor,
+//                 borderWidth: 2
+//             },
+//             levels: [
+//                 {},
+//                 {
+//                     r0: 0,
+//                     r: 40,
+//                     label: {
+//                         rotate: 0
+//                     }
+//                 },
+//                 {
+//                     r0: 40,
+//                     r: 105,
+//                     label: {
+//                         rotate: 90
+//                     }
+//                 },
+//                 {
+//                     r0: 115,
+//                     r: 140,
+//                     itemStyle: {
+//                         shadowBlur: 2,
+//                         shadowColor: colors[2],
+//                         color: 'transparent'
+//                     },
+//                     label: {
+//                         rotate: 'tangential',
+//                         fontSize: 10,
+//                         color: colors[0]
+//                     }
+//                 },
+//                 {
+//                     r0: 140,
+//                     r: 145,
+//                     itemStyle: {
+//                         shadowBlur: 80,
+//                         shadowColor: colors[0]
+//                     },
+//                     label: {
+//                         position: 'outside',
+//                         textShadowBlur: 5,
+//                         textShadowColor: '#333'
+//                     },
+//                     downplay: {
+//                         label: {
+//                             opacity: 0.5
+//                         }
+//                     }
+//                 }
+//             ]
+//         }
+//     ]
+// }
 
-
-const dataBJ = [
-    [55, 9, 56, 0.46, 18, 6, 1],
-    [25, 11, 21, 0.65, 34, 9, 2],
-    [56, 7, 63, 0.3, 14, 5, 3],
-    [33, 7, 29, 0.33, 16, 6, 4],
-    [42, 24, 44, 0.76, 40, 16, 5],
-    [82, 58, 90, 1.77, 68, 33, 6],
-    [74, 49, 77, 1.46, 48, 27, 7],
-    [78, 55, 80, 1.29, 59, 29, 8],
-    [267, 216, 280, 4.8, 108, 64, 9],
-    [185, 127, 216, 2.52, 61, 27, 10],
-    [39, 19, 38, 0.57, 31, 15, 11],
-    [41, 11, 40, 0.43, 21, 7, 12],
-    [64, 38, 74, 1.04, 46, 22, 13],
-    [108, 79, 120, 1.7, 75, 41, 14],
-    [108, 63, 116, 1.48, 44, 26, 15],
-    [33, 6, 29, 0.34, 13, 5, 16],
-    [94, 66, 110, 1.54, 62, 31, 17],
-    [186, 142, 192, 3.88, 93, 79, 18],
-    [57, 31, 54, 0.96, 32, 14, 19],
-    [22, 8, 17, 0.48, 23, 10, 20],
-    [39, 15, 36, 0.61, 29, 13, 21],
-    [94, 69, 114, 2.08, 73, 39, 22],
-    [99, 73, 110, 2.43, 76, 48, 23],
-    [31, 12, 30, 0.5, 32, 16, 24],
-    [42, 27, 43, 1, 53, 22, 25],
-    [154, 117, 157, 3.05, 92, 58, 26],
-    [234, 185, 230, 4.09, 123, 69, 27],
-    [160, 120, 186, 2.77, 91, 50, 28],
-    [134, 96, 165, 2.76, 83, 41, 29],
-    [52, 24, 60, 1.03, 50, 21, 30],
-    [46, 5, 49, 0.28, 10, 6, 31]
-];
-const dataGZ = [
-    [26, 37, 27, 1.163, 27, 13, 1],
-    [85, 62, 71, 1.195, 60, 8, 2],
-    [78, 38, 74, 1.363, 37, 7, 3],
-    [21, 21, 36, 0.634, 40, 9, 4],
-    [41, 42, 46, 0.915, 81, 13, 5],
-    [56, 52, 69, 1.067, 92, 16, 6],
-    [64, 30, 28, 0.924, 51, 2, 7],
-    [55, 48, 74, 1.236, 75, 26, 8],
-    [76, 85, 113, 1.237, 114, 27, 9],
-    [91, 81, 104, 1.041, 56, 40, 10],
-    [84, 39, 60, 0.964, 25, 11, 11],
-    [64, 51, 101, 0.862, 58, 23, 12],
-    [70, 69, 120, 1.198, 65, 36, 13],
-    [77, 105, 178, 2.549, 64, 16, 14],
-    [109, 68, 87, 0.996, 74, 29, 15],
-    [73, 68, 97, 0.905, 51, 34, 16],
-    [54, 27, 47, 0.592, 53, 12, 17],
-    [51, 61, 97, 0.811, 65, 19, 18],
-    [91, 71, 121, 1.374, 43, 18, 19],
-    [73, 102, 182, 2.787, 44, 19, 20],
-    [73, 50, 76, 0.717, 31, 20, 21],
-    [84, 94, 140, 2.238, 68, 18, 22],
-    [93, 77, 104, 1.165, 53, 7, 23],
-    [99, 130, 227, 3.97, 55, 15, 24],
-    [146, 84, 139, 1.094, 40, 17, 25],
-    [113, 108, 137, 1.481, 48, 15, 26],
-    [81, 48, 62, 1.619, 26, 3, 27],
-    [56, 48, 68, 1.336, 37, 9, 28],
-    [82, 92, 174, 3.29, 0, 13, 29],
-    [106, 116, 188, 3.628, 101, 16, 30],
-    [118, 50, 0, 1.383, 76, 11, 31]
-];
-const dataSH = [
-    [91, 45, 125, 0.82, 34, 23, 1],
-    [65, 27, 78, 0.86, 45, 29, 2],
-    [83, 60, 84, 1.09, 73, 27, 3],
-    [109, 81, 121, 1.28, 68, 51, 4],
-    [106, 77, 114, 1.07, 55, 51, 5],
-    [109, 81, 121, 1.28, 68, 51, 6],
-    [106, 77, 114, 1.07, 55, 51, 7],
-    [89, 65, 78, 0.86, 51, 26, 8],
-    [53, 33, 47, 0.64, 50, 17, 9],
-    [80, 55, 80, 1.01, 75, 24, 10],
-    [117, 81, 124, 1.03, 45, 24, 11],
-    [99, 71, 142, 1.1, 62, 42, 12],
-    [95, 69, 130, 1.28, 74, 50, 13],
-    [116, 87, 131, 1.47, 84, 40, 14],
-    [108, 80, 121, 1.3, 85, 37, 15],
-    [134, 83, 167, 1.16, 57, 43, 16],
-    [79, 43, 107, 1.05, 59, 37, 17],
-    [71, 46, 89, 0.86, 64, 25, 18],
-    [97, 71, 113, 1.17, 88, 31, 19],
-    [84, 57, 91, 0.85, 55, 31, 20],
-    [87, 63, 101, 0.9, 56, 41, 21],
-    [104, 77, 119, 1.09, 73, 48, 22],
-    [87, 62, 100, 1, 72, 28, 23],
-    [168, 128, 172, 1.49, 97, 56, 24],
-    [65, 45, 51, 0.74, 39, 17, 25],
-    [39, 24, 38, 0.61, 47, 17, 26],
-    [39, 24, 39, 0.59, 50, 19, 27],
-    [93, 68, 96, 1.05, 79, 29, 28],
-    [188, 143, 197, 1.66, 99, 51, 29],
-    [174, 131, 174, 1.55, 108, 50, 30],
-    [187, 143, 201, 1.39, 89, 53, 31]
-];
-const lineStyle = {
-    width: 1,
-    opacity: 0.5
-};
-let option2 = {
-    backgroundColor: '#161627',
+// mock
+let option1 = {
+    backgroundColor: '#2c343c',
     title: {
-        text: 'AQI - Radar',
+        text: '综合评分',
         left: 'center',
+        top: 20,
         textStyle: {
-            color: '#eee'
+            color: '#ccc'
         }
     },
-    legend: {
-        bottom: 5,
-        data: ['Beijing', 'Shanghai', 'Guangzhou'],
-        itemGap: 20,
-        textStyle: {
-            color: '#fff',
-            fontSize: 14
-        },
-        selectedMode: 'single'
+    tooltip: {
+        trigger: 'item'
     },
-    radar: {
-        indicator: [
-            { name: 'AQI', max: 300 },
-            { name: 'PM2.5', max: 250 },
-            { name: 'PM10', max: 300 },
-            { name: 'CO', max: 5 },
-            { name: 'NO2', max: 200 },
-            { name: 'SO2', max: 100 }
-        ],
-        shape: 'circle',
-        splitNumber: 5,
-        axisName: {
-            color: 'rgb(238, 197, 102)'
-        },
-        splitLine: {
-            lineStyle: {
-                color: [
-                    'rgba(238, 197, 102, 0.1)',
-                    'rgba(238, 197, 102, 0.2)',
-                    'rgba(238, 197, 102, 0.4)',
-                    'rgba(238, 197, 102, 0.6)',
-                    'rgba(238, 197, 102, 0.8)',
-                    'rgba(238, 197, 102, 1)'
-                ].reverse()
-            }
-        },
-        splitArea: {
-            show: false
-        },
-        axisLine: {
-            lineStyle: {
-                color: 'rgba(238, 197, 102, 0.5)'
-            }
+    visualMap: {
+        show: false,
+        min: 80,
+        max: 600,
+        inRange: {
+            colorLightness: [0, 1]
         }
     },
     series: [
         {
-            name: 'Beijing',
-            type: 'radar',
-            lineStyle: lineStyle,
-            data: dataBJ,
-            symbol: 'none',
-            itemStyle: {
-                color: '#F9713C'
+            name: 'Access From',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '50%'],
+            data: [
+                { value: 335, name: '速度' },
+                { value: 310, name: '弹药量' },
+                { value: 274, name: '续航' },
+                { value: 235, name: '成本' },
+                { value: 400, name: '反侦察' }
+            ].sort(function (a, b) {
+                return a.value - b.value;
+            }),
+            roseType: 'radius',
+            label: {
+                color: 'rgba(255, 255, 255, 0.3)'
             },
-            areaStyle: {
-                opacity: 0.1
-            }
-        },
-        {
-            name: 'Shanghai',
-            type: 'radar',
-            lineStyle: lineStyle,
-            data: dataSH,
-            symbol: 'none',
-            itemStyle: {
-                color: '#B3E4A1'
+            labelLine: {
+                lineStyle: {
+                    color: 'rgba(255, 255, 255, 0.3)'
+                },
+                smooth: 0.2,
+                length: 10,
+                length2: 20
             },
-            areaStyle: {
-                opacity: 0.05
-            }
-        },
-        {
-            name: 'Guangzhou',
-            type: 'radar',
-            lineStyle: lineStyle,
-            data: dataGZ,
-            symbol: 'none',
             itemStyle: {
-                color: 'rgb(238, 197, 102)'
+                color: '#c23531',
+                shadowBlur: 200,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
             },
-            areaStyle: {
-                opacity: 0.05
+            animationType: 'scale',
+            animationEasing: 'elasticOut',
+            animationDelay: function (idx) {
+                return Math.random() * 200;
             }
         }
     ]
 };
 
+let option2 = {
+    backgroundColor: '#2c343c',
+    title: {
+        text: '综合评分',
+        left: 'center',
+        top: 20,
+        textStyle: {
+            color: '#ccc'
+        }
+    },
+    tooltip: {
+        trigger: 'item'
+    },
+    visualMap: {
+        show: false,
+        min: 80,
+        max: 600,
+        inRange: {
+            colorLightness: [0, 1]
+        }
+    },
+    series: [
+        {
+            name: 'Access From',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '50%'],
+            data: [
+                { value: 205, name: '速度' },
+                { value: 710, name: '弹药量' },
+                { value: 174, name: '续航' },
+                { value: 285, name: '成本' },
+                { value: 40, name: '反侦察' }
+            ].sort(function (a, b) {
+                return a.value - b.value;
+            }),
+            roseType: 'radius',
+            label: {
+                color: 'rgba(255, 255, 255, 0.3)'
+            },
+            labelLine: {
+                lineStyle: {
+                    color: 'rgba(255, 255, 255, 0.3)'
+                },
+                smooth: 0.2,
+                length: 10,
+                length2: 20
+            },
+            itemStyle: {
+                color: '#c23531',
+                shadowBlur: 200,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+            },
+            animationType: 'scale',
+            animationEasing: 'elasticOut',
+            animationDelay: function (idx) {
+                return Math.random() * 200;
+            }
+        }
+    ]
+};
+
+let option3 = {
+    backgroundColor: '#2c343c',
+    title: {
+        text: '综合评分',
+        left: 'center',
+        top: 20,
+        textStyle: {
+            color: '#ccc'
+        }
+    },
+    tooltip: {
+        trigger: 'item'
+    },
+    visualMap: {
+        show: false,
+        min: 80,
+        max: 600,
+        inRange: {
+            colorLightness: [0, 1]
+        }
+    },
+    series: [
+        {
+            name: 'Access From',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '50%'],
+            data: [
+                { value: 325, name: '速度' },
+                { value: 310, name: '弹药量' },
+                { value: 274, name: '续航' },
+                { value: 809, name: '成本' },
+                { value: 600, name: '反侦察' }
+            ].sort(function (a, b) {
+                return a.value - b.value;
+            }),
+            roseType: 'radius',
+            label: {
+                color: 'rgba(255, 255, 255, 0.3)'
+            },
+            labelLine: {
+                lineStyle: {
+                    color: 'rgba(255, 255, 255, 0.3)'
+                },
+                smooth: 0.2,
+                length: 10,
+                length2: 20
+            },
+            itemStyle: {
+                color: '#c23531',
+                shadowBlur: 200,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+            },
+            animationType: 'scale',
+            animationEasing: 'elasticOut',
+            animationDelay: function (idx) {
+                return Math.random() * 200;
+            }
+        }
+    ]
+};
+
+let option4 = {
+    backgroundColor: '#2c343c',
+    title: {
+        text: '综合评分',
+        left: 'center',
+        top: 20,
+        textStyle: {
+            color: '#ccc'
+        }
+    },
+    tooltip: {
+        trigger: 'item'
+    },
+    visualMap: {
+        show: false,
+        min: 80,
+        max: 600,
+        inRange: {
+            colorLightness: [0, 1]
+        }
+    },
+    series: [
+        {
+            name: 'Access From',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '50%'],
+            data: [
+                { value: 625, name: '速度' },
+                { value: 310, name: '弹药量' },
+                { value: 774, name: '续航' },
+                { value: 839, name: '成本' },
+                { value: 600, name: '反侦察' }
+            ].sort(function (a, b) {
+                return a.value - b.value;
+            }),
+            roseType: 'radius',
+            label: {
+                color: 'rgba(255, 255, 255, 0.3)'
+            },
+            labelLine: {
+                lineStyle: {
+                    color: 'rgba(255, 255, 255, 0.3)'
+                },
+                smooth: 0.2,
+                length: 10,
+                length2: 20
+            },
+            itemStyle: {
+                color: '#c23531',
+                shadowBlur: 200,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+            },
+            animationType: 'scale',
+            animationEasing: 'elasticOut',
+            animationDelay: function (idx) {
+                return Math.random() * 200;
+            }
+        }
+    ]
+};
+
+let option5 = {
+    backgroundColor: '#2c343c',
+    title: {
+        text: '综合评分',
+        left: 'center',
+        top: 20,
+        textStyle: {
+            color: '#ccc'
+        }
+    },
+    tooltip: {
+        trigger: 'item'
+    },
+    visualMap: {
+        show: false,
+        min: 80,
+        max: 600,
+        inRange: {
+            colorLightness: [0, 1]
+        }
+    },
+    series: [
+        {
+            name: 'Access From',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '50%'],
+            data: [
+                { value: 425, name: '速度' },
+                { value: 210, name: '弹药量' },
+                { value: 574, name: '续航' },
+                { value: 309, name: '成本' },
+                { value: 100, name: '反侦察' }
+            ].sort(function (a, b) {
+                return a.value - b.value;
+            }),
+            roseType: 'radius',
+            label: {
+                color: 'rgba(255, 255, 255, 0.3)'
+            },
+            labelLine: {
+                lineStyle: {
+                    color: 'rgba(255, 255, 255, 0.3)'
+                },
+                smooth: 0.2,
+                length: 10,
+                length2: 20
+            },
+            itemStyle: {
+                color: '#c23531',
+                shadowBlur: 200,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+            },
+            animationType: 'scale',
+            animationEasing: 'elasticOut',
+            animationDelay: function (idx) {
+                return Math.random() * 200;
+            }
+        }
+    ]
+};
+
+let option6 = {
+    backgroundColor: '#2c343c',
+    title: {
+        text: '综合评分',
+        left: 'center',
+        top: 20,
+        textStyle: {
+            color: '#ccc'
+        }
+    },
+    tooltip: {
+        trigger: 'item'
+    },
+    visualMap: {
+        show: false,
+        min: 80,
+        max: 600,
+        inRange: {
+            colorLightness: [0, 1]
+        }
+    },
+    series: [
+        {
+            name: 'Access From',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '50%'],
+            data: [
+                { value: 325, name: '速度' },
+                { value: 910, name: '弹药量' },
+                { value: 174, name: '续航' },
+                { value: 909, name: '成本' },
+                { value: 100, name: '反侦察' }
+            ].sort(function (a, b) {
+                return a.value - b.value;
+            }),
+            roseType: 'radius',
+            label: {
+                color: 'rgba(255, 255, 255, 0.3)'
+            },
+            labelLine: {
+                lineStyle: {
+                    color: 'rgba(255, 255, 255, 0.3)'
+                },
+                smooth: 0.2,
+                length: 10,
+                length2: 20
+            },
+            itemStyle: {
+                color: '#c23531',
+                shadowBlur: 200,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+            },
+            animationType: 'scale',
+            animationEasing: 'elasticOut',
+            animationDelay: function (idx) {
+                return Math.random() * 200;
+            }
+        }
+    ]
+};
+
+
+
+
+bus.on('chartChange', (select => {
+    if (select === 'F-22A猛禽战斗机') {
+        mapOpt.value = option1
+    } else if (select === 'F-35A闪电II战斗机') {
+        mapOpt.value = option2
+    } else if (select === 'F/A-18E/F超级大黄蜂战斗机') {
+        mapOpt.value = option3
+    } else if (select === '杰拉尔德·R·福特级航空母舰') {
+        mapOpt.value = option4
+    } else if (select === '黄蜂级两栖攻击舰') {
+        mapOpt.value = option5
+    } else {
+        mapOpt.value = option6
+    }
+}))
 onMounted(() => {
     console.log('right chart mounted')
-    mapOpt.value = option2
+    // mapOpt.value = option
 })
-// onMounted(() => {
-//     axios.get('https://echarts.apache.org/examples/data/asset/geo/Map_of_Iceland.svg').then(res => {
-//         echarts.registerMap('iceland_svg', { svg: svg })
-//         mapOpt.value = {
-//             tooltip: {},
-//             geo: {
-//                 tooltip: {
-//                     show: true
-//                 },
-//                 map: 'iceland_svg',
-//                 roam: true
-//             },
-//             series: {
-//                 type: 'custom',
-//                 coordinateSystem: 'geo',
-//                 geoIndex: 0,
-//                 zlevel: 1,
-//                 data: [
-//                     [488.2358421078053, 459.70913833075736, 100],
-//                     [770.3415644319939, 757.9672194986475, 30],
-//                     [1180.0329284196291, 743.6141808346214, 80],
-//                     [894.03790632245, 1188.1985153835008, 61],
-//                     [1372.98925630313, 477.3839988649537, 70],
-//                     [1378.62251255796, 935.6708486282843, 81]
-//                 ],
-//                 renderItem(params, api) {
-//                     const coord = api.coord([
-//                         api.value(0, params.dataIndex),
-//                         api.value(1, params.dataIndex)
-//                     ]);
-//                     const circles = [];
-//                     for (let i = 0; i < 5; i++) {
-//                         circles.push({
-//                             type: 'circle',
-//                             shape: {
-//                                 cx: 0,
-//                                 cy: 0,
-//                                 r: 30
-//                             },
-//                             style: {
-//                                 stroke: 'red',
-//                                 fill: 'none',
-//                                 lineWidth: 2
-//                             },
-//                             // Ripple animation
-//                             keyframeAnimation: {
-//                                 duration: 4000,
-//                                 loop: true,
-//                                 delay: (-i / 4) * 4000,
-//                                 keyframes: [
-//                                     {
-//                                         percent: 0,
-//                                         scaleX: 0,
-//                                         scaleY: 0,
-//                                         style: {
-//                                             opacity: 1
-//                                         }
-//                                     },
-//                                     {
-//                                         percent: 1,
-//                                         scaleX: 1,
-//                                         scaleY: 0.4,
-//                                         style: {
-//                                             opacity: 0
-//                                         }
-//                                     }
-//                                 ]
-//                             }
-//                         });
-//                     }
-//                     return {
-//                         type: 'group',
-//                         x: coord[0],
-//                         y: coord[1],
-//                         children: [
-//                             ...circles,
-//                             {
-//                                 type: 'path',
-//                                 shape: {
-//                                     d: 'M16 0c-5.523 0-10 4.477-10 10 0 10 10 22 10 22s10-12 10-22c0-5.523-4.477-10-10-10zM16 16c-3.314 0-6-2.686-6-6s2.686-6 6-6 6 2.686 6 6-2.686 6-6 6z',
-//                                     x: -10,
-//                                     y: -35,
-//                                     width: 20,
-//                                     height: 40
-//                                 },
-//                                 style: {
-//                                     fill: 'red'
-//                                 },
-//                                 // Jump animation.
-//                                 keyframeAnimation: {
-//                                     duration: 1000,
-//                                     loop: true,
-//                                     delay: Math.random() * 1000,
-//                                     keyframes: [
-//                                         {
-//                                             y: -10,
-//                                             percent: 0.5,
-//                                             easing: 'cubicOut'
-//                                         },
-//                                         {
-//                                             y: 0,
-//                                             percent: 1,
-//                                             easing: 'bounceOut'
-//                                         }
-//                                     ]
-//                                 }
-//                             }
-//                         ]
-//                     };
-//                 }
-//             }
-//         }
-//     })
 
-// })
 
 </script>
 
@@ -338,11 +845,10 @@ onMounted(() => {
     width: 100%;
     height: 100%;
 
-    .chart {
-        // width: 100%;
-        // height: 100%;
-        width: 50rem;
-        height: 50rem;
+    .vchart {
+        width: auto;
+        height: 100%;
+
     }
 }
 </style>
