@@ -212,8 +212,9 @@ onBeforeUnmount(() => {
     overflow: scroll;
 
     .head {
-        width: 100%;
+        width: 80%;
         height: 10%;
+        margin: 0 auto;
     }
 
     .main {

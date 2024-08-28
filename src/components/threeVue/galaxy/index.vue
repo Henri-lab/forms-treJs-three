@@ -196,22 +196,28 @@ onMounted(() => {
 // })
 
 const initR = 12
+let openFlag = 1
 const open = () => {
-    console.log('galaxy')
-    ringR.value = initR
-    const timer = setInterval(() => {
-        if (ringR.value < 40) {
-            ringR.value += 0.03
-            initRing()
-        }
-        else {
-            clearInterval(timer)
-        }
-    }, 1)
+    openFlag = 1
+    if (openFlag) {
+        openFlag = 0//正在open 其他人不可操作 _flag
+        console.log('galaxy ring open')
+        ringR.value = initR
+        const timer = setInterval(() => {
+            if (ringR.value < 40) {
+                ringR.value += 0.03
+                initRing()
+            }
+            else {
+                openFlag = 1
+                clearInterval(timer)
+            }
+        }, 1)
+    }
 }
 const reverse = () => {
-    console.log('galaxy')
-
+    if (!openFlag) return // flag_
+    console.log('galaxy ring reverse')
     const timer = setInterval(() => {
         if (ringR.value > initR) {
             ringR.value -= 0.03
@@ -245,6 +251,7 @@ const setPosOfCamera = (x, y, z) => {
 
 
 const cameraReset = () => {
+    reverse()
     cameraX.value = 0
     cameraY.value = 5
     cameraZ.value = 42
@@ -294,7 +301,7 @@ onBeforeMount(() => {
 const theme = ref('black')
 const changeTheme = () => {
     console.log('change theme');
-    
+
     theme.value === 'black' ? theme.value = 'white' : theme.value = 'black'
 }
 
