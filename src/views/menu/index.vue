@@ -1,9 +1,9 @@
 <template>
     <div class="menu" @click.right="lookReset">
-        <Galaxy class="galaxy-wrapper" ref="galaxy" />
+        <Galaxy class="galaxy-wrapper" ref="galaxy" v-if="isGalaxy" />
         <Tags class="tags-wrapper animate__animated animate__fadeInDown" v-if="isBtn" />
         <div class="theme">
-            <el-switch v-model="themeLight" />开灯
+            <el-switch v-model="themeLight" /> 关闭背景
         </div>
         <el-button class="btn1 animate__animated animate__fadeInRight" color="green" v-if="isBtn" @click="lookPre">
             上一个
@@ -21,7 +21,7 @@
                 <Description class="description-wrapper " :country="country" :targetType="checkType" />
             </div>
         </div>
-        <Search class="search-wrapper animate__animated animate__fadeInRight" v-if="isBtn" />
+        <Search class="search-wrapper animate__animated animate__fadeInLeft" v-if="isBtn" />
         <Card ref="card" class="card-wrapper animate__animated animate__fadeInUpBig" v-show="isCard"
             :countryName="country" />
 
@@ -50,6 +50,7 @@ const cardClass = ref('animate__fadeInRightBig')
 const zoomClass = ref('')
 const isDtails = ref(false)
 const checkType = ref('')
+const isGalaxy = ref(true)
 
 onMounted(() => {
     setTimeout(() => {
@@ -59,7 +60,8 @@ onMounted(() => {
 
 const themeLight = ref(false)
 watch(() => themeLight.value, (newV) => {
-    galaxy.value && galaxy.value.changeTheme()
+    isGalaxy.value = !isGalaxy.value
+    // galaxy.value && galaxy.value.changeTheme()
 })
 
 
@@ -223,8 +225,8 @@ bus.on('go', (name) => {
         max-height: 10%;
         position: absolute;
         padding: 0;
-        top: 10%;
-        right: 8.5%;
+        top: 3%;
+        left: -10%;
         // background-color: red;
     }
 

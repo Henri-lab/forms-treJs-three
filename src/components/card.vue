@@ -3,7 +3,7 @@
         <el-card class="card">
             <template #header>
                 <div class="card-header">
-                    <span class="countryName">{{ props.countryName }}</span>
+                    <span class="countryName">{{ props.countryName || '请选择您要查看的国家' }}</span>
                 </div>
             </template>
             <div class="classify">
@@ -180,14 +180,14 @@ watch(() => props.countryName, (newV) => {
         isEmpty.value = false
 
         airOpt.value = {
-            backgroundColor: 'black',
+            backgroundColor: 'transparent',
 
             title: {
                 text: '飞机目标',
                 left: 'center',
                 top: 20,
                 textStyle: {
-                    color: '#ccc'
+                    color: '#00FF7F'
                 }
             },
 
@@ -219,11 +219,11 @@ watch(() => props.countryName, (newV) => {
                     ].sort(function (a, b) { return a.value - b.value; }),
                     roseType: 'radius',
                     label: {
-                        color: 'rgba(255, 255, 255, 0.3)'
+                        color: '#FFD700'
                     },
                     labelLine: {
                         lineStyle: {
-                            color: 'rgba(255, 255, 255, 0.3)'
+                            color: '#FFD700'
                         },
                         smooth: 0.2,
                         length: 10,
@@ -244,14 +244,14 @@ watch(() => props.countryName, (newV) => {
             ]
         }
         shipOpt.value = {
-            backgroundColor: 'black',
+            backgroundColor: 'transparent',
 
             title: {
                 text: '舰艇目标',
                 left: 'center',
                 top: 20,
                 textStyle: {
-                    color: '#ccc'
+                    color: '#00FF7F'
                 }
             },
 
@@ -283,11 +283,11 @@ watch(() => props.countryName, (newV) => {
                     ].sort(function (a, b) { return a.value - b.value; }),
                     roseType: 'radius',
                     label: {
-                        color: 'rgba(255, 255, 255, 0.3)'
+                        color: '#FFD700'
                     },
                     labelLine: {
                         lineStyle: {
-                            color: 'rgba(255, 255, 255, 0.3)'
+                            color: '#FFD700'
                         },
                         smooth: 0.2,
                         length: 10,
@@ -313,14 +313,14 @@ watch(() => props.countryName, (newV) => {
         isEmpty.value = false
 
         airOpt.value = {
-            backgroundColor: 'black',
+            backgroundColor: 'transparent',
 
             title: {
                 text: '飞机目标',
                 left: 'center',
                 top: 20,
                 textStyle: {
-                    color: '#ccc'
+                    color: '#00FF7F'
                 }
             },
 
@@ -352,11 +352,11 @@ watch(() => props.countryName, (newV) => {
                     ].sort(function (a, b) { return a.value - b.value; }),
                     roseType: 'radius',
                     label: {
-                        color: 'rgba(255, 255, 255, 0.3)'
+                        color: '#FFD700'
                     },
                     labelLine: {
                         lineStyle: {
-                            color: 'rgba(255, 255, 255, 0.3)'
+                            color: '#FFD700'
                         },
                         smooth: 0.2,
                         length: 10,
@@ -377,14 +377,14 @@ watch(() => props.countryName, (newV) => {
             ]
         }
         shipOpt.value = {
-            backgroundColor: 'black',
+            backgroundColor: 'transparent',
 
             title: {
                 text: '舰艇目标',
                 left: 'center',
                 top: 20,
                 textStyle: {
-                    color: '#ccc'
+                    color: '#00FF7F'
                 }
             },
 
@@ -416,11 +416,11 @@ watch(() => props.countryName, (newV) => {
                     ].sort(function (a, b) { return a.value - b.value; }),
                     roseType: 'radius',
                     label: {
-                        color: 'rgba(255, 255, 255, 0.3)'
+                        color: '#FFD700'
                     },
                     labelLine: {
                         lineStyle: {
-                            color: 'rgba(255, 255, 255, 0.3)'
+                            color: '#FFD700'
                         },
                         smooth: 0.2,
                         length: 10,

@@ -42,12 +42,13 @@ const form = reactive({
 
         .search-item {
             // background-color: blue;
-            border: 1px solid white;
+            // border: 1px solid white;
 
             .input {
+                // width: 600%;
             }
-            .name-input{
-            }
+
+            .name-input {}
         }
     }
 
@@ -55,7 +56,7 @@ const form = reactive({
 
     // 搜索框
     .el-item {
-        width: 100px;
+        width: 200px;
         height: 40px !important;
     }
 
