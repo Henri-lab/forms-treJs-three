@@ -11,13 +11,15 @@
         <el-button class="btn2 animate__animated animate__fadeInRight" color="green" v-if="isBtn" @click="lookNext">
             next
         </el-button>
-
-        <div class="detailsPane animate__animated animate__fadeInRight" v-draggable v-if="isDtails">
-            <div class="navi">
-                <div class="details">{{ country }}</div>
-                <div class="close" @click="closeDetails">关闭</div>
+        <div class="detailsPane-wrapper" v-if="isDtails">
+            <div class="head"></div>
+            <div class="detailsPane animate__animated animate__fadeInRight">
+                <div class="navi">
+                    <div class="details">{{ country }}</div>
+                    <div class="close" @click="closeDetails"><el-button type="">关闭</el-button></div>
+                </div>
+                <Description class="description-wrapper" :country="country" :targetType="checkType" />
             </div>
-            <Description class="description-wrapper" :country="country" :targetType="checkType" />
         </div>
         <Search class="search-wrapper" v-if="isCard" />
         <Card ref="card" :class="'card-wrapper', 'animate__animated', 'animate__fadeInRight', cardClass, zoomClass"
@@ -127,7 +129,7 @@ bus.on('detailsCheck', ({ country, type }) => {
     // card.value.style.width = `100px`
     // card.value.style.height = `100px`
     zoomClass.value = 'zoom'
-    
+
 })
 </script>
 
@@ -148,34 +150,62 @@ bus.on('detailsCheck', ({ country, type }) => {
         position: absolute;
     }
 
-    .detailsPane {
+    .detailsPane-wrapper {
+        display: flex;
         width: 80%;
         height: 90%;
         position: absolute;
         top: 8%;
         right: 10%;
-        background-color: transparent;
-        opacity: 60%;
-        z-index: 2;
-        display: flex;
         flex-direction: column;
+        opacity:65%;
+        z-index: 2;
         border: 1px solid whitesmoke;
-
-        .navi {
-            display: flex;
+        background-color: white;
+        border-radius: 20%;
+        .head {
             width: 100%;
             height: 5%;
-            justify-content: space-around;
+
         }
 
-        .description-wrapper {
-            width: 100%;
-            background-color: black;
-            opacity: 80%;
-            height: 95%;
+        .detailsPane {
+            width: 90%;
+            height: 90%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            background-color: wheat;
+            // border: 1px solid whitesmoke;
+            box-shadow: 10px 10px 10px 10px rgb(18, 18, 18, 0.8);
+
+
+
+            .navi {
+                display: flex;
+                width: 100%;
+                height: 5%;
+                justify-content: space-around;
+                position: relative;
+
+                .close {
+                    position: absolute;
+                    right: 0;
+                    opacity: 50%;
+                }
+            }
+
+            .description-wrapper {
+                width: 100%;
+                background-color: black;
+                opacity: 80%;
+                height: 95%;
+            }
+
         }
 
     }
+
 
     .search-wrapper {
         width: 40%;
@@ -183,7 +213,7 @@ bus.on('detailsCheck', ({ country, type }) => {
         position: absolute;
         padding: 0;
         top: 10%;
-        right: 10%;
+        right: 8.5%;
         // background-color: red;
     }
 

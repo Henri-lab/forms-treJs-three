@@ -212,7 +212,7 @@ let option2 = {
 };
 
 onMounted(() => {
-    console.log('map mounted')
+    console.log('right chart mounted')
     mapOpt.value = option2
 })
 // onMounted(() => {
