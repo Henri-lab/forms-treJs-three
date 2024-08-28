@@ -22,6 +22,7 @@ declare module 'vue' {
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     'Index copy': typeof import('./src/components/descriptions/index copy.vue')['default']
+    Map: typeof import('./src/components/map.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Search: typeof import('./src/components/search.vue')['default']

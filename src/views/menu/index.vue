@@ -12,16 +12,16 @@
             next
         </el-button>
 
-        <div class="detailsPane animate__animated animate__fadeInLeft" v-draggable v-if="isDtails">
+        <div class="detailsPane animate__animated animate__fadeInRight" v-draggable v-if="isDtails">
             <div class="navi">
                 <div class="details">{{ country }}</div>
                 <div class="close" @click="closeDetails">关闭</div>
             </div>
             <Description class="description-wrapper" :country="country" :targetType="checkType" />
         </div>
-        <Search class="search-wrapper" />
-        <Card ref="card" :class="'card-wrapper', 'animate__animated', cardClass, zoomClass" v-show="isCard"
-            :countryName="country" />
+        <Search class="search-wrapper" v-if="isCard" />
+        <Card ref="card" :class="'card-wrapper', 'animate__animated', 'animate__fadeInRight', cardClass, zoomClass"
+            v-show="isCard" :countryName="country" />
 
 
     </div>
@@ -109,6 +109,7 @@ const lookReset = (e) => {
 
 const closeDetails = () => {
     isDtails.value = false
+    isCard.value = true
     galaxy.value && galaxy.value.reverse()
 
 
@@ -121,10 +122,12 @@ bus.on('detailsCheck', ({ country, type }) => {
     console.log(country, type, '查看详情~国家和类型');
     checkType.value = type
     galaxy.value && galaxy.value.open()
+    isCard.value = false
     isDtails.value = true;
     // card.value.style.width = `100px`
     // card.value.style.height = `100px`
     zoomClass.value = 'zoom'
+    
 })
 </script>
 
@@ -146,28 +149,30 @@ bus.on('detailsCheck', ({ country, type }) => {
     }
 
     .detailsPane {
-        width: 50%;
-        height: 50%;
+        width: 80%;
+        height: 90%;
         position: absolute;
-        top: 13%;
-        left: 10%;
-        background-color: white;
+        top: 8%;
+        right: 10%;
+        background-color: transparent;
         opacity: 60%;
         z-index: 2;
         display: flex;
         flex-direction: column;
+        border: 1px solid whitesmoke;
 
         .navi {
             display: flex;
             width: 100%;
-            height: 10%;
+            height: 5%;
             justify-content: space-around;
         }
 
         .description-wrapper {
             width: 100%;
-            background-color: burlywood;
-            height: 85%;
+            background-color: black;
+            opacity: 80%;
+            height: 95%;
         }
 
     }

@@ -333,7 +333,7 @@ defineExpose({
             <!-- 配置 -->
             <TresPerspectiveCamera :position="[cameraX, cameraY, cameraZ]" />
             <OrbitControls />
-            <MouseParallax :factor="50" :ease="[3, 0.5]" />
+            <MouseParallax :factor="50" :ease="[1, 0.5]" />
             <TresAmbientLight />
             <TresDirectionalLight :position="[10, 10, 15]" />
 

@@ -1,13 +1,22 @@
 <template>
     <div class="description">
-        <el-select v-model="select" placeholder="请选择具体目标" size="large">
-            <el-option v-for="item in targets" :key="item" :label="item" :value="item" />
-        </el-select>
+        <div class="head">
+            <el-select v-model="select" placeholder="请选择具体目标" size="large">
+                <el-option v-for="item in targets" :key="item" :label="item" :value="item" />
+            </el-select>
+        </div>
+        <div class="main">
+            <div class="left">
+                <Map />
+            </div>
+            <div class="right"></div>
+        </div>
     </div>
 </template>
 
 <script setup >
 import { onMounted } from 'vue';
+import Map from '~c/map.vue'
 import {
     data,
     jbxx_aircraft_arr,
@@ -42,8 +51,8 @@ const select = ref('')
 const targets = ref([])
 
 function initTargets() {
+    targets.value = []
     if (!props.country) {
-        targets.value = []
         return
     }
     const type = props.targetType
@@ -79,4 +88,36 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.description {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+
+    .head {
+        width: 100%;
+        height: 10%;
+    }
+
+    .main {
+        width: 100%;
+        height: 90%;
+        display: flex;
+        justify-content: space-around;
+
+        .left {
+            width: 48%;
+            height: 100%;
+            border: 1px solid orange;
+        }
+
+        .right {
+            width: 48%;
+            height: 100%;
+            border: 1px solid orange;
+        }
+
+    }
+}
+</style>
