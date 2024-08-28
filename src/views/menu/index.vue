@@ -6,7 +6,7 @@
             <el-switch v-model="themeLight" />开灯
         </div>
         <el-button class="btn1 animate__animated animate__fadeInRight" color="green" v-if="isBtn" @click="lookPre">
-            前一个
+            上一个
         </el-button>
         <el-button class="btn2 animate__animated animate__fadeInRight" color="green" v-if="isBtn" @click="lookNext">
             下一个
@@ -54,7 +54,7 @@ const checkType = ref('')
 onMounted(() => {
     setTimeout(() => {
         isBtn.value = true
-    }, 5000);
+    }, 3000);
 })
 
 const themeLight = ref(false)
@@ -129,7 +129,12 @@ bus.on('detailsCheck', ({ country, type }) => {
     // card.value.style.width = `100px`
     // card.value.style.height = `100px`
     zoomClass.value = 'zoom'
+})
 
+bus.on('go', (name) => {
+    console.log(name, 'go');
+
+    country.value = lowerCaseCountryNameMap[name.toLowerCase()]
 })
 </script>
 
@@ -139,7 +144,7 @@ bus.on('detailsCheck', ({ country, type }) => {
     height: 100px !important;
 }
 
-.detailsName{
+.detailsName {
     font-size: 30px;
     font-weight: 900;
 }
@@ -232,7 +237,7 @@ bus.on('detailsCheck', ({ country, type }) => {
         top: 20%;
         right: 10%;
         // box-shadow: 0 0 10px rgba(0, 0, 0, 1);
-        --animate-duration: 7s;
+        --animate-duration: 3s;
         overflow: visible;
     }
 

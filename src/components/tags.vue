@@ -8,31 +8,31 @@ vue
         </div> -->
         <div class="flag">
             <div class="flag-container">
-                <img class="flag-img" src="@/assets/flagSVG/cn.svg" alt="">
+                <img class="flag-img" src="@/assets/flagSVG/cn.svg" alt="" @click="go('cn')">
             </div>
         </div>
 
         <div class="flag">
             <div class="flag-container">
-                <img class="flag-img" src="@/assets/flagSVG/us.svg" alt="">
+                <img class="flag-img" src="@/assets/flagSVG/us.svg" alt="" @click="go('us')">
             </div>
         </div>
 
         <div class="flag">
             <div class="flag-container">
-                <img class="flag-img" src="@/assets/flagSVG/ru.svg" alt="">
+                <img class="flag-img" src="@/assets/flagSVG/ru.svg" alt="" @click="go('ru')">
             </div>
         </div>
 
         <div class="flag">
             <div class="flag-container">
-                <img class="flag-img" src="@/assets/flagSVG/fr.svg" alt="">
+                <img class="flag-img" src="@/assets/flagSVG/fr.svg" alt="" @click="go('fr')">
             </div>
         </div>
 
         <div class="flag">
             <div class="flag-container">
-                <img class="flag-img" src="@/assets/flagSVG/gb.svg" alt="">
+                <img class="flag-img" src="@/assets/flagSVG/gb.svg" alt="" @click="go('gb')">
             </div>
         </div>
 
@@ -45,8 +45,9 @@ vue
     </div>
 </template> 
 
-<script lang="ts" setup>
+<script setup>
 import { ref } from 'vue';
+import bus from '@/utils/bus'
 
 const flags = ref([
     {
@@ -80,6 +81,11 @@ const flags = ref([
         url: `@/assets/flagSVG/jp.svg`
     },
 ]);
+
+const go = (name) => {
+    console.log('go');
+    bus.emit('go', name)
+}
 </script>
 
 <style lang="scss" scoped>
