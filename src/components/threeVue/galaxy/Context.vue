@@ -8,10 +8,8 @@
 // @ts-nocheck
 import { useTresContext } from '@tresjs/core'
 import { onMounted } from 'vue'
-import mitt from 'mitt';
 import * as THREE from 'three'
 
-const bus = mitt()
 const props = defineProps({
     direction: {
         type: Array,

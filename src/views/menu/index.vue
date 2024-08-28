@@ -232,7 +232,7 @@ bus.on('go', (name) => {
 
     .card-wrapper {
         width: 40%;
-        max-height: 60%;
+        height: 70%;
         // background-color: rgba(236, 200, 17, 0.3);
         position: absolute;
         padding: 1%;
