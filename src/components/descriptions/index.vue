@@ -67,8 +67,8 @@
                         </el-collapse-item>
                     </el-form>
                 </el-collapse>
-                <el-empty class="empty" description="请选择一个战斗机型号" v-if="isEmptyAir" />
-                <el-empty class="empty" description="请选择一个舰船型号" v-if="isEmptyShip" />
+                <el-empty class="empty" description="请选择一个战斗机型号" image="src/assets/images/aircraft.png" image-size="500" v-if="isEmptyAir" />
+                <el-empty class="empty" description="请选择一个舰船型号"  image="src/assets/images/ship.png" image-size="500" v-if="isEmptyShip" />
             </div>
             <div class="right">
                 <Chart class="vchart" />
@@ -216,8 +216,7 @@ onBeforeUnmount(() => {
 .description {
     display: flex;
     flex-direction: column;
-    width: 100%;
-    height: 100%;
+    @include layout100('%');
     overflow: scroll;
 
     .head {

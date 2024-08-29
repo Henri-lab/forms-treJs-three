@@ -127,45 +127,44 @@ bus.on('goCountry', (name) => {
 </script>
 
 <style lang="scss" scoped>
-.zoom {
-    width: 100px !important;
-    height: 100px !important;
+@mixin pre-next($top) {
+    width: 5%;
+    height: 5%;
+    position: absolute;
+    top: $top;
+    right: 5%;
+    z-index: 1;
+    --animate-duration: 2s;
 }
 
-.detailsName {
-    font-size: 30px;
-    font-weight: 900;
-}
+
 
 .menu {
-    width: 100%;
-    height: 100%;
+    @include layout100('%');
     position: relative;
 
     .galaxy-wrapper {
-        width: 100vw;
-        height: 100vh;
+        @include layout100('v');
         position: absolute;
     }
 
     .detailsPane-wrapper {
         display: flex;
+        flex-direction: column;
         width: 80%;
         height: 90%;
-        position: absolute;
         top: 8%;
         right: 10%;
-        flex-direction: column;
         opacity: 1;
-        z-index: 2;
         border: 1px solid whitesmoke;
-        background-color: white;
         border-radius: 20%;
+        background-color: white;
+        position: absolute;
+        z-index: 2;
 
         .head {
             width: 100%;
             height: 5%;
-
         }
 
         .detailsPane {
@@ -178,14 +177,18 @@ bus.on('goCountry', (name) => {
             // border: 1px solid whitesmoke;
             box-shadow: 10px 10px 10px 10px rgb(18, 18, 18, 0.8);
 
-
-
             .navi {
                 display: flex;
+                justify-content: space-around;
                 width: 100%;
                 height: 5%;
-                justify-content: space-around;
                 position: relative;
+
+                .detailsName {
+                    font-size: 30px;
+                    font-weight: 900;
+                }
+
 
                 .close {
                     position: absolute;
@@ -218,35 +221,26 @@ bus.on('goCountry', (name) => {
 
     .card-wrapper {
         width: 40%;
-        height: 70%;
-        // background-color: rgba(236, 200, 17, 0.3);
+        height: 35%;
+        background-color: rgba(242, 240, 231, 0.1);
         position: absolute;
         padding: 1%;
         top: 20%;
         right: 10%;
-        // box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+        border-radius: 20%;
+        box-shadow: 0 0 10px rgb(155, 235, 81);
         --animate-duration: 3s;
         overflow: visible;
     }
 
+    // 上一个
     .btn1 {
-        width: 5%;
-        height: 5%;
-        position: absolute;
-        top: 25%;
-        right: 5%;
-        z-index: 1;
-        --animate-duration: 2s;
+        @include pre-next(32%)
     }
 
+    // 下一个
     .btn2 {
-        width: 5%;
-        height: 5%;
-        position: absolute;
-        top: 35%;
-        right: 5%;
-        z-index: 1;
-        --animate-duration: 2s;
+        @include pre-next(43%)
     }
 
     .tags-wrapper {
@@ -264,18 +258,5 @@ bus.on('goCountry', (name) => {
         top: 0%;
         position: absolute;
     }
-
-    // .description-wrapper {
-    //     width: 30%;
-    //     height: auto;
-    //     background-color: rgba(76, 250, 250, 0.3);
-    //     position: absolute;
-    //     padding: 1%;
-    //     top: 20vh;
-    //     right: 10vw;
-    //     box-shadow: 0 0 10px rgba(0, 0, 0, 1);
-    //     z-index: 1;
-    // }
-
 }
 </style>

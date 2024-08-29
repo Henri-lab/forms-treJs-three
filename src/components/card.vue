@@ -8,22 +8,26 @@
             </template>
             <div class="classify">
                 <div class="aircraft">
-                    <div style="color: aliceblue;font-weight: 600;font-size: 20px; margin:0 auto ;">战斗机</div>
+                    <div class="title" style="font-weight: 600;font-size: 20px; margin:0 auto ;">战斗机</div>
                     <div class="aircraft-chart chart" ref="aircraftChart">
-                        <div class="empty-air" v-show="isEmpty" />
-                        <!-- <el-empty class="empty" :img="imgUrl" v-show="isEmpty"></el-empty> -->
+                        <!-- <div class="empty-air" v-show="isEmpty" /> -->
+                        <el-empty class="empty" image="src/assets/images/aircraft.png" image-size="350"
+                            v-show="isEmpty"></el-empty>
                         <v-chart :option="airOpt" class="vchart"></v-chart>
                     </div>
-                    <el-button type="primary" class="btn-check" round @click="checkAir(props.countryName)">查看</el-button>
+                    <el-button type="primary" class="btn-check" round @click="checkAir(props.countryName)"
+                        v-show="!isEmpty">查看</el-button>
                 </div>
                 <div class="ship">
-                    <div style="color: aliceblue;font-weight: 600;font-size: 20px; margin:0 auto ;">舰船</div>
+                    <div class="title" style="font-weight: 600;font-size: 20px; margin:0 auto ;">舰船</div>
                     <div class="ship-chart chart" ref="shipChart">
-                        <!-- <el-empty class="empty" img="src/assets/images/ship.png" v-show="isEmpty"></el-empty> -->
-                        <div class="empty-ship" v-show="isEmpty" />
+                        <el-empty class="empty" image="src/assets/images/ship.png" image-size="350"
+                            v-show="isEmpty"></el-empty>
+                        <!-- <div class="empty-ship" v-show="isEmpty" /> -->
                         <v-chart :option="shipOpt" class="vchart"></v-chart>
                     </div>
-                    <el-button type="primary" class="btn-check" round @click="checkShip(props.countryName)">查看</el-button>
+                    <el-button type="primary" class="btn-check" round @click="checkShip(props.countryName)"
+                        v-show="!isEmpty">查看</el-button>
                 </div>
             </div>
             <!-- <template #footer>Footer content</template> -->
@@ -214,119 +218,159 @@ function checkShip(country) {
 </script>
 
 <style lang="scss" scoped>
-.countryName {
-    font-weight: 900;
-    color: rgb(5, 249, 54);
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 1.5rem;
+@mixin set-vchart() {
+    width: 100%;
+    height: 100%;
 
+    border: 1px solid greenyellow;
+    border-radius: 10%;
+    margin: 0 auto;
+    border-bottom: 2px;
 }
+
+@mixin set-btn-check {
+    width: 80%;
+    height: 5%;
+    margin: 0 auto;
+}
+
+@mixin set-mainLR() {
+    width: 50%;
+    height: 100%;
+    // background-color: blue;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+@mixin set-empty() {
+    width: 90%;
+    height: 80%;
+    margin-top: 5%;
+    // background-color: red;
+    background-size: cover;
+}
+
+@keyframes zoom {
+
+    0%,
+    100% {
+        font-size: 16px;
+    }
+
+    50% {
+        font-size: 20px;
+    }
+}
+
 
 .card {
     width: 100%;
-    height: auto;
+    height: 100%;
     background-color: transparent;
     opacity: 90%;
     padding: 0;
+    border: 0;
+
+    .card-header {
+        padding-left: 3%;
+        // padding-top: 1%;
+        font-weight: 900;
+        color: rgb(5, 249, 54);
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 1.5rem;
+    }
 
 
     // @update
     .classify {
         width: 90%;
         height: 20rem;
-        // background-color: rgb(26, 219, 193);
-        padding: 0;
-        display: flex;
         margin: 0 auto;
+        padding: 0;
+        // background-color: rgb(26, 219, 193);
+        display: flex;
         justify-content: space-between;
 
         .aircraft {
-            width: 50%;
-            height: 100%;
-            // background-color: green;
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
+            @include set-mainLR();
+            position: relative;
+
+            .title {
+                position: absolute;
+                top: 1%;
+                left: 50%;
+                transform: translateX(-50%);
+                color: aliceblue;
+            }
+
+            .title:hover {
+                animation: zoom 0.5s;
+            }
 
             .chart {
-                width: 100%;
-                height: 95%;
+                @include layout100('%');
 
                 // border: 1px solid greenyellow;
                 .empty-air {
-                    width: 90%;
-                    height: 80%;
+                    @include set-empty();
+                    background-image: url('src/assets/images/aircraft.png');
                     float: left;
                     margin-left: 5%;
-                    margin-top: 5%;
-                    background-color: blue;
-                    background-image: url('src/assets/images/aircraft.png');
-                    background-size: cover;
+                }
 
+                .empty-ship:hover {
+                    cursor: auto;
                 }
 
                 .vchart {
-                    width: 100%;
-                    height: 100%;
-                    border: 1px solid greenyellow;
-                    border-bottom: 2px;
-                    border-radius: 10%;
-                    margin: 0 auto;
+                    @include set-vchart()
                 }
             }
 
             .btn-check {
-                width: 80%;
-                height: 5%;
-                margin: 0 auto;
+                @include set-btn-check()
             }
         }
 
         .ship {
-            width: 50%;
-            height: 100%;
-            // background-color: blue;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            @include set-mainLR();
+            position: relative;
 
+            .title {
+                position: absolute;
+                top: 1%;
+                left: 50%;
+                transform: translateX(-50%);
+                color: aliceblue;
+            }
+
+            .title:hover {
+                animation: zoom 0.5s;
+            }
 
             .chart {
-                width: 100%;
-                height: 120%;
+                @include layout100('%');
                 // border: 1px solid greenyellow;
 
                 .vchart {
-                    width: 100%;
-                    height: 100%;
-
-                    border: 1px solid greenyellow;
-                    border-radius: 10%;
-                    margin: 0 auto;
-                    border-bottom: 2px;
-
-
-
+                    @include set-vchart()
                 }
 
                 .empty-ship {
-                    width: 90%;
-                    height: 80%;
+                    @include set-empty();
+                    background-image: url('src/assets/images/ship.png');
                     float: right;
                     margin-right: 5%;
-                    margin-top: 5%;
-                    background-color: red;
-                    background-image: url('src/assets/images/ship.png');
-                    background-size: cover;
-                
+                }
 
+                .empty-ship:hover {
+                    cursor: auto;
                 }
             }
 
             .btn-check {
-                width: 80%;
-                height: 5%;
-                margin: 0 auto;
+                @include set-btn-check()
             }
         }
     }
