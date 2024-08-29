@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Context: typeof import('./src/components/threeVue/relation/Context.vue')['default']
     copy: typeof import('./src/components/descriptions/test/index copy.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElButton: typeof import('element-plus/es')['ElButton']
@@ -28,8 +29,7 @@ declare module 'vue' {
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
-    'Index copy': typeof import('./src/components/descriptions/test/index copy.vue')['default']
-    Relation: typeof import('./src/components/descriptions/relation.vue')['default']
+    Relation: typeof import('./src/components/threeVue/relation/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

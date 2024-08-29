@@ -1,7 +1,7 @@
 <template>
     <div class="map">
+        <v-chart class="vchart relation" :option="relationOpt" v-draggable></v-chart>
         <v-chart class="vchart pie" :option="pieOpt"></v-chart>
-        <v-chart class="vchart relation" :option="relationOpt"></v-chart>
     </div>
 </template>
 
@@ -446,7 +446,7 @@ const pieOpt = ref({})
 
 // mock
 let pieMock1 = {
-    backgroundColor: '#2c343c',
+    backgroundColor: 'transparent',
     title: {
         text: '综合评分',
         left: 'center',
@@ -507,7 +507,7 @@ let pieMock1 = {
     ]
 };
 let pieMock2 = {
-    backgroundColor: '#2c343c',
+    backgroundColor: 'transparent',
     title: {
         text: '综合评分',
         left: 'center',
@@ -568,7 +568,7 @@ let pieMock2 = {
     ]
 };
 let pieMock3 = {
-    backgroundColor: '#2c343c',
+    backgroundColor: 'transparent',
     title: {
         text: '综合评分',
         left: 'center',
@@ -629,7 +629,7 @@ let pieMock3 = {
     ]
 };
 let pieMock4 = {
-    backgroundColor: '#2c343c',
+    backgroundColor: 'transparent',
     title: {
         text: '综合评分',
         left: 'center',
@@ -690,7 +690,7 @@ let pieMock4 = {
     ]
 };
 let pieMock5 = {
-    backgroundColor: '#2c343c',
+    backgroundColor: 'transparent',
     title: {
         text: '综合评分',
         left: 'center',
@@ -751,7 +751,7 @@ let pieMock5 = {
     ]
 };
 let pieMock6 = {
-    backgroundColor: '#2c343c',
+    backgroundColor: 'transparent',
     title: {
         text: '综合评分',
         left: 'center',
@@ -818,106 +818,193 @@ let pieMock6 = {
 
 
 const relationOpt = ref({})
-let nodesAir = [
-    {
-        id: 'F22',
-        name: 'F-22A猛禽战斗机',
-        category: 'Fighter',
-        value: 100, // 可以表示战斗机的一些量化属性，如性能指数
-        // 自定义属性，比如战斗机图标的URL
-        icon: 'path/to/f22-icon.png',
-        // 节点的初始位置，可以是二维或三维坐标
-        x: 100,
-        y: 200,
-        // z: 50,
-        // 节点样式，如边框、背景色等
-        itemStyle: {
-            color: '#ff0000', // 节点颜色
-            borderColor: '#000000', // 边框颜色
-            borderWidth: 2 // 边框宽度
-        },
-        label: {
-            show: true,
-            formatter: '{b}',
-            color: '#ffffff' // 文字颜色
-        }
-    },
-    {
-        id: 'F35',
-        name: 'F-35A闪电II战斗机',
-        category: 'Fighter',
-        value: 95,
-        icon: 'path/to/f35-icon.png',
-        x: 300,
-        y: 100,
-        itemStyle: {
-            color: '#00ff00'
-        },
-        label: {
-            show: true,
-            formatter: '{b}'
-        }
-    },
-    // 根据需要添加更多战斗机节点...
-];
+// let nodesAir = [
+//     {
+//         id: 'F22',
+//         name: 'F-22A猛禽战斗机',
+//         category: 'Fighter',
+//         value: 1000, // 可以表示战斗机的一些量化属性，如性能指数
+//         // 自定义属性，比如战斗机图标的URL
+//         icon: 'src/assets/airShips/f22a.png',
+//         // 节点的初始位置，可以是二维或三维坐标
+//         x: 100,
+//         y: 200,
+//         // z: 50,
+//         // 节点样式，如边框、背景色等
+//         itemStyle: {
+//             color: '#ff0000', // 节点颜色
+//             borderColor: '#000000', // 边框颜色
+//             borderWidth: 2 // 边框宽度
+//         },
+//         label: {
+//             show: true,
+//             formatter: '{b}',
+//             color: '#ffffff' // 文字颜色
+//         }
+//     },
+//     {
+//         id: 'F35',
+//         name: 'F-35A闪电II战斗机',
+//         category: 'Fighter',
+//         value: 95,
+//         icon: 'path/to/f35-icon.png',
+//         x: 300,
+//         y: 100,
+//         itemStyle: {
+//             color: '#00ff00'
+//         },
+//         label: {
+//             show: true,
+//             formatter: '{b}'
+//         }
+//     },
+//      {
+//         id: 'FA18',
+//         name: 'F/A-18E/F超级大黄蜂',
+//         category: 'Fighter',
+//         value: 95,
+//         icon: 'path/to/f35-icon.png',
+//         x: 600,
+//         y: 500,
+//         itemStyle: {
+//             color: '#00ff00'
+//         },
+//         label: {
+//             show: true,
+//             formatter: '{b}'
+//         }
+//     },
+//     // 根据需要添加更多战斗机节点...
+// ];
 
-let edgesAir = [
-    {
-        source: 'F22',
-        target: 'F35'
-    },
-    // 可以添加更多边来表示其他战斗机之间的关系...
-];
-let relationMock1 = {
-    backgroundColor: '#000',
-    series: [
+// let edgesAir = [
+//     {
+//         source: 'F22',
+//         target: 'F35'
+//     },
+//      {
+//         source: 'F22',
+//         target: 'FA18'
+//     },
+//      {
+//         source: 'F35',
+//         target: 'FA18'
+//     },
+//     // 可以添加更多边来表示其他战斗机之间的关系...
+// ];
+// let relationMock1 = {
+//     backgroundColor: '#000',
+//     series: [
+//         {
+//             type: 'graphGL',
+//             scaleLimit:{
+//                 min:500
+//             },
+//             nodes: nodesAir,
+//             edges: edgesAir,
+//             modularity: {
+//                 resolution: 2,
+//                 sort: true
+//             },
+//             lineStyle: {
+//                 color: 'rgba(255,255,255,1)',
+//                 opacity: 0.05,
+//                 width:5
+//             },
+//             itemStyle: {
+//                 opacity: 1
+//                 // borderColor: '#fff',
+//                 // borderWidth: 1
+//             },
+//             focusNodeAdjacency: false,
+//             focusNodeAdjacencyOn: 'click',
+//             symbolSize: function (value) {
+//                 return Math.sqrt(value / 10);
+//             },
+//             label: {
+//                 color: '#fff',
+//                 textStyle: {
+//                     fontSize: 20
+//                 }
+//             },
+//             emphasis: {
+//                 label: {
+//                     show: false
+//                 },
+//                 lineStyle: {
+//                     opacity: 0.5,
+//                     width: 4
+//                 }
+//             },
+//             forceAtlas2: {
+//                 steps: 5,
+//                 stopThreshold: 20,
+//                 jitterTolerence: 10,
+//                 edgeWeight: [0.2, 1],
+//                 gravity: 5,
+//                 edgeWeightInfluence: 0
+//                 // preventOverlap: true
+//             }
+//         }
+//     ]
+// };
+
+
+
+let relationMockAir = {
+    name: '',
+    children=[
         {
-            type: 'graphGL',
-            nodes: nodesAir,
-            edges: edgesAir,
-            modularity: {
-                resolution: 2,
-                sort: true
-            },
-            lineStyle: {
-                color: 'rgba(255,255,255,1)',
-                opacity: 0.05
-            },
-            itemStyle: {
-                opacity: 1
-                // borderColor: '#fff',
-                // borderWidth: 1
-            },
-            focusNodeAdjacency: false,
-            focusNodeAdjacencyOn: 'click',
-            symbolSize: function (value) {
-                return Math.sqrt(value / 10);
-            },
-            label: {
-                color: '#fff'
-            },
-            emphasis: {
-                label: {
-                    show: false
-                },
-                lineStyle: {
-                    opacity: 0.5,
-                    width: 4
+            name: '',
+            children=[
+                {
+                    name: '',
+                    children =[]
                 }
-            },
-            forceAtlas2: {
-                steps: 5,
-                stopThreshold: 20,
-                jitterTolerence: 10,
-                edgeWeight: [0.2, 1],
-                gravity: 5,
-                edgeWeightInfluence: 0
-                // preventOverlap: true
-            }
+            ]
+        },
+        {
+            name: '',
+            children=[]
         }
     ]
-};
-
+}
+let relationOptAir = {
+    tooltip: {
+        trigger: 'item',
+        triggerOn: 'mousemove'
+    },
+    series: [
+        {
+            type: 'tree',
+            data: [data],
+            top: '1%',
+            left: '15%',
+            bottom: '1%',
+            right: '7%',
+            symbolSize: 7,
+            orient: 'RL',
+            label: {
+                position: 'right',
+                verticalAlign: 'middle',
+                align: 'left'
+            },
+            leaves: {
+                label: {
+                    position: 'left',
+                    verticalAlign: 'middle',
+                    align: 'right'
+                }
+            },
+            emphasis: {
+                focus: 'descendant'
+            },
+            expandAndCollapse: true,
+            animationDuration: 550,
+            animationDurationUpdate: 750
+        }
+    ]
+}
 
 
 bus.on('chartChange', (select => {
@@ -948,7 +1035,6 @@ bus.on('chartChange', (select => {
     .vchart {
         width: auto;
         height: 100%;
-
     }
 }
 </style>

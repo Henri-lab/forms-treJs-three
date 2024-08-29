@@ -1,9 +1,11 @@
 <template>
   <!-- <router-link to="/StatusComponent">状态栏组件</router-link> -->
-  <router-view />
+  <!-- <router-view /> -->
+<relation></relation>
 
 </template>
 <script setup lang="ts">
+import relation from '~c/threeVue/relation/index.vue'
 
 
 </script>

@@ -4,7 +4,7 @@ const history = createWebHashHistory();
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    redirect: "/menu",
+    redirect: "/menu",//stack 溢出 path和redirect一样
   },
   {
     path: "/home",
