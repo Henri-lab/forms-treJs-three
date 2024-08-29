@@ -1,7 +1,8 @@
 <template>
-  <div style="width: 400px; height: 300px; margin: 0 auto" id="main"></div>
+  <div style="margin: 0 auto" id="main"></div>
 </template>
-<script setup lang="ts">
+<script setup>
+// 没有使用v-chart，直接使用echarts
 import { onMounted } from "vue";
 import * as echarts from "echarts";
 // import Url from "../../assets/images/四字按钮.png";
@@ -9,10 +10,8 @@ import centerUrl from "../assets/images/图谱关系选中.png";
 import outSiezUrl from "../assets/images/图谱关系未选中.png";
 
 onMounted(() => {
-  setTimeout(() => {
-    init();
-  }, 1000);
-}); 
+  init();
+});
 let init = () => {
   var myChart = echarts.init(document.getElementById("main"));
   var echartJson = {
@@ -99,7 +98,7 @@ let init = () => {
       source: "prente1",
       target: "c6",
     },
- 
+
   ];
   // 博主数据
   var map = [
