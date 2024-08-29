@@ -3,7 +3,7 @@
 <template>
     <div class="description">
         <div class="head">
-            <el-select v-model="select" placeholder="请选择具体目标" size="large">
+            <el-select v-model="select" placeholder="请选择具体目标" size="large" allow-create filterable>
                 <el-option v-for="item in targets" :key="item" :label="item" :value="item" />
             </el-select>
         </div>
@@ -67,8 +67,10 @@
                         </el-collapse-item>
                     </el-form>
                 </el-collapse>
-                <el-empty class="empty" description="请选择一个战斗机型号" image="src/assets/images/aircraft.png" image-size="500" v-if="isEmptyAir" />
-                <el-empty class="empty" description="请选择一个舰船型号"  image="src/assets/images/ship.png" image-size="500" v-if="isEmptyShip" />
+                <el-empty class="empty" description="请选择一个战斗机型号" image="src/assets/images/aircraft.png" image-size="500"
+                    v-if="isEmptyAir && !loadAllTypeFlag" />
+                <el-empty class="empty" description="请选择一个舰船型号" image="src/assets/images/ship.png" image-size="500"
+                    v-if="isEmptyShip && !loadAllTypeFlag" />
             </div>
             <div class="right">
                 <Chart class="vchart" />
@@ -101,28 +103,36 @@ import {
     tree
 } from './mock'
 const gutter = ref(20);//折叠项间距
+const select = ref('')
+const targets = ref([])
+const collapsedNames = ref([])
+const targetNames = Object.keys(data['jbxx'])
 
 const props = defineProps({
+    // 查看的国家
     country: {
         type: String,
         default: ''
     },
+    // 查看的类型
     targetType: {
         type: String,
         default: ''
+    },
+    // 搜索框输入
+    search: {
+        type: Object,
+        default: () => {
+            return {
+                name: '',
+                country: '',
+                type: '',
+            }
+        }
     }
 })
-watch(() => props.country, (newVal) => {
-    if (newVal == '美国') {
-        isRelation.value = true
-    } else isRelation.value = false
-})
-
-const select = ref('')
-const targets = ref([])
-const collapsedNames = ref([])
-const isRelation = ref(false)
-
+let loadAllTypeFlag = ref(0)
+// 下拉框初始化
 function initTargets() {
     targets.value = []
     if (!props.country) {
@@ -135,6 +145,7 @@ function initTargets() {
     // 
     const type = props.targetType
     if (type === 'aircraft') {
+        loadAllTypeFlag.value = 0
         jbxx_aircraft_arr.forEach(item => {//item：字段集合
             item.forEach(it => {
                 if (it.name === '目标名称') {
@@ -142,7 +153,8 @@ function initTargets() {
                 }
             })
         })
-    } else {//@update
+    } else if (type === 'ship') {//@update
+        loadAllTypeFlag.value = 0
         jbxx_ship_arr.forEach(item => {
             item.forEach(it => {
                 if (it.name === '目标名称') {
@@ -150,16 +162,16 @@ function initTargets() {
                 }
             })
         })
+    } else {
+        loadAllTypeFlag = 1
+        targets.value = targetNames
     }
     console.log(targets.value, 'options of select')
 
 }
-
 onMounted(() => {
     initTargets()
 })
-
-// 下拉框数据初始化
 watch(() => props.country, () => {
     initTargets()
 })
@@ -167,9 +179,10 @@ watch(() => props.country, () => {
 const isCollapse = ref(false)
 const isEmptyAir = ref(false)
 const isEmptyShip = ref(false)
-watch(() => select.value,
+watch(
+    () => select.value,
     (newV) => {
-        if (!newV) {
+        if (!newV) {//没有进行下拉选择
             isCollapse.value = false
             if (props.targetType === 'aircraft')
                 isEmptyAir.value = true
@@ -184,12 +197,32 @@ watch(() => select.value,
     },
     {
         immediate: true
-    })
+    }
+)
+// 六项表数据源
+/**
+ * @description:基本信息
+ * */
 const obj = ref([])
+/**
+ * @description:性能属性
+ * */
 const obj1 = ref([])
+/**
+ * @description:物理特性
+ * */
 const obj2 = ref([])
+/**
+ * @description:功能特性
+ * */
 const obj3 = ref([])
+/**
+ * @description:活动特性
+ * */
 const obj4 = ref([])
+/**
+ * @description:sb特性
+ * */
 const obj5 = ref([])
 onMounted(async () => {
     const response = await axios.get("./data.json");
@@ -206,6 +239,28 @@ function collapseChange() {
     console.log(obj.value, ' collapseChange')
 }
 
+
+
+watch(() => props.search,
+    (newV) => {
+        if (newV) {
+            const { name, countryCode, type } = newV
+            // console.log(targetNames, 'ad')
+            // if (targetNames.includes(name)) {
+            //     console.log('搜索到了')
+            // }
+            bus.emit('detailsCheck', { countryCode, type })
+        }
+
+    }, { immediate: true }
+)
+
+
+
+// bus.on('searchRes', (para) => {
+//     console.log('get seach')
+//     // console.log(para, 'search', allTarget.value, '已有')
+// })
 
 
 onBeforeUnmount(() => {

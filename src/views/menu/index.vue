@@ -18,14 +18,12 @@
                     <div class="detailsName">{{ country }}</div>
                     <div class="close" @click="closeDetails"><el-button type="danger">关闭</el-button></div>
                 </div>
-                <Description class="description-wrapper " :country="country" :targetType="checkType" />
+                <Description class="description-wrapper " :country="country" :targetType="checkType" :search="search" />
             </div>
         </div>
         <Search class="search-wrapper animate__animated animate__fadeInLeft" v-if="isBtn" />
         <Card ref="card" class="card-wrapper animate__animated animate__fadeInUpBig" v-show="isCard"
             :countryName="country" />
-
-
     </div>
 </template>
 
@@ -38,7 +36,7 @@ import Description from '~c/descriptions/index.vue';
 import Search from '~c/search.vue'
 import { onMounted, ref, watch } from 'vue';
 import bus from '@/utils/bus';
-import { lowerCaseCountryNameMap } from './dict'
+import { lowerCaseCountryNameMap } from '@/dict/country'
 
 const isBtn = ref(false)
 const isCard = ref(true)//false 导致 echarts无法获取宽高！！
@@ -109,8 +107,11 @@ bus.on('openRing', () => {
 })
 
 // 查看详情
-bus.on('detailsCheck', ({ country, type }) => {
-    console.log(country, type, '查看详情~国家和类型');
+bus.on('detailsCheck', ({ countryCode, type }) => {
+    console.log(countryCode, type, '查看详情~国家和类型');
+    if (countryCode) {
+        country.value = lowerCaseCountryNameMap[countryCode.toLowerCase()]
+    }
     checkType.value = type
     galaxy.value && galaxy.value.open()
     isCard.value = false
@@ -123,6 +124,20 @@ bus.on('detailsCheck', ({ country, type }) => {
 bus.on('goCountry', (name) => {
     console.log(name, 'goCountry');
     country.value = lowerCaseCountryNameMap[name.toLowerCase()]
+})
+// 搜索
+const search = ref('')
+bus.on('search', (para) => {
+    console.log(para, 'search')
+    search.value = para
+    // bus.emit('searchRes', para)
+})
+
+bus.on('openDetails', () => {
+    isDtails.value = true
+})
+bus.on('closeDetails', () => {
+    isDtails.value = false
 })
 </script>
 
@@ -215,7 +230,7 @@ bus.on('goCountry', (name) => {
         position: absolute;
         padding: 0;
         top: 3%;
-        left: -10%;
+        left: -3%;
         // background-color: red;
     }
 
@@ -230,7 +245,7 @@ bus.on('goCountry', (name) => {
         border-radius: 20%;
         box-shadow: 0 0 10px rgb(155, 235, 81);
         --animate-duration: 3s;
-        overflow: visible;
+        overflow: visible
     }
 
     // 上一个

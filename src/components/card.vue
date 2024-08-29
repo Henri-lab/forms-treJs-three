@@ -11,23 +11,23 @@
                     <div class="title" style="font-weight: 600;font-size: 20px; margin:0 auto ;">战斗机</div>
                     <div class="aircraft-chart chart" ref="aircraftChart">
                         <!-- <div class="empty-air" v-show="isEmpty" /> -->
-                        <el-empty class="empty" image="src/assets/images/aircraft.png" image-size="350"
+                        <el-empty class="empty" image="src/assets/images/aircraft.png" image-size=350
                             v-show="isEmpty"></el-empty>
                         <v-chart :option="airOpt" class="vchart"></v-chart>
                     </div>
-                    <el-button type="primary" class="btn-check" round @click="checkAir(props.countryName)"
-                        v-show="!isEmpty">查看</el-button>
+                    <el-button type="primary" class="btn-check" round
+                        @click="checkAir(lowerCaseCountryNameMap[props.countryName])" v-show="!isEmpty">查看</el-button>
                 </div>
                 <div class="ship">
                     <div class="title" style="font-weight: 600;font-size: 20px; margin:0 auto ;">舰船</div>
                     <div class="ship-chart chart" ref="shipChart">
-                        <el-empty class="empty" image="src/assets/images/ship.png" image-size="350"
+                        <el-empty class="empty" image="src/assets/images/ship.png" image-size=350
                             v-show="isEmpty"></el-empty>
                         <!-- <div class="empty-ship" v-show="isEmpty" /> -->
                         <v-chart :option="shipOpt" class="vchart"></v-chart>
                     </div>
-                    <el-button type="primary" class="btn-check" round @click="checkShip(props.countryName)"
-                        v-show="!isEmpty">查看</el-button>
+                    <el-button type="primary" class="btn-check" round
+                        @click="checkShip(lowerCaseCountryNameMap[props.countryName])" v-show="!isEmpty">查看</el-button>
                 </div>
             </div>
             <!-- <template #footer>Footer content</template> -->
@@ -39,10 +39,12 @@
 import { defineProps, onMounted, ref, watch } from 'vue';
 import * as THREE from 'three';
 import bus from '@/utils/bus';
+import { lowerCaseCountryNameMap } from '@/dict/country'
+
 
 const props = defineProps({
     countryName: {
-        type: String,
+        type: String,//国家代码转义后的中文
         default: 'test',
     },
 })
@@ -60,6 +62,11 @@ const shipOpt = ref({})
 
 // vchart
 let radarGraph_air = {
+    axisPointer: {
+        link: {
+            alignTicks: false
+        }
+    },
     title: {
     },
     tooltip: {
@@ -123,6 +130,11 @@ let radarGraph_air = {
     ]
 };
 let radarGraph_ship = {
+    axisPointer: {
+        link: {
+            alignTicks: false
+        }
+    },
     title: {
     },
     tooltip: {
@@ -192,6 +204,7 @@ watch(() => props.countryName,
         if (newV === '美国') {
             console.log('usa radar');
             isEmpty.value = false
+
             airOpt.value = radarGraph_air
             shipOpt.value = radarGraph_ship
         } else {
@@ -208,10 +221,10 @@ watch(() => props.countryName,
 
 // 查看详情
 function checkAir(country) {
-    bus.emit('detailsCheck', { country, type: 'aircraft' })
+    bus.emit('detailsCheck', { countryCode: country, type: 'aircraft' })
 }
 function checkShip(country) {
-    bus.emit('detailsCheck', { country, type: 'ship' })
+    bus.emit('detailsCheck', { countryCode: country, type: 'ship' })
 }
 
 
@@ -221,10 +234,10 @@ function checkShip(country) {
 @mixin set-vchart() {
     width: 100%;
     height: 100%;
-
-    border: 1px solid greenyellow;
+    // border: 1px solid greenyellow;
     border-radius: 10%;
     margin: 0 auto;
+    margin-left: 0.7rem;
     border-bottom: 2px;
 }
 
@@ -288,6 +301,7 @@ function checkShip(country) {
         height: 20rem;
         margin: 0 auto;
         padding: 0;
+        padding-top: 1rem;
         // background-color: rgb(26, 219, 193);
         display: flex;
         justify-content: space-between;
@@ -298,7 +312,7 @@ function checkShip(country) {
 
             .title {
                 position: absolute;
-                top: 1%;
+                top: -2rem;
                 left: 50%;
                 transform: translateX(-50%);
                 color: aliceblue;
@@ -323,9 +337,9 @@ function checkShip(country) {
                     cursor: auto;
                 }
 
-                .vchart {
-                    @include set-vchart()
-                }
+                // .vchart {
+                //     @include set-vchart()
+                // }
             }
 
             .btn-check {
@@ -339,7 +353,7 @@ function checkShip(country) {
 
             .title {
                 position: absolute;
-                top: 1%;
+                top: -2rem;
                 left: 50%;
                 transform: translateX(-50%);
                 color: aliceblue;
