@@ -13,6 +13,7 @@ import 'animate.css';
 // 导入 vue-echarts 和 echarts
 import ECharts from 'vue-echarts';
 import { use } from 'echarts/core';
+import 'echarts-gl';
 
 // 导入需要的 echarts 模块
 import { CanvasRenderer } from 'echarts/renderers';

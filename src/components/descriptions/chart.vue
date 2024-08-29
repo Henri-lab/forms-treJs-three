@@ -1,6 +1,7 @@
 <template>
     <div class="map">
-        <v-chart class="vchart" :option="mapOpt"></v-chart>
+        <v-chart class="vchart pie" :option="pieOpt"></v-chart>
+        <v-chart class="vchart relation" :option="relationOpt"></v-chart>
     </div>
 </template>
 
@@ -9,7 +10,7 @@ import * as echarts from 'echarts';
 import axios from 'axios';
 import bus from '@/utils/bus';
 
-const mapOpt = ref({})
+const pieOpt = ref({})
 
 // const colors = ['#FFAE57', '#FF7853', '#EA5151', '#CC3F57', '#9A2555'];
 // const bgColor = '#2E2733';
@@ -441,8 +442,10 @@ const mapOpt = ref({})
 //     ]
 // }
 
+
+
 // mock
-let option1 = {
+let pieMock1 = {
     backgroundColor: '#2c343c',
     title: {
         text: '综合评分',
@@ -503,8 +506,7 @@ let option1 = {
         }
     ]
 };
-
-let option2 = {
+let pieMock2 = {
     backgroundColor: '#2c343c',
     title: {
         text: '综合评分',
@@ -565,8 +567,7 @@ let option2 = {
         }
     ]
 };
-
-let option3 = {
+let pieMock3 = {
     backgroundColor: '#2c343c',
     title: {
         text: '综合评分',
@@ -627,8 +628,7 @@ let option3 = {
         }
     ]
 };
-
-let option4 = {
+let pieMock4 = {
     backgroundColor: '#2c343c',
     title: {
         text: '综合评分',
@@ -689,8 +689,7 @@ let option4 = {
         }
     ]
 };
-
-let option5 = {
+let pieMock5 = {
     backgroundColor: '#2c343c',
     title: {
         text: '综合评分',
@@ -751,8 +750,7 @@ let option5 = {
         }
     ]
 };
-
-let option6 = {
+let pieMock6 = {
     backgroundColor: '#2c343c',
     title: {
         text: '综合评分',
@@ -817,25 +815,127 @@ let option6 = {
 
 
 
+
+
+const relationOpt = ref({})
+let nodesAir = [
+    {
+        id: 'F22',
+        name: 'F-22A猛禽战斗机',
+        category: 'Fighter',
+        value: 100, // 可以表示战斗机的一些量化属性，如性能指数
+        // 自定义属性，比如战斗机图标的URL
+        icon: 'path/to/f22-icon.png',
+        // 节点的初始位置，可以是二维或三维坐标
+        x: 100,
+        y: 200,
+        // z: 50,
+        // 节点样式，如边框、背景色等
+        itemStyle: {
+            color: '#ff0000', // 节点颜色
+            borderColor: '#000000', // 边框颜色
+            borderWidth: 2 // 边框宽度
+        },
+        label: {
+            show: true,
+            formatter: '{b}',
+            color: '#ffffff' // 文字颜色
+        }
+    },
+    {
+        id: 'F35',
+        name: 'F-35A闪电II战斗机',
+        category: 'Fighter',
+        value: 95,
+        icon: 'path/to/f35-icon.png',
+        x: 300,
+        y: 100,
+        itemStyle: {
+            color: '#00ff00'
+        },
+        label: {
+            show: true,
+            formatter: '{b}'
+        }
+    },
+    // 根据需要添加更多战斗机节点...
+];
+
+let edgesAir = [
+    {
+        source: 'F22',
+        target: 'F35'
+    },
+    // 可以添加更多边来表示其他战斗机之间的关系...
+];
+let relationMock1 = {
+    backgroundColor: '#000',
+    series: [
+        {
+            type: 'graphGL',
+            nodes: nodesAir,
+            edges: edgesAir,
+            modularity: {
+                resolution: 2,
+                sort: true
+            },
+            lineStyle: {
+                color: 'rgba(255,255,255,1)',
+                opacity: 0.05
+            },
+            itemStyle: {
+                opacity: 1
+                // borderColor: '#fff',
+                // borderWidth: 1
+            },
+            focusNodeAdjacency: false,
+            focusNodeAdjacencyOn: 'click',
+            symbolSize: function (value) {
+                return Math.sqrt(value / 10);
+            },
+            label: {
+                color: '#fff'
+            },
+            emphasis: {
+                label: {
+                    show: false
+                },
+                lineStyle: {
+                    opacity: 0.5,
+                    width: 4
+                }
+            },
+            forceAtlas2: {
+                steps: 5,
+                stopThreshold: 20,
+                jitterTolerence: 10,
+                edgeWeight: [0.2, 1],
+                gravity: 5,
+                edgeWeightInfluence: 0
+                // preventOverlap: true
+            }
+        }
+    ]
+};
+
+
+
 bus.on('chartChange', (select => {
     if (select === 'F-22A猛禽战斗机') {
-        mapOpt.value = option1
+        pieOpt.value = pieMock1
+        relationOpt.value = relationMock1
     } else if (select === 'F-35A闪电II战斗机') {
-        mapOpt.value = option2
+        pieOpt.value = pieMock2
     } else if (select === 'F/A-18E/F超级大黄蜂战斗机') {
-        mapOpt.value = option3
+        pieOpt.value = pieMock3
     } else if (select === '杰拉尔德·R·福特级航空母舰') {
-        mapOpt.value = option4
+        pieOpt.value = pieMock4
     } else if (select === '黄蜂级两栖攻击舰') {
-        mapOpt.value = option5
+        pieOpt.value = pieMock5
     } else {
-        mapOpt.value = option6
+        pieOpt.value = pieMock6
     }
 }))
-onMounted(() => {
-    console.log('right chart mounted')
-    // mapOpt.value = option
-})
 
 
 </script>

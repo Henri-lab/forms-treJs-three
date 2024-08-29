@@ -72,7 +72,7 @@
             </div>
             <div class="right">
                 <Chart class="vchart" />
-                <Relation class="relation" v-draggable />
+                <!-- <Relation class="relation" v-draggable/> -->
             </div>
         </div>
     </div>
