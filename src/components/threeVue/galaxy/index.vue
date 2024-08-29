@@ -27,18 +27,6 @@ import { resolve } from 'path';
 import { onBeforeMount } from 'vue';
 
 const bus = mitt()
-// bus.on('galaxy', () => {
-//     console.log('galaxy')
-//     ringR.value = 0
-//     const timer = setInterval(() => {
-//         if (ringR.value < 100)
-//             ringR.value += 6
-//         else {
-//             initRing()
-//             clearInterval(timer)
-//         }
-//     }, 10)
-// })
 
 // 立方体旋转
 const boxRef: ShallowRef<TresInstance | null> = shallowRef(null);
@@ -56,15 +44,12 @@ function onClick(ev) {
 }
 
 
-// 背景旋转
+// 星空背景旋转
+const lightRef = shallowRef()
 const yRotation = shallowRef(0)
 useRenderLoop().onLoop(({ delta }) => {
     yRotation.value += 0.1 * delta
 })
-
-
-const lightRef = shallowRef()
-
 useRenderLoop().onLoop(({ elapsed }) => {
     if (lightRef.value) {
         lightRef.value.position.x = Math.cos(elapsed) * 2.5
@@ -72,6 +57,7 @@ useRenderLoop().onLoop(({ elapsed }) => {
     }
 })
 
+// 摄像机初始动画
 const cameraZ = ref(2000); // camera startPos
 const cameraX = ref(0);
 const cameraY = ref(5);
@@ -81,11 +67,13 @@ const animateCamera = () => {
         requestAnimationFrame(animateCamera);
     }
 };
-
 onMounted(() => {
     requestAnimationFrame(animateCamera);
 });
 
+
+
+// ring 星球链
 const planets = ref([
     { x: 0, y: 0, z: 0, id: 1, svg: 'src/assets/flagSVG/cn.svg', color: 'white', name: 'cn' },
     { x: 0, y: 0, z: 0, id: 3, svg: 'src/assets/flagSVG/ru.svg', color: 'white', name: 'ru' },
@@ -95,7 +83,6 @@ const planets = ref([
     { x: 0, y: 0, z: 0, id: 6, svg: 'src/assets/flagSVG/jp.svg', color: 'white', name: 'jp' },
 ])
 
-// ring
 const ringN = ref({ x: 0, y: 0, z: 0 });// 环normal
 const ringC = ref({ x: 0, y: 0, z: 0 });// 环中心点
 const ringR = ref(12);// 环的半径
@@ -170,32 +157,10 @@ onMounted(() => {
 
 
 
-// 直线
-// const orbitPos = computed(() => {
-//     return planets.value.map((planet) => [planet.x, planet.y, planet.z]);
-// });
-// 曲线
-// const orbitPos = ref([]) as any
 
-// onMounted(() => {
-//     const centerX = (-13 + -4) / 2;  // 中心点的x坐标
-//     const centerY = (5 + 0) / 2;     // 中心点的y坐标
-//     const centerZ = (-8 + 2) / 2;    // 中心点的z坐标
 
-//     const radius = Math.sqrt(Math.pow(-13 - centerX, 2) + Math.pow(5 - centerY, 2) + Math.pow(-8 - centerZ, 2));  // 半径
-//     const numPoints = 8;  // 你可以根据需要增加或减少点的数量
-
-//     for (let i = 0; i < numPoints; i++) {
-//         const angle = (2 * Math.PI * i) / numPoints;
-//         const x = centerX + radius * Math.cos(angle) || 0;
-//         const y = centerY + radius * Math.sin(angle);
-//         const z = centerZ;  // 假设轨道在同一个z平面上
-
-//         orbitPos.value.push({ x, y, z, id: i + 2 });  // 新生成点的id从2开始
-//     }
-// })
-
-const initR = 12
+// 星球链动画
+const initR = 12//初始半径
 let openFlag = 1
 const open = () => {
     openFlag = 1
@@ -229,6 +194,7 @@ const reverse = () => {
     }, 1)
 }
 
+//摄像机视线方向
 const lookX = ref(0)
 const lookY = ref(0)
 const lookZ = ref(0)
@@ -239,48 +205,36 @@ const lookAt = (i) => {
     lookZ.value = planets.value[i].z
     // // ctx.value && ctx.value.animate()
     ctx.value && ctx.value.lookAt() //bug
-
 }
 
-// 💢
+// 设置摄像机
 const setPosOfCamera = (x, y, z) => {
     cameraX.value = x
     cameraY.value = y
     cameraZ.value = z
 }
 
-
+// 重置摄像机
 const cameraReset = () => {
     reverse()
     cameraX.value = 0
     cameraY.value = 5
     cameraZ.value = 42
 }
-function transArr(arr: any) {
-    const pop = arr.shift()
-    arr.push(pop)
-}
-function transArr_reverse(arr: any) {
-
-    const pop = arr.pop()
-    arr.unshift(pop)
-}
+// 返回生成的星球集合
 function getPlanets() {
     return planets.value
 }
-// bus.on('getCamera', (res) => {
-//     camera = res
-//     console.log(camera, 'camera');
-// })
-const texture = ref([])
 
+
+// 星球材质
+const texture = ref([])
 const promises = planets.value.map(p => {
     return useLoader(TextureLoader, p.svg);
 });
-
 Promise.all(promises).then(resArr => texture.value = resArr)
 
-// plane的rotation
+// 星球内平面的rotation
 const rotX = ref(Math.PI)
 const rotY = ref(Math.PI)
 const rotZ = ref(Math.PI)
@@ -298,14 +252,18 @@ onBeforeMount(() => {
     // clearInterval(timer2)
 })
 
+// 背景颜色切换
 const theme = ref('black')
 const changeTheme = () => {
     console.log('change theme');
-
     theme.value === 'black' ? theme.value = 'white' : theme.value = 'black'
 }
-
-
+// 背景环境切换
+const isSky = ref(false)
+const changeSky = () => {
+    console.log('change theme');
+    isSky.value = !isSky.value
+}
 
 defineExpose({
     open,
@@ -314,7 +272,8 @@ defineExpose({
     setPosOfCamera,
     cameraReset,
     getPlanets,
-    changeTheme
+    changeTheme,
+    changeSky
 })
 </script>
 
@@ -336,6 +295,7 @@ defineExpose({
 <template>
     <div class="galaxy">
         <TresCanvas :clear-color="theme">
+            <!-- 上下文 -->
             <Context ref="ctx" :direction="[lookX, lookY, lookZ]" />
             <!-- 配置 -->
             <TresPerspectiveCamera :position="[cameraX, cameraY, cameraZ]" />
@@ -347,7 +307,7 @@ defineExpose({
             <!-- 背景 -->
             <Stars :rotation="[0, yRotation, 0]" :radius="500" :depth="100" :count="2000" :size="0.3"
                 :size-attenuation="true" />
-            <!-- <Sky /> -->
+            <Sky v-if="isSky" />
             <!-- 星球 -->
             <TresMesh class="planets" v-for="planet in planets" :key="planet.id" :position="[planet.x, planet.y, planet.z]">
                 <Sphere>
@@ -355,7 +315,7 @@ defineExpose({
                     <Sparkles :directional-light="lightRef" />
                 </Sphere>
             </TresMesh>
-
+            <!-- 星球内部平面 国旗 -->
             <TresMesh class="planets" v-for="(planet, index) in planets" :key="planet.id"
                 :position="[planet.x, planet.y, planet.z]">
                 <Plane :args="[3, 2.5]" :rotation="[rotX, rotY, rotZ]">
@@ -363,20 +323,11 @@ defineExpose({
                 </Plane>
             </TresMesh>
 
-
-            <!-- 国旗 -->
-            <TresMesh class="flags" v-for="planet in planets" :key="planet.id"
-                :position="[planet.x - 1, planet.y + 2, planet.z + 2]">
-                <!-- <Suspense>
-                    <SVG :src="planet.svg" :scale="0.003" />
-                </Suspense> -->
-            </TresMesh>
             <!-- 轨道 -->
             <Ring ref="ringRef" :args="[ringR - 0.1, ringR, 32]" :position="[ringC.x, ringC.y, ringC.z]"
                 :rotation="[Math.atan2(ringN.y, ringN.z) * Math.PI / (-3), Math.atan2(ringN.x, ringN.z), 0]">
                 <TresMeshToonMaterial color="purple" />
             </Ring>
-            <!-- <CatmullRomCurve3 :points="orbitPos" :segments="4" :line-width="2" color="#fbb03b" /> -->
 
             <!-- 立方体 -->
             <TresMesh ref="boxRef" :position="[23.2, 13, 0]" :scale="0.5" cast-shadow>

@@ -1,47 +1,11 @@
 vue
 <template>
     <div class="tags">
-        <!-- <div class="flag" v-for="(item, index) in flags">
+        <div class="flag" v-for="(item, index) in flags">
             <div class="flag-container">
-                <img class="flag-img" :src="item.url" alt="">
-            </div>
-        </div> -->
-        <div class="flag">
-            <div class="flag-container">
-                <img class="flag-img" src="@/assets/flagSVG/cn.svg" alt="" @click="go('cn')">
+                <img class="flag-img" :src="item.url" alt="" @click="goCountry(item.value)">
             </div>
         </div>
-
-        <div class="flag">
-            <div class="flag-container">
-                <img class="flag-img" src="@/assets/flagSVG/us.svg" alt="" @click="go('us')">
-            </div>
-        </div>
-
-        <div class="flag">
-            <div class="flag-container">
-                <img class="flag-img" src="@/assets/flagSVG/ru.svg" alt="" @click="go('ru')">
-            </div>
-        </div>
-
-        <div class="flag">
-            <div class="flag-container">
-                <img class="flag-img" src="@/assets/flagSVG/fr.svg" alt="" @click="go('fr')">
-            </div>
-        </div>
-
-        <div class="flag">
-            <div class="flag-container">
-                <img class="flag-img" src="@/assets/flagSVG/gb.svg" alt="" @click="go('gb')">
-            </div>
-        </div>
-
-        <div class="flag">
-            <div class="flag-container">
-                <img class="flag-img" src="@/assets/flagSVG/jp.svg" alt="">
-            </div>
-        </div>
-
     </div>
 </template> 
 
@@ -53,38 +17,38 @@ const flags = ref([
     {
         name: '中国',
         value: 'cn',
-        url: `@/assets/flagSVG/cn.svg`
+        url: "src/assets/flagSVG/cn.svg"//vite无法解析-路径
     },
     {
         name: '美国',
         value: 'us',
-        url: `@/assets/flagSVG/us.svg`
+        url: `src/assets/flagSVG/us.svg`
     },
     {
         name: '俄国',
         value: 'ru',
-        url: `@/assets/flagSVG/ru.svg`
+        url: `src/assets/flagSVG/ru.svg`
     },
     {
         name: '法国',
         value: 'fr',
-        url: `@/assets/flagSVG/fr.svg`
+        url: `src/assets/flagSVG/fr.svg`
     },
     {
         name: '英国',
         value: 'gb',
-        url: `@/assets/flagSVG/gb.svg`
+        url: `src/assets/flagSVG/gb.svg`
     },
     {
         name: '日本',
         value: 'jp',
-        url: `@/assets/flagSVG/jp.svg`
+        url: `src/assets/flagSVG/jp.svg`
     },
 ]);
 
-const go = (name) => {
-    console.log('go');
-    bus.emit('go', name)
+const goCountry = (name) => {
+    console.log('goCountry');
+    bus.emit('goCountry', name)
 }
 </script>
 

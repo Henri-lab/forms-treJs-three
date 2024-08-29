@@ -115,14 +115,14 @@ let init = () => {
       },
     },
     {
-      name: "核动力航空母舰",
+      name: "尼米兹号航空母舰",
       symbol: outSiezUrl,
       symbolSize: 30,
       id: "c1",
       link: "https://echarts.baidu.com/examples/#chart-type-bar",
     },
     {
-      name: "核动力航空母舰1",
+      name: "阿利·伯克号驱逐舰",
       symbol: outSiezUrl,
       symbolSize: 30,
       id: "c2",
@@ -130,14 +130,14 @@ let init = () => {
     },
 
     {
-      name: "核动力航空母舰2",
+      name: "黄蜂级两栖攻击舰",
       symbol: outSiezUrl,
       symbolSize: 30,
       id: "c4",
       link: "https://echarts.baidu.com/examples/#chart-type-bar",
     },
     {
-      name: "尼米兹航空母舰",
+      name: "杰拉尔德·R·福特级航空母舰",
       symbol: outSiezUrl,
       symbolSize: 30,
       id: "c6",

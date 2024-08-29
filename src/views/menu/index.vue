@@ -3,7 +3,7 @@
         <Galaxy class="galaxy-wrapper" ref="galaxy" v-if="isGalaxy" />
         <Tags class="tags-wrapper animate__animated animate__fadeInDown" v-if="isBtn" />
         <div class="theme">
-            <el-switch v-model="themeLight" /> 关闭背景
+            <el-switch v-model="themeLight" /> 切换背景
         </div>
         <el-button class="btn1 animate__animated animate__fadeInRight" color="green" v-if="isBtn" @click="lookPre">
             上一个
@@ -42,12 +42,8 @@ import { lowerCaseCountryNameMap } from './dict'
 
 const isBtn = ref(false)
 const isCard = ref(true)//false 导致 echarts无法获取宽高！！
-const isJbxxShip = ref(false)
-const isJbxxAir = ref(false)
 const galaxy = ref(null)
 const card = ref(null)
-const cardClass = ref('animate__fadeInRightBig')
-const zoomClass = ref('')
 const isDtails = ref(false)
 const checkType = ref('')
 const isGalaxy = ref(true)
@@ -58,70 +54,61 @@ onMounted(() => {
     }, 3000);
 })
 
+// 背景开关
 const themeLight = ref(false)
 watch(() => themeLight.value, (newV) => {
-    isGalaxy.value = !isGalaxy.value
-    // galaxy.value && galaxy.value.changeTheme()
+    // isGalaxy.value = !isGalaxy.value
+    galaxy.value && galaxy.value.changeSky()
 })
 
 
 let planets = []
+let len = 6//%len 星球数量 循环遍历
 onMounted(() => {
     planets = galaxy.value && galaxy.value.getPlanets()
-    console.log(planets, 'planets in menu');
+    len = planets.length || 6
+    // console.log(planets, 'planets in menu');
 })
-let count = 0
-
-const getDetails = (type) => {
-    galaxy.value && galaxy.value.open()
-    isCard.value = false
-    cardClass.value = 'animate__fadeOutLeftBig'
-    isCard.value = true
-
-    if (type === 'jbxx_aircraft') {
-        isJbxxAir.value = !isJbxxAir.value
-    } else if (type === 'jbxx_ship') {
-        isJbxxShip.value = !isJbxxShip
-    }
-}
 
 // 暂时硬编码(6个球)数组遍历 因为摄像头没有调好
-let countCN = 0
-let countUSA = 0
 let i_planets = 0
-const country = ref('')
-
+const country = ref('')//查看国家 --carry--> 卡片\详情表
+// 上一个
 const lookPre = () => {
-    const { x, y, z, name } = planets[Math.abs(i_planets++ % 6)]
-    galaxy.value && galaxy.value.setPosOfCamera(x, y, z + 5)
+    const { x, y, z, name } = planets[Math.abs(i_planets++ % len)]
     country.value = lowerCaseCountryNameMap[name.toLowerCase()]
+    galaxy.value && galaxy.value.setPosOfCamera(x, y, z + 5)
     // console.log(name, '--country name watching');
     // bug
     // galaxy.value && galaxy.value.lookAt(index++ % 6)
 }
+// 下一个
 const lookNext = () => {
     const { x, y, z, name } = planets[Math.abs(i_planets-- % 6)]
-    galaxy.value && galaxy.value.setPosOfCamera(x, y, z + 5)
     country.value = lowerCaseCountryNameMap[name.toLowerCase()]
+    galaxy.value && galaxy.value.setPosOfCamera(x, y, z + 5)
     // console.log(name, '--country name watching');
     // galaxy.value && galaxy.value.lookAt(index-- % 6)
 }
+// 摄像重置
 const lookReset = (e) => {
     country.value = ''
     galaxy.value && galaxy.value.cameraReset()
 }
 
+// 关闭详情表
 const closeDetails = () => {
     isDtails.value = false
     isCard.value = true
     galaxy.value && galaxy.value.reverse()
-
-
 }
+
+// 打开星球环
 bus.on('openRing', () => {
     galaxy.value && galaxy.value.open()
 })
 
+// 查看详情
 bus.on('detailsCheck', ({ country, type }) => {
     console.log(country, type, '查看详情~国家和类型');
     checkType.value = type
@@ -130,12 +117,11 @@ bus.on('detailsCheck', ({ country, type }) => {
     isDtails.value = true;
     // card.value.style.width = `100px`
     // card.value.style.height = `100px`
-    zoomClass.value = 'zoom'
 })
 
-bus.on('go', (name) => {
-    console.log(name, 'go');
-
+// 跳转国家
+bus.on('goCountry', (name) => {
+    console.log(name, 'goCountry');
     country.value = lowerCaseCountryNameMap[name.toLowerCase()]
 })
 </script>

@@ -71,7 +71,8 @@
                 <el-empty class="empty" description="请选择一个舰船型号" v-if="isEmptyShip" />
             </div>
             <div class="right">
-                <Chart />
+                <Chart class="vchart" />
+                <Relation class="relation" v-draggable />
             </div>
         </div>
     </div>
@@ -82,6 +83,7 @@ import { onMounted } from 'vue';
 import Chart from './chart.vue'
 import axios from 'axios'
 import bus from '@/utils/bus'
+import Relation from '~c/RelationEcharts.vue'
 import {
     data,
     jbxx_aircraft_arr,
@@ -110,11 +112,16 @@ const props = defineProps({
         default: ''
     }
 })
-
+watch(() => props.country, (newVal) => {
+    if (newVal == '美国') {
+        isRelation.value = true
+    } else isRelation.value = false
+})
 
 const select = ref('')
 const targets = ref([])
 const collapsedNames = ref([])
+const isRelation = ref(false)
 
 function initTargets() {
     targets.value = []
@@ -122,7 +129,7 @@ function initTargets() {
         return
     }
     // mock ！
-    if (props.country.includes('法') || props.country.includes('英') || props.country.includes('俄') || props.country.includes('日')) {
+    if (props.country.includes('法') || props.country.includes('英') || props.country.includes('俄') || props.country.includes('日') || props.country.includes('中')) {
         return
     }
     // 
@@ -240,7 +247,20 @@ onBeforeUnmount(() => {
         .right {
             width: 35%;
             height: 100%;
-            border: 1px solid orange;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            // border: 1px solid orange;
+            .vchart {
+                width: 100%;
+                height: 50%;
+            }
+
+            .relation {
+                width: 100%;
+                height: 50%;
+            }
         }
 
     }
