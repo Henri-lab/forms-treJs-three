@@ -232,8 +232,8 @@ bus.on('closeDetails', () => {
         width: 40%;
         position: fixed;
         padding: 0;
-        top: 3%;
-        left: 25%;
+        top: 10%;
+        right: 3%;
         // background-color: red;
     }
 
@@ -264,7 +264,7 @@ bus.on('closeDetails', () => {
     .tags-wrapper {
         width: 23%;
         height: 5%;
-        right: 10%;
+        right: 12%;
         top: 2%;
         position: absolute;
     }
