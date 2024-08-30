@@ -36,7 +36,7 @@ import Description from '~c/descriptions/index.vue';
 import Search from '~c/search.vue'
 import { onMounted, ref, watch } from 'vue';
 import bus from '@/utils/bus';
-import { lowerCaseCountryNameMap } from '@/dict/country'
+import { lowerCaseCountryNameMap } from '@/dict/country.ts'
 
 const isBtn = ref(false)
 const isCard = ref(true)//false 导致 echarts无法获取宽高！！
@@ -114,8 +114,8 @@ bus.on('detailsCheck', ({ countryCode, type }) => {
     }
     checkType.value = type
     galaxy.value && galaxy.value.open()
-    isCard.value = false
     isDtails.value = true;
+    isCard.value = false
     // card.value.style.width = `100px`
     // card.value.style.height = `100px`
 })

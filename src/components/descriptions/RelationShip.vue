@@ -6,8 +6,8 @@
 import { onMounted } from "vue";
 import * as echarts from "echarts";
 // import Url from "../../assets/images/四字按钮.png";
-import centerUrl from "../assets/images/图谱关系选中.png";
-import outSiezUrl from "../assets/images/图谱关系未选中.png";
+import centerUrl from "@/assets/images/图谱关系选中.png";
+import outSiezUrl from "@/assets/images/图谱关系未选中.png";
 
 onMounted(() => {
   init();

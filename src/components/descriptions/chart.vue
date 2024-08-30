@@ -1,8 +1,8 @@
 <template>
     <div class="map">
         <!-- <v-chart class="vchart relation" :option="relationOpt" v-draggable></v-chart> -->
-        <RelationAir v-if="isAir"></RelationAir>
-        <RelationShip v-if="isShip"></RelationShip>
+        <RelationAir class="vchart relation" v-if="isAir"></RelationAir>
+        <RelationShip class="vchart relation" v-if="isShip"></RelationShip>
         <v-chart class="vchart pie" :option="pieOpt"></v-chart>
     </div>
 </template>
@@ -954,65 +954,65 @@ const relationOpt = ref({})
 
 
 
-let relationMockAir = {
-    name: '',
-    children: [
-        {
-            name: '',
-            children: [
-                {
-                    name: '',
-                    children: []
-                }
-            ]
-        },
-        {
-            name: '',
-            children: []
-        }
-    ]
-}
-let relationOptAir = {
-    tooltip: {
-        trigger: 'item',
-        triggerOn: 'mousemove'
-    },
-    series: [
-        {
-            type: 'tree',
-            data: [data],
-            top: '1%',
-            left: '15%',
-            bottom: '1%',
-            right: '7%',
-            symbolSize: 7,
-            orient: 'RL',
-            label: {
-                position: 'right',
-                verticalAlign: 'middle',
-                align: 'left'
-            },
-            leaves: {
-                label: {
-                    position: 'left',
-                    verticalAlign: 'middle',
-                    align: 'right'
-                }
-            },
-            emphasis: {
-                focus: 'descendant'
-            },
-            expandAndCollapse: true,
-            animationDuration: 550,
-            animationDurationUpdate: 750
-        }
-    ]
-}
+// let relationMockAir = {
+//     name: '',
+//     children: [
+//         {
+//             name: '',
+//             children: [
+//                 {
+//                     name: '',
+//                     children: []
+//                 }
+//             ]
+//         },
+//         {
+//             name: '',
+//             children: []
+//         }
+//     ]
+// }
+// let relationOptAir = {
+//     tooltip: {
+//         trigger: 'item',
+//         triggerOn: 'mousemove'
+//     },
+//     series: [
+//         {
+//             type: 'tree',
+//             data: [data],
+//             top: '1%',
+//             left: '15%',
+//             bottom: '1%',
+//             right: '7%',
+//             symbolSize: 7,
+//             orient: 'RL',
+//             label: {
+//                 position: 'right',
+//                 verticalAlign: 'middle',
+//                 align: 'left'
+//             },
+//             leaves: {
+//                 label: {
+//                     position: 'left',
+//                     verticalAlign: 'middle',
+//                     align: 'right'
+//                 }
+//             },
+//             emphasis: {
+//                 focus: 'descendant'
+//             },
+//             expandAndCollapse: true,
+//             animationDuration: 550,
+//             animationDurationUpdate: 750
+//         }
+//     ]
+// }
 
 
 
 function showAir() {
-    isAir.value = ture
+    isAir.value = true
     isShip.value = false
 }
 function showShip() {
