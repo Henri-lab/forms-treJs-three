@@ -6,7 +6,7 @@
                 <el-input v-model="form.name" placeholder="请输入关键字" clearable class="name-input input" />
             </el-form-item>
             <el-form-item class="search-country search-item"
-                :rules="[{ required: true, message: '请选择国家', trigger: 'blur'}]" label="国家">
+                :rules="[{ required: true, message: '请选择国家', trigger: 'blur' }]" label="国家">
                 <el-select v-model="form.countryCode" placeholder="请输入国家" clearable class="country-input input" allow-create
                     filterable>
                     <el-option value="us">美国</el-option>
@@ -37,7 +37,9 @@ const form = reactive({
 
 const inputSearch = () => {
     bus.emit('openDetails')
-    bus.emit('search', form);
+    const countryCode = form.countryCode
+    const type = form.type
+    bus.emit('detailsCheck', { countryCode, type });
 }
 
 </script>

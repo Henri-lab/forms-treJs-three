@@ -15,8 +15,8 @@
                             v-show="isEmpty"></el-empty>
                         <v-chart :option="airOpt" class="vchart"></v-chart>
                     </div>
-                    <el-button type="primary" class="btn-check" round
-                        @click="checkAir(lowerCaseCountryNameMap[props.countryName])" v-show="!isEmpty">查看</el-button>
+                    <el-button type="primary" class="btn-check" round @click="checkAir(props.countryName)"
+                        v-show="!isEmpty">查看</el-button>
                 </div>
                 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                 <div class="ship">
@@ -27,8 +27,8 @@
                         <!-- <div class="empty-ship" v-show="isEmpty" /> -->
                         <v-chart :option="shipOpt" class="vchart"></v-chart>
                     </div>
-                    <el-button type="primary" class="btn-check" round
-                        @click="checkShip(lowerCaseCountryNameMap[props.countryName])" v-show="!isEmpty">查看</el-button>
+                    <el-button type="primary" class="btn-check" round @click="checkShip(props.countryName)"
+                        v-show="!isEmpty">查看</el-button>
                 </div>
             </div>
             <!-- <template #footer>Footer content</template> -->
@@ -219,13 +219,21 @@ watch(() => props.countryName,
     }
 )
 
-
-// 查看详情
-function checkAir(country) {
-    bus.emit('detailsCheck', { countryCode: country, type: 'aircraft' })
+const nameMap = {
+    '美国': 'us',
+    '中国': 'cn',
 }
-function checkShip(country) {
-    bus.emit('detailsCheck', { countryCode: country, type: 'ship' })
+// 查看详情
+function checkAir(countryName) {
+    const countryCode = nameMap[countryName.toLowerCase()]
+    console.log(countryCode, 'air check');
+
+    bus.emit('detailsCheck', { countryCode, type: 'aircraft' })
+}
+function checkShip(countryName) {
+    const countryCode = nameMap[countryName.toLowerCase()]
+    console.log(countryCode, 'ship check');
+    bus.emit('detailsCheck', { countryCode, type: 'ship' })
 }
 
 

@@ -71,6 +71,7 @@
                     v-if="isEmptyAir && !loadAllTypeFlag" />
                 <el-empty class="empty" description="请选择一个舰船型号" image="src/assets/images/ship.png" image-size="500"
                     v-if="isEmptyShip && !loadAllTypeFlag" />
+                <el-empty class="empty" description="请选择一个舰船或战斗机型号" v-if="loadAllTypeFlag" />
             </div>
             <div class="right">
                 <Chart class="vchart" />
@@ -154,6 +155,7 @@ function initTargets() {
             })
         })
     } else if (type === 'ship') {//@update
+
         loadAllTypeFlag.value = 0
         jbxx_ship_arr.forEach(item => {
             item.forEach(it => {
@@ -162,8 +164,9 @@ function initTargets() {
                 }
             })
         })
-    } else {
-        loadAllTypeFlag = 1
+    } else if (!type) {
+        loadAllTypeFlag.value = 1
+        console.log('load all types')
         targets.value = targetNames
     }
     console.log(targets.value, 'options of select')
@@ -174,7 +177,7 @@ onMounted(() => {
 })
 watch(() => props.country, () => {
     initTargets()
-})
+}, { immediate: true, deep: true })
 
 const isCollapse = ref(false)
 const isEmptyAir = ref(false)
