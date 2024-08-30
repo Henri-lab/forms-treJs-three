@@ -18,6 +18,7 @@
                     <el-button type="primary" class="btn-check" round
                         @click="checkAir(lowerCaseCountryNameMap[props.countryName])" v-show="!isEmpty">查看</el-button>
                 </div>
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                 <div class="ship">
                     <div class="title" style="font-weight: 600;font-size: 20px; margin:0 auto ;">舰船</div>
                     <div class="ship-chart chart" ref="shipChart">
@@ -248,12 +249,12 @@ function checkShip(country) {
 }
 
 @mixin set-mainLR() {
-    width: 50%;
+    width: 45%;
     height: 100%;
     // background-color: blue;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
 }
 
 @mixin set-empty() {

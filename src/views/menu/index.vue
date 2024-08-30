@@ -143,8 +143,8 @@ bus.on('closeDetails', () => {
 
 <style lang="scss" scoped>
 @mixin pre-next($top) {
-    width: 5%;
-    height: 5%;
+    width: 8rem;
+    height: 5rem;
     position: absolute;
     top: $top;
     right: 5%;
@@ -156,6 +156,8 @@ bus.on('closeDetails', () => {
 
 .menu {
     @include layout100('%');
+    // width: 2500px;
+    // height: 1500px;
     position: relative;
 
     .galaxy-wrapper {
@@ -226,17 +228,16 @@ bus.on('closeDetails', () => {
 
     .search-wrapper {
         width: 40%;
-        max-height: 10%;
-        position: absolute;
+        position: fixed;
         padding: 0;
         top: 3%;
-        left: -3%;
+        left: 20%;
         // background-color: red;
     }
 
     .card-wrapper {
-        width: 40%;
-        height: 35%;
+        width: auto;
+        height: auto;
         background-color: rgba(242, 240, 231, 0.1);
         position: absolute;
         padding: 1%;
