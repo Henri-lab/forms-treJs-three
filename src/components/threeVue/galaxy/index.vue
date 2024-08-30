@@ -18,15 +18,15 @@ import {
     SVG,
     Ring,
     Sky,
-    useVideoTexture
+    useVideoTexture,
+    Ocean,
 } from '@tresjs/cientos'
-import mitt from 'mitt'
+import bus from '@/utils/bus'
 import Context from './Context.vue'
 import { TextureLoader } from 'three';
 import { resolve } from 'path';
 import { onBeforeMount } from 'vue';
 
-const bus = mitt()
 
 // 立方体旋转
 const boxRef: ShallowRef<TresInstance | null> = shallowRef(null);
@@ -63,7 +63,7 @@ const cameraX = ref(0);
 const cameraY = ref(5);
 const animateCamera = () => {
     if (cameraZ.value > 42) {
-        cameraZ.value -= 7; //speed
+        cameraZ.value -= 15; //speed
         requestAnimationFrame(animateCamera);
     }
 };
@@ -75,12 +75,12 @@ onMounted(() => {
 
 // ring 星球链
 const planets = ref([
-    { x: 0, y: 0, z: 0, id: 1, svg: 'src/assets/flagSVG/cn.svg', color: 'white', name: 'cn' },
-    { x: 0, y: 0, z: 0, id: 3, svg: 'src/assets/flagSVG/ru.svg', color: 'white', name: 'ru' },
-    { x: 0, y: 0, z: 0, id: 2, svg: 'src/assets/flagSVG/us.svg', color: 'white', name: 'us' },
-    { x: 0, y: 0, z: 0, id: 4, svg: 'src/assets/flagSVG/fr.svg', color: 'white', name: 'fr' },
-    { x: 0, y: 0, z: 0, id: 5, svg: 'src/assets/flagSVG/gb.svg', color: 'white', name: 'gb' },
-    { x: 0, y: 0, z: 0, id: 6, svg: 'src/assets/flagSVG/jp.svg', color: 'white', name: 'jp' },
+    { type: 'country', x: 0, y: 0, z: 0, id: 1, svg: '../../../../assets/flagSVG/cn.svg', color: 'red', name: 'cn' },
+    { type: 'country', x: 0, y: 0, z: 0, id: 3, svg: '../../../../assets/flagSVG/ru.svg', color: 'yellow', name: 'ru' },
+    { type: 'country', x: 0, y: 0, z: 0, id: 2, svg: '../../../../assets/flagSVG/us.svg', color: 'blue', name: 'us' },
+    { type: 'country', x: 0, y: 0, z: 0, id: 4, svg: '../../../../assets/flagSVG/fr.svg', color: 'purple', name: 'fr' },
+    { type: 'country', x: 0, y: 0, z: 0, id: 5, svg: '../../../../assets/flagSVG/gb.svg', color: 'green', name: 'gb' },
+    { type: 'country', x: 0, y: 0, z: 0, id: 6, svg: '../../../../assets/flagSVG/jp.svg', color: 'white', name: 'jp' },
 ])
 
 const ringN = ref({ x: 0, y: 0, z: 0 });// 环normal
@@ -154,10 +154,6 @@ function initRing() {
 onMounted(() => {
     initRing();
 });
-
-
-
-
 
 // 星球链动画
 const initR = 12//初始半径
@@ -265,6 +261,10 @@ const changeSky = () => {
     isSky.value = !isSky.value
 }
 
+const handlePlanetClick = (e, name) => {
+    console.log(e, name);
+}
+
 defineExpose({
     open,
     reverse,
@@ -275,7 +275,67 @@ defineExpose({
     changeTheme,
     changeSky
 })
+
+
+// 事件
+bus.on('countrySphere',(country3D)=>{
+    console.log(country3D,'country3D');
+    
+})
+function getSceneInfo() {
+    bus.emit('sceneInfo')
+  
+}
+
+
 </script>
+
+<template>
+    <div class="galaxy" @click="getSceneInfo">
+        <TresCanvas :clear-color="theme">
+            <Context ref="ctx" :direction="[lookX, lookY, lookZ]" />
+
+            <TresPerspectiveCamera :position="[cameraX, cameraY, cameraZ]" />
+            <OrbitControls />
+            <MouseParallax :factor="50" :ease="[1, 0.5]" />
+            <TresAmbientLight />
+            <TresDirectionalLight :position="[10, 10, 15]" />
+
+
+            <Stars :rotation="[0, yRotation, 0]" :radius="500" :depth="100" :count="2000" :size="0.3"
+                :size-attenuation="true" />
+            <Sky v-if="isSky" />
+
+
+            <TresMesh class="planets" v-for="planet in planets" :key="planet.id" :position="[planet.x, planet.y, planet.z]"
+                :name="planet.name" type="country"  @click="(event) => console.log('click')" >
+                <Sphere>
+                    <MeshGlassMaterial :color="planet.color" />
+                    <Sparkles :directional-light="lightRef" />
+                </Sphere>
+            </TresMesh>
+
+            <TresMesh class="planets" v-for="(planet, index) in  planets " :key="planet.id"
+                :position="[planet.x, planet.y, planet.z]">
+                <Plane :args="[3, 2.5]" :rotation="[rotX, rotY, rotZ]">
+                    <TresMeshBasicMaterial :map="texture[index]" />
+                </Plane>
+            </TresMesh>
+
+
+            <Ring ref="ringRef" :args="[ringR - 0.1, ringR, 32]" :position="[ringC.x, ringC.y, ringC.z]"
+                :rotation="[Math.atan2(ringN.y, ringN.z) * Math.PI / (-3), Math.atan2(ringN.x, ringN.z), 0]">
+                <TresMeshToonMaterial color="purple" />
+            </Ring>
+
+            <TresMesh ref="boxRef" :position="[23.2, 13, 0]" :scale="0.5" cast-shadow>
+                <TresBoxGeometry :args="[1, 1, 1]" />
+                <TresMeshNormalMaterial />
+            </TresMesh>
+        </TresCanvas>
+    </div>
+</template>
+
 
 <style lang="scss" scoped>
 .galaxy {
@@ -290,50 +350,3 @@ defineExpose({
     }
 }
 </style>
-
-
-<template>
-    <div class="galaxy">
-        <TresCanvas :clear-color="theme">
-            <!-- 上下文 -->
-            <Context ref="ctx" :direction="[lookX, lookY, lookZ]" />
-            <!-- 配置 -->
-            <TresPerspectiveCamera :position="[cameraX, cameraY, cameraZ]" />
-            <OrbitControls />
-            <MouseParallax :factor="50" :ease="[1, 0.5]" />
-            <TresAmbientLight />
-            <TresDirectionalLight :position="[10, 10, 15]" />
-
-            <!-- 背景 -->
-            <Stars :rotation="[0, yRotation, 0]" :radius="500" :depth="100" :count="2000" :size="0.3"
-                :size-attenuation="true" />
-            <Sky v-if="isSky" />
-            <!-- 星球 -->
-            <TresMesh class="planets" v-for="planet in planets" :key="planet.id" :position="[planet.x, planet.y, planet.z]">
-                <Sphere>
-                    <MeshGlassMaterial :color="planet.color" />
-                    <Sparkles :directional-light="lightRef" />
-                </Sphere>
-            </TresMesh>
-            <!-- 星球内部平面 国旗 -->
-            <TresMesh class="planets" v-for="(planet, index) in planets" :key="planet.id"
-                :position="[planet.x, planet.y, planet.z]">
-                <Plane :args="[3, 2.5]" :rotation="[rotX, rotY, rotZ]">
-                    <TresMeshBasicMaterial :map="texture[index]" />
-                </Plane>
-            </TresMesh>
-
-            <!-- 轨道 -->
-            <Ring ref="ringRef" :args="[ringR - 0.1, ringR, 32]" :position="[ringC.x, ringC.y, ringC.z]"
-                :rotation="[Math.atan2(ringN.y, ringN.z) * Math.PI / (-3), Math.atan2(ringN.x, ringN.z), 0]">
-                <TresMeshToonMaterial color="purple" />
-            </Ring>
-
-            <!-- 立方体 -->
-            <TresMesh ref="boxRef" :position="[23.2, 13, 0]" :scale="0.5" cast-shadow>
-                <TresBoxGeometry :args="[1, 1, 1]" />
-                <TresMeshNormalMaterial />
-            </TresMesh>
-        </TresCanvas>
-    </div>
-</template>

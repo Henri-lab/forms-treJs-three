@@ -10,7 +10,7 @@
                 <div class="aircraft">
                     <div class="title" style="font-weight: 600;font-size: 20px; margin:0 auto ;">战斗机</div>
                     <div class="aircraft-chart chart" ref="aircraftChart">
-                        <img class="empty-air" src="src/assets/images/aircraft.png" alt="" v-show="isEmpty">
+                        <img class="empty-air" src="../assets/images/aircraft.png" alt="" v-show="isEmpty">
                         <div class="no-data" v-show="isEmpty">没有结果</div>
 
                         <!-- <div class="empty-air" v-show="isEmpty" />
@@ -27,7 +27,7 @@
                     <div class="title" style="font-weight: 600;font-size: 20px; margin:0 auto ;">舰船</div>
                     <div class="ship-chart chart" ref="shipChart">
 
-                        <img class="empty-ship" src="src/assets/images/ship.png" alt="" v-show="isEmpty">
+                        <img class="empty-ship" src="../assets/images/ship.png" alt="" v-show="isEmpty">
                         <div class="no-data" v-show="isEmpty">没有结果</div>
 
                         <!-- <div class="empty-ship" v-show="isEmpty" />
@@ -347,7 +347,7 @@ function checkShip(countryName) {
                 // border: 1px solid greenyellow;
                 .empty-air {
                     @include set-empty();
-                    background-image: url('src/assets/images/aircraft.png');
+                    // background-image: url('src/assets/images/aircraft.png');
                     left: 0;
 
 
@@ -401,7 +401,7 @@ function checkShip(countryName) {
 
                 .empty-ship {
                     @include set-empty();
-                    background-image: url('src/assets/images/ship.png');
+                    // background-image: url('src/assets/images/ship.png');
                     right: 0%;
                 }
 

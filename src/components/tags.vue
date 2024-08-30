@@ -80,6 +80,7 @@ const goCountry = (name) => {
     justify-content: space-between;
     align-items: center;
     background-color: transparent;
+    margin-top: -1%;
 
 }
 

@@ -5,6 +5,7 @@ export function getCopy() {
     targets: [
       { src: '**/*.png', dest: 'dist/assets' },
       { src: '**/*.jpg', dest: 'dist/assets' },
+      { src: '**/*.svg', dest: 'dist/assets' },
     ],
     hook: 'buildEnd',
   });
