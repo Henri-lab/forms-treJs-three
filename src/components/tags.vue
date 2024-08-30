@@ -3,7 +3,7 @@ vue
     <div class="tags">
         <div class="flag" v-for="(item, index) in flags">
             <div class="flag-container">
-                <img class="flag-img" :src="item.url" alt="" @click="goCountry(item.value)">
+                <img class="flag-img" :src="new URL(item.url, import.meta.url).href" alt="" @click="goCountry(item.value)">
             </div>
         </div>
     </div>

@@ -67,10 +67,8 @@
                         </el-collapse-item>
                     </el-form>
                 </el-collapse>
-                <el-empty class="empty" description="请选择一个战斗机型号" image="src/assets/images/aircraft.png" image-size="500"
-                    v-if="isEmptyAir && !loadAllTypeFlag" />
-                <el-empty class="empty" description="请选择一个舰船型号" image="src/assets/images/ship.png" image-size="500"
-                    v-if="isEmptyShip && !loadAllTypeFlag" />
+                <el-empty class="empty" description="请选择一个战斗机型号" v-if="isEmptyAir && !loadAllTypeFlag" />
+                <el-empty class="empty" description="请选择一个舰船型号" v-if="isEmptyShip && !loadAllTypeFlag" />
                 <el-empty class="empty" description="请选择一个舰船或战斗机型号" v-if="loadAllTypeFlag" />
             </div>
             <div class="right">

@@ -238,7 +238,7 @@ bus.on('closeDetails', () => {
     }
 
     .card-wrapper {
-        width: auto;
+        width: 35%;
         height: auto;
         background-color: rgba(242, 240, 231, 0.1);
         position: absolute;

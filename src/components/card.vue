@@ -10,9 +10,10 @@
                 <div class="aircraft">
                     <div class="title" style="font-weight: 600;font-size: 20px; margin:0 auto ;">战斗机</div>
                     <div class="aircraft-chart chart" ref="aircraftChart">
-                        <!-- <div class="empty-air" v-show="isEmpty" /> -->
-                        <el-empty class="empty" image="src/assets/images/aircraft.png" image-size=350
-                            v-show="isEmpty"></el-empty>
+                        <div class="empty-air" v-show="isEmpty" />
+                        <div class="no-data" v-show="isEmpty">没有结果</div>
+                        <!-- <el-empty class="empty" image="src/assets/images/aircraft.png" image-size=350
+                            v-show="isEmpty"></el-empty> -->
                         <v-chart :option="airOpt" class="vchart"></v-chart>
                     </div>
                     <el-button type="primary" class="btn-check" round @click="checkAir(props.countryName)"
@@ -22,9 +23,10 @@
                 <div class="ship">
                     <div class="title" style="font-weight: 600;font-size: 20px; margin:0 auto ;">舰船</div>
                     <div class="ship-chart chart" ref="shipChart">
-                        <el-empty class="empty" image="src/assets/images/ship.png" image-size=350
-                            v-show="isEmpty"></el-empty>
-                        <!-- <div class="empty-ship" v-show="isEmpty" /> -->
+                        <div class="empty-ship" v-show="isEmpty" />
+                        <div class="no-data" v-show="isEmpty">没有结果</div>
+                        <!-- <el-empty class="empty" image="src/assets/images/ship.png" image-size=350
+                            v-show="isEmpty"></el-empty> -->
                         <v-chart :option="shipOpt" class="vchart"></v-chart>
                     </div>
                     <el-button type="primary" class="btn-check" round @click="checkShip(props.countryName)"
@@ -266,11 +268,12 @@ function checkShip(countryName) {
 }
 
 @mixin set-empty() {
-    width: 90%;
+    width: 100%;
     height: 80%;
     margin-top: 5%;
-    // background-color: red;
+    background-color: red;
     background-size: cover;
+    position: absolute;
 }
 
 @keyframes zoom {
@@ -338,12 +341,21 @@ function checkShip(countryName) {
                 .empty-air {
                     @include set-empty();
                     background-image: url('src/assets/images/aircraft.png');
-                    float: left;
-                    margin-left: 5%;
+                    left: 0;
+
+
                 }
 
                 .empty-ship:hover {
                     cursor: auto;
+                }
+
+                .no-data {
+                    color: antiquewhite;
+                    position: absolute;
+                    bottom: 0;
+                    left: 50%;
+                    transform: translateX(-50%)
                 }
 
                 // .vchart {
@@ -383,12 +395,19 @@ function checkShip(countryName) {
                 .empty-ship {
                     @include set-empty();
                     background-image: url('src/assets/images/ship.png');
-                    float: right;
-                    margin-right: 5%;
+                    right: 0%;
                 }
 
                 .empty-ship:hover {
                     cursor: auto;
+                }
+
+                .no-data {
+                    color: antiquewhite;
+                    position: absolute;
+                    bottom: 0;
+                    left: 50%;
+                    transform: translateX(-50%)
                 }
             }
 
