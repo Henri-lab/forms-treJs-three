@@ -1,5 +1,6 @@
 <template>
     <div class="menu" @click.right="lookReset">
+        <HeaderTime></HeaderTime>
         <Galaxy class="galaxy-wrapper" ref="galaxy" v-if="isGalaxy" />
         <Tags class="tags-wrapper animate__animated animate__fadeInDown" v-if="isBtn" />
         <div class="theme">
@@ -21,7 +22,7 @@
                 <Description class="description-wrapper " :country="country" :targetType="checkType" :search="search" />
             </div>
         </div>
-        <Search class="search-wrapper animate__animated animate__fadeInLeft" v-if="isBtn" />
+        <Search class="search-wrapper animate__animated animate__fadeInDown" v-if="isBtn" />
         <Card ref="card" class="card-wrapper animate__animated animate__fadeInUpBig" v-show="isCard"
             :countryName="country" />
     </div>
@@ -37,6 +38,7 @@ import Search from '~c/search.vue'
 import { onMounted, ref, watch } from 'vue';
 import bus from '@/utils/bus';
 import { lowerCaseCountryNameMap } from '@/dict/country.ts'
+import HeaderTime from '~c/HeaderVue.vue';
 
 const isBtn = ref(false)
 const isCard = ref(true)//false 导致 echarts无法获取宽高！！
@@ -231,7 +233,7 @@ bus.on('closeDetails', () => {
         position: fixed;
         padding: 0;
         top: 3%;
-        left: 20%;
+        left: 25%;
         // background-color: red;
     }
 
@@ -273,6 +275,7 @@ bus.on('closeDetails', () => {
         right: -5%;
         top: 0%;
         position: absolute;
+        color: antiquewhite;
     }
 }
 </style>

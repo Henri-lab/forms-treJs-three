@@ -49,14 +49,14 @@ onMounted(() => {
 .header-top {
   width: 100%;
   height: 75px;
-  background: url("../assets/images/头部.png") no-repeat center;
+  background: url("../assets/images/头部.png") repeat left;
+  background-color: transparent;
   display: flex;
   align-items: center;
   .header-top-title {
     width: 500px;
     height: 40px;
-    background: url("../assets/images/某地区陆上压制力量展示系统.png") no-repeat
-      center;
+    background: url("../assets/images/某地区陆上压制力量展示系统.png") no-repeat center;
     background-size: 75%;
   }
   .header-top-time {
