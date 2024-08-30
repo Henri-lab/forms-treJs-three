@@ -10,10 +10,13 @@
                 <div class="aircraft">
                     <div class="title" style="font-weight: 600;font-size: 20px; margin:0 auto ;">战斗机</div>
                     <div class="aircraft-chart chart" ref="aircraftChart">
-                        <div class="empty-air" v-show="isEmpty" />
+                        <img class="empty-air" src="src/assets/images/aircraft.png" alt="" v-show="isEmpty">
                         <div class="no-data" v-show="isEmpty">没有结果</div>
-                        <!-- <el-empty class="empty" image="src/assets/images/aircraft.png" image-size=350
-                            v-show="isEmpty"></el-empty> -->
+
+                        <!-- <div class="empty-air" v-show="isEmpty" />
+                        <div class="no-data" v-show="isEmpty">没有结果</div> -->
+                        <!-- <el-empty class="empty" v-show="isEmpty"></el-empty> -->
+
                         <v-chart :option="airOpt" class="vchart"></v-chart>
                     </div>
                     <el-button type="primary" class="btn-check" round @click="checkAir(props.countryName)"
@@ -23,10 +26,14 @@
                 <div class="ship">
                     <div class="title" style="font-weight: 600;font-size: 20px; margin:0 auto ;">舰船</div>
                     <div class="ship-chart chart" ref="shipChart">
-                        <div class="empty-ship" v-show="isEmpty" />
+
+                        <img class="empty-ship" src="src/assets/images/ship.png" alt="" v-show="isEmpty">
                         <div class="no-data" v-show="isEmpty">没有结果</div>
-                        <!-- <el-empty class="empty" image="src/assets/images/ship.png" image-size=350
-                            v-show="isEmpty"></el-empty> -->
+
+                        <!-- <div class="empty-ship" v-show="isEmpty" />
+                        <div class="no-data" v-show="isEmpty">没有结果</div> -->
+                        <!-- <el-empty class="empty" v-show="isEmpty"></el-empty> -->
+
                         <v-chart :option="shipOpt" class="vchart"></v-chart>
                     </div>
                     <el-button type="primary" class="btn-check" round @click="checkShip(props.countryName)"

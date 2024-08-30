@@ -13,8 +13,8 @@ export default defineConfig({
   },
   envDir: 'env',
   plugins: createPlugin(), // 注册插件
-  // base: process.env.VITE_BASE_URL || './',
-  base:"/",
+  base: process.env.VITE_BASE_URL || './',
+  // base:"/",
   server: {
     open: true,
   },

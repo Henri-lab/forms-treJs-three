@@ -2,10 +2,30 @@ vue
 <template>
     <div class="tags">
         <div class="flag" v-for="(item, index) in flags">
-            <div class="flag-container">
-                <img class="flag-img" :src="new URL(item.url, import.meta.url).href" alt="" @click="goCountry(item.value)">
+            <div class="flag-container" @click="goCountry(item.value)">
+                {{ item.name }}
+                <!-- <img class="flag-img" :src="item.url" alt="" @click="goCountry(item.value)"> -->
             </div>
         </div>
+        <!-- <div class="flag-container">
+            <img class="flag-img" src="src/assets/flagSVG/cn.svg" alt="" @click="goCountry('cn')">
+        </div>
+        <div class="flag-container">
+            <img class="flag-img" src="src/assets/flagSVG/us.svg" alt="" @click="goCountry('us')">
+        </div>
+        <div class="flag-container">
+            <img class="flag-img" src="src/assets/flagSVG/gb.svg" alt="" @click="goCountry('gb')">
+        </div>
+        <div class="flag-container">
+            <img class="flag-img" src="src/assets/flagSVG/fr.svg" alt="" @click="goCountry('fr')">
+        </div>
+        <div class="flag-container">
+            <img class="flag-img" src="src/assets/flagSVG/ru.svg" alt="" @click="goCountry('ru')">
+        </div>
+        <div class="flag-container">
+            <img class="flag-img" src="src/assets/flagSVG/jb.svg" alt="" @click="goCountry('gb')">
+        </div> -->
+
     </div>
 </template> 
 
@@ -17,7 +37,7 @@ const flags = ref([
     {
         name: '中国',
         value: 'cn',
-        url: "src/assets/flagSVG/cn.svg"//vite无法解析-路径
+        url: "src/assets/flagSVG/cn.svg"
     },
     {
         name: '美国',
