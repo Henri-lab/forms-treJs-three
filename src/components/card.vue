@@ -257,7 +257,7 @@ function checkShip(countryName) {
 }
 
 @mixin set-mainLR() {
-    width: 45%;
+    width: 55%;
     height: 100%;
     // background-color: blue;
     display: flex;

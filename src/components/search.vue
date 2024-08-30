@@ -14,8 +14,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item class="search-type search-item" label="载具类型">
-                <el-select v-model="form.type" placeholder="请输入类型" clearable class="type-input input" allow-create
-                    filterable>
+                <el-select v-model="form.type" placeholder="请输入类型" clearable class="type-input input">
                     <el-option value="aircraft">战斗机</el-option>
                     <el-option value="ship">舰船</el-option>
                 </el-select>

@@ -1,12 +1,20 @@
 import { defineConfig } from 'vite';
 import path from 'path';
 import { createPlugin } from './src/vite/plugin';
-
+import copy from 'rollup-plugin-copy';
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    minify: true, // 代码压缩
+    sourcemap: true, // 生成 source map 文件，方便调试
+    rollupOptions: {
+      treeshake: true, // Tree-shaking
+    },
+  },
   envDir: 'env',
   plugins: createPlugin(), // 注册插件
-  base: './',
+  // base: process.env.VITE_BASE_URL || './',
+  base:"/",
   server: {
     open: true,
   },
