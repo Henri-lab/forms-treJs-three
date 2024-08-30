@@ -1,6 +1,8 @@
 <template>
     <div class="map">
-        <v-chart class="vchart relation" :option="relationOpt" v-draggable></v-chart>
+        <!-- <v-chart class="vchart relation" :option="relationOpt" v-draggable></v-chart> -->
+        <RelationAir v-if="isAir"></RelationAir>
+        <RelationShip v-if="isShip"></RelationShip>
         <v-chart class="vchart pie" :option="pieOpt"></v-chart>
     </div>
 </template>
@@ -9,8 +11,12 @@
 import * as echarts from 'echarts';
 import axios from 'axios';
 import bus from '@/utils/bus';
+import RelationAir from './RelationAir.vue'
+import RelationShip from './RelationShip.vue'
 
 const pieOpt = ref({})
+const isAir = ref(false)
+const isShip = ref(false)
 
 // const colors = ['#FFAE57', '#FF7853', '#EA5151', '#CC3F57', '#9A2555'];
 // const bgColor = '#2E2733';
@@ -814,9 +820,6 @@ let pieMock6 = {
 
 
 
-
-
-
 const relationOpt = ref({})
 // let nodesAir = [
 //     {
@@ -953,19 +956,19 @@ const relationOpt = ref({})
 
 let relationMockAir = {
     name: '',
-    children=[
+    children: [
         {
             name: '',
-            children=[
+            children: [
                 {
                     name: '',
-                    children =[]
+                    children: []
                 }
             ]
         },
         {
             name: '',
-            children=[]
+            children: []
         }
     ]
 }
@@ -1007,20 +1010,37 @@ let relationOptAir = {
 }
 
 
+
+function showAir() {
+    isAir.value = ture
+    isShip.value = false
+}
+function showShip() {
+    isAir.value = false
+    isShip.value = true
+}
+
 bus.on('chartChange', (select => {
     if (select === 'F-22A猛禽战斗机') {
         pieOpt.value = pieMock1
-        relationOpt.value = relationMock1
+        // relationOpt.value = relationMock1
+        showAir()
     } else if (select === 'F-35A闪电II战斗机') {
         pieOpt.value = pieMock2
+        showAir()
     } else if (select === 'F/A-18E/F超级大黄蜂战斗机') {
         pieOpt.value = pieMock3
+        showAir()
     } else if (select === '杰拉尔德·R·福特级航空母舰') {
         pieOpt.value = pieMock4
+        // relationOpt.value = relationMock2
+        showShip()
     } else if (select === '黄蜂级两栖攻击舰') {
         pieOpt.value = pieMock5
-    } else {
+        showShip()
+    } else if (select === '阿利·伯克号驱逐舰') {
         pieOpt.value = pieMock6
+        showShip()
     }
 }))
 

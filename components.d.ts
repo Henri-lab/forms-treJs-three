@@ -30,6 +30,9 @@ declare module 'vue' {
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     Relation: typeof import('./src/components/threeVue/relation/index.vue')['default']
+    RelationAir: typeof import('./src/components/descriptions/RelationAir.vue')['default']
+    RelationEcharts: typeof import('./src/components/descriptions/RelationEcharts.vue')['default']
+    RelationShip: typeof import('./src/components/descriptions/RelationShip.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

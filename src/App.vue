@@ -1,7 +1,7 @@
 <template>
   <!-- <router-link to="/StatusComponent">状态栏组件</router-link> -->
-  <!-- <router-view /> -->
-<relation></relation>
+  <router-view />
+<!-- <relation></relation> -->
 
 </template>
 <script setup lang="ts">

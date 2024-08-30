@@ -1,5 +1,6 @@
 <template>
     <button @click="getScene">getScene</button>
+    <button @click="getDynamicEdge">getDynamicEdge</button>
     <div class="relation">
         <div class="pane" ref="paneRef" v-mouse-follow v-draggable v-if="isPane">
             正在查看： {{ curLabel }}
@@ -24,7 +25,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import Context from './Context.vue'
 import { TresCanvas, useRenderLoop, useLoader } from '@tresjs/core'
 import {
@@ -66,6 +67,7 @@ const props = defineProps({
 
 const testData = ref([
     {
+        id: 'F22a',
         x: 0,
         y: 0,
         z: 0,
@@ -73,22 +75,82 @@ const testData = ref([
         value: 10
     },
     {
+        id: 'F15A',
         x: 5,
         y: 0,
         z: 0,
-        label: 'bbb',
+        label: 'F15A',
         value: 5
     },
     {
+        id: 'F3bc',
         x: -5,
         y: 0,
         z: 0,
-        label: 'ccc',
+        label: 'F3bc',
         value: 20
     },
 
 ])
+//options
+const edgesOpt = ref([
+    {
+        source: 'F22a',
+        target: 'F15A',
+        value: 10
+    },
+    {
+        source: 'F22a',
+        target: 'F3bc',
+        value: 5
+    },
+    {
+        source: 'F3bc',
+        target: 'F15A',
+        value: 20
+    },
+])
 
+//根据edge配置找到对应的节点 并生成 线集合
+function createEdges(nodes, edges, { isDynamic, step }) {
+    return edges.map(edge => {
+        const sourceNode = nodes.value.find(node => node.id === edge.source)
+        const targetNode = nodes.value.find(node => node.id === edge.target)
+        if (sourceNode && targetNode) {
+            const linePos = createLinePos(sourceNode, targetNode, { isDynamic, step })//动态线
+            return linePos
+        } else {
+            return null
+        }
+    })
+}
+
+
+function createLinePos(sourceNode, targetNode, { isDynamic, step }) {
+    if (isDynamic) {
+        return interpolatePoints(sourceNode, targetNode, step)
+    } else {
+        return [[sourceNode.x, sourceNode.y, sourceNode.z], [targetNode.x, targetNode.y, targetNode.z]]
+    }
+}
+
+function interpolatePoints(sourceNode, targetNode, step) {
+    const deltaX = targetNode.x - sourceNode.x;
+    const deltaY = targetNode.y - sourceNode.y;
+    const deltaZ = targetNode.z - sourceNode.z;
+    const numSteps = Math.ceil(Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ) / step);//步数=总长 / 步长
+    const points = [];
+
+    for (let i = 0; i <= numSteps; i++) {
+        const t = i / numSteps;//行进进度  // 比例要求：(行进进度与时间成正比 >>> 时间与步长成正比 >>> #步长大则行进快)
+        const x = sourceNode.x + t * deltaX;//行进长度=总长 * 行进进度 
+        const y = sourceNode.y + t * deltaY;
+        const z = sourceNode.z + t * deltaZ;
+        points.push([x, y, z]);
+    }
+
+    return points;
+}
 // const nodes = computed(() => props.nodes)
 // nodes.forEach(node => {
 //     const { x, y, z, value, label } = node
@@ -96,9 +158,23 @@ const testData = ref([
 const ctx = ref()
 const getScene = () => {
     console.log('sfsfs');
-
     const sceneRef = ctx.value.getScene()
     console.log(sceneRef.value, 'scence')
+}
+
+
+
+const edgePosArr = ref([])
+const getDynamicEdge = () => {
+    const linePosArr = createEdges(testData, edgesOpt, { isDynamic: true, step: 0.2 })
+
+    for (let i = 0; i < linePosArr.length - 1; i++) {
+        if (linePosArr[i]) {
+            edgePosArr.value.push(linePosArr[i])
+        } else continue
+    }
+
+    console.log(edgePosArr.value,'dynamic: pos in diff time')
 }
 
 const curLabel = ref('')
@@ -127,7 +203,7 @@ const handleClose = () => {
         background-color: antiquewhite;
         font-size: 20px;
         color: black;
-        position:absolute;
+        position: absolute;
         padding-top: 2%;
         padding-bottom: 0;
         z-index: 999;
