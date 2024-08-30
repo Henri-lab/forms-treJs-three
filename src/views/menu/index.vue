@@ -22,7 +22,7 @@
                 <Description class="description-wrapper " :country="country" :targetType="checkType" :search="search" />
             </div>
         </div>
-        <Search class="search-wrapper animate__animated animate__fadeInDown" v-if="isBtn" />
+        <Search class="search-wrapper animate__animated animate__fadeInDown" v-if="isCard" />
         <Card ref="card" class="card-wrapper animate__animated animate__fadeInUpBig" v-show="isCard"
             :countryName="country" />
     </div>

@@ -2,8 +2,8 @@
     <div class="search">
         <!-- 查询 -->
         <el-form :model="form" label-width="80px" class="search-form">
-            <el-form-item class="search-name search-item" label="关键字">
-                <el-input v-model="form.name" placeholder="请输入关键字" clearable class="name-input input" />
+            <el-form-item class="search-keywords search-item" label="关键字">
+                <el-input v-model="form.keywords" placeholder="请输入关键字" clearable class="keywords-input input" />
             </el-form-item>
             <el-form-item class="search-country search-item"
                 :rules="[{ required: true, message: '请选择国家', trigger: 'blur' }]" label="国家">
@@ -30,16 +30,23 @@
 <script setup>
 import bus from '@/utils/bus';
 const form = reactive({
-    name: '',
+    keywords: '',
     countryCode: '',
     type: '',
 })
 
 const inputSearch = () => {
-    bus.emit('openDetails')
+    // 暂时硬编码 如果你输入关键字 那就加载所有类型
     const countryCode = form.countryCode
     const type = form.type
-    bus.emit('detailsCheck', { countryCode, type });
+    if (form.keywords) {
+        console.log('keywords');
+        bus.emit('openDetails')
+        bus.emit('detailsCheck', { countryCode, type: '' });
+    } else {
+        bus.emit('openDetails')
+        bus.emit('detailsCheck', { countryCode, type });
+    }
 }
 
 </script>
@@ -65,7 +72,7 @@ const inputSearch = () => {
                 width: 10rem;
             }
 
-            .name-input {}
+            .keywords-input {}
         }
     }
 
